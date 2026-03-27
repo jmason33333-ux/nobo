@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scope of Work — Monumental · Nobo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:        #F5F0E6;
+      --cream-dark:   #EBE4D6;
+      --cream-deeper: #DDD5C4;
+      --pine:         #334A36;
+      --pine-dark:    #263E31;
+      --pine-mid:     #4C5E46;
+      --pine-light:   #697A50;
+      --pine-sage:    #8D9967;
+      --pine-soft:    rgba(51,74,54,0.08);
+      --rust:         #A84A2A;
+      --gold:         #C0883A;
+      --text-dark:    #1C180E;
+      --text-mid:     #4A4435;
+      --text-soft:    #7A7060;
+      --text-muted:   #A89F8E;
+      --white:        #FDFAF4;
+      --font-display: 'Lora', Georgia, serif;
+      --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(28,24,14,0.06);
+      --shadow-md: 0 4px 12px rgba(28,24,14,0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--cream);
+      color: var(--text-dark);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ── */
+    .page {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 64px 32px 96px;
+    }
+
+    /* ── Header ── */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 56px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--cream-deeper);
+    }
+
+    .wordmark {
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--pine-dark);
+      letter-spacing: -0.01em;
+    }
+
+    .doc-meta {
+      text-align: right;
+    }
+
+    .doc-meta .label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--pine-mid);
+      display: block;
+    }
+
+    .doc-meta .value {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ── Title block ── */
+    .title-block {
+      margin-bottom: 52px;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--rust);
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      color: var(--pine-dark);
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: var(--text-soft);
+      max-width: 560px;
+      line-height: 1.65;
+    }
+
+    /* ── Sections ── */
+    .section {
+      margin-bottom: 48px;
+    }
+
+    h2 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--pine-dark);
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    p {
+      color: var(--text-mid);
+      margin-bottom: 14px;
+      font-size: 0.97rem;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--cream-deeper);
+      margin: 48px 0;
+    }
+
+    /* ── Deliverables list ── */
+    .deliverables {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .deliverable-item {
+      background: var(--white);
+      border: 1px solid var(--cream-deeper);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .deliverable-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--pine-soft);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .deliverable-icon svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--pine);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .deliverable-text strong {
+      display: block;
+      font-size: 0.93rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 3px;
+    }
+
+    .deliverable-text p {
+      font-size: 0.875rem;
+      color: var(--text-soft);
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* ── Out of scope list ── */
+    .oos-list {
+      list-style: none;
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .oos-list li {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+      font-size: 0.92rem;
+      color: var(--text-mid);
+    }
+
+    .oos-list li::before {
+      content: '—';
+      color: var(--cream-deeper);
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+
+    /* ── Investment card ── */
+    .investment-card {
+      background: var(--pine);
+      border-radius: var(--radius-lg);
+      padding: 32px 36px;
+      color: var(--white);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .investment-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--pine-sage);
+      margin-bottom: 6px;
+    }
+
+    .investment-amount {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .investment-note {
+      font-size: 0.83rem;
+      color: rgba(253,250,244,0.65);
+      margin-top: 6px;
+    }
+
+    .investment-right {
+      text-align: right;
+      max-width: 280px;
+    }
+
+    .investment-right p {
+      font-size: 0.88rem;
+      color: rgba(253,250,244,0.75);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* ── Timeline ── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 8px;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 13px;
+      top: 24px;
+      bottom: 24px;
+      width: 1px;
+      background: var(--cream-deeper);
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 12px 0;
+    }
+
+    .timeline-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid var(--cream-deeper);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-dot.active {
+      background: var(--pine);
+      border-color: var(--pine);
+    }
+
+    .timeline-dot span {
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: var(--text-muted);
+    }
+
+    .timeline-dot.active span {
+      color: var(--white);
+    }
+
+    .timeline-content {
+      padding-top: 2px;
+    }
+
+    .timeline-content strong {
+      display: block;
+      font-size: 0.93rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .timeline-content p {
+      font-size: 0.865rem;
+      color: var(--text-soft);
+      margin: 2px 0 0;
+    }
+
+    /* ── Next step callout ── */
+    .next-step {
+      background: var(--white);
+      border: 1px solid var(--cream-deeper);
+      border-left: 3px solid var(--pine);
+      border-radius: var(--radius-md);
+      padding: 24px 24px 24px 22px;
+      margin-top: 8px;
+    }
+
+    .next-step p {
+      font-size: 0.93rem;
+      color: var(--text-mid);
+      margin: 0;
+    }
+
+    .next-step strong {
+      color: var(--text-dark);
+    }
+
+    /* ── Footer ── */
+    .doc-footer {
+      margin-top: 64px;
+      padding-top: 28px;
+      border-top: 1px solid var(--cream-deeper);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .doc-footer .wordmark {
+      font-size: 0.95rem;
+    }
+
+    .footer-contact {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .footer-contact a {
+      color: var(--pine);
+      text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+      .page { padding: 40px 20px 72px; }
+      .doc-header { flex-direction: column; gap: 16px; }
+      .doc-meta { text-align: left; }
+      .investment-card { flex-direction: column; }
+      .investment-right { text-align: left; max-width: 100%; }
+    }
+
+    /* ── PDF / Print page-break control ── */
+    /* WeasyPrint reads these directly — do not move to @media print */
+    @page {
+      size: A4;
+      margin: 18mm 16mm 20mm 16mm;
+    }
+
+    /* Headings must never strand at top of page — keep glued to content below */
+    h1, h2 {
+      break-after: avoid;
+      break-before: avoid;
+    }
+
+    /* Dividers should pull the next section with them, not sit alone at page bottom */
+    .section-divider {
+      break-after: avoid;
+    }
+
+    /* Block elements that must never split mid-element */
+    .deliverable-item,
+    .investment-card,
+    .timeline-item,
+    .next-step,
+    .doc-header,
+    .title-block {
+      break-inside: avoid;
+    }
+
+    /* Prevent lone lines at top/bottom of page */
+    p {
+      orphans: 3;
+      widows: 3;
+    }
+
+    /* Tighten vertical rhythm slightly for print — prevents inflated gaps */
+    .page {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .section-divider {
+      margin: 32px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <header class="doc-header">
+      <div class="wordmark">nobo</div>
+      <div class="doc-meta">
+        <span class="label">Prepared for</span>
+        <span class="value">Monumental</span>
+        <span class="label" style="margin-top:10px;">Date</span>
+        <span class="value">March 2026</span>
+      </div>
+    </header>
+
+    <!-- Title -->
+    <div class="title-block">
+      <div class="eyebrow">Scope of work</div>
+      <h1>Claude System Foundation</h1>
+      <p class="subtitle">Your team is already using Claude. This engagement builds the shared system around it — so everyone works from the same context, the same standards, and the same voice.</p>
+    </div>
+
+    <!-- The situation -->
+    <div class="section">
+      <h2>What we're solving</h2>
+      <p>Right now, your team's Claude usage is individual and isolated. Everyone has their own conversations, their own context, and their own approach. The result is inconsistency — good output sometimes, generic output other times, and no reliable way to hand work from one person to the next without manually restoring context each time.</p>
+      <p>The Foundation fixes that at the system level. Not by changing how your team works, but by giving Claude a shared understanding of how your business works — so it stops being a tool people prompt and starts being something they delegate to.</p>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Deliverables -->
+    <div class="section">
+      <h2>What's included</h2>
+
+      <div class="deliverables">
+
+        <div class="deliverable-item">
+          <div class="deliverable-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="deliverable-text">
+            <strong>Company context files</strong>
+            <p>I work with you to write a set of files that teach Claude who Monumental is — your brand voice, your brand standards, how your team works, and how you communicate with clients. This lives in a shared Drive folder your whole team can access and maintain.</p>
+          </div>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div class="deliverable-text">
+            <strong>Guided onboarding flow for each team member</strong>
+            <p>A plugin-based flow that walks each person through setting up their own personal context — their role, voice, and preferences. Runs once per person, takes about ten minutes, and connects their Claude workspace to the shared Drive. After that, Claude knows who they are every time they open a new project.</p>
+          </div>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div class="deliverable-text">
+            <strong>New-project setup flow</strong>
+            <p>Every time a team member starts a new client engagement project in Claude, a two-minute flow loads your company context, their personal profile, and asks a few questions about the specific project. Claude starts each project already knowing your business — no re-explaining, no starting from scratch.</p>
+          </div>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-icon">
+            <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <div class="deliverable-text">
+            <strong>Ten specialist roles</strong>
+            <p>Ten pre-built specialist roles — project manager, client comms specialist, content strategist, data analyst, and more. Each one knows Monumental's context, so the output is ready to use, not ready to rewrite.</p>
+          </div>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-icon">
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+          </div>
+          <div class="deliverable-text">
+            <strong>Delegation guide</strong>
+            <p>A plain-language document for your team: what to hand off to Claude, how to brief it, and what good output looks like. Includes a quick-start orientation so anyone new to the system can get up to speed in twenty minutes.</p>
+          </div>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-icon">
+            <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          </div>
+          <div class="deliverable-text">
+            <strong>60-minute training session (recorded)</strong>
+            <p>I walk your team through the system live — how to use it, how to delegate, and how to get the most out of every project. The recording becomes your team's reference for anyone who joins later.</p>
+          </div>
+        </div>
+
+        <div class="deliverable-item">
+          <div class="deliverable-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.8a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+          </div>
+          <div class="deliverable-text">
+            <strong>30-day launch support</strong>
+            <p>I stay available as the team settles in — questions answered, 
+adjustments made as needed. Around week two we'll talk about what 
+to automate first. The Foundation is the starting point, not the 
+finish line.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Out of scope -->
+    <div class="section">
+      <h2>What's not included</h2>
+      <p>The Foundation builds the shared system and trains your team to use it. A few things fall outside that scope and would be quoted separately:</p>
+      <ul class="oos-list">
+        <li>Additional custom skills beyond what's included ($150/hr each)</li>
+        <li>Custom integrations with proprietary tools not available in Claude's connector marketplace</li>
+        <li>Ongoing updates after the 30-day window — available as a Partner retainer</li>
+      </ul>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Investment -->
+    <div class="section">
+      <h2>Investment</h2>
+      <div class="investment-card">
+        <div>
+          <div class="investment-label">Flat fee</div>
+          <div class="investment-amount">$1,500</div>
+          <div class="investment-note">Full system. No retainer required.</div>
+        </div>
+        <div class="investment-right">
+          <p>This is a reduced rate from my standard $2,500 — Monumental is my first Foundation engagement outside Stripe, and I want to invest in getting the delivery process right. You get the full output.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Timeline -->
+    <div class="section">
+      <h2>How this works</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot active"><span>1</span></div>
+          <div class="timeline-content">
+            <strong>You approve this scope</strong>
+            <p>We agree on the engagement and confirm the investment.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"><span>2</span></div>
+          <div class="timeline-content">
+            <strong>Intake call (~60 min)</strong>
+            <p>I learn how Monumental works — your team structure, your tools, 
+your clients, and your voice. This is the information that gets 
+built into the system so Claude operates in your context, not a 
+generic one.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"><span>3</span></div>
+          <div class="timeline-content">
+            <strong>Build phase (~8 days)</strong>
+            <p>I build the full system: company context files, the plugin flows, specialist roles, and the delegation guide. You get one round of revisions before handoff.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"><span>4</span></div>
+          <div class="timeline-content">
+            <strong>Training session</strong>
+            <p>60-minute walkthrough with your team. Recorded for future reference.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"><span>5</span></div>
+          <div class="timeline-content">
+            <strong>30-day launch support</strong>
+<p>You're live. I stay available as the team settles in, 
+and around week two we talk about what to build next.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- Next step -->
+    <div class="section">
+      <h2>Next step</h2>
+      <div class="next-step">
+        <p>If the scope looks right, reply to confirm and I'll send a one-page agreement + deposit invoice (30% upfront). Once that's signed and the deposit is in, 
+we'll schedule the intake call and get started.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="doc-footer">
+      <div class="wordmark">nobo</div>
+      <div class="footer-contact">
+        James Mason &nbsp;·&nbsp; <a href="mailto:jmason33333@gmail.com">jmason33333@gmail.com</a>
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
