@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nobo — AI for Boulder Businesses</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:        #F5F0E6;
+      --cream-dark:   #EBE4D6;
+      --cream-deeper: #DDD5C4;
+      --pine:         #334A36;
+      --pine-dark:    #263E31;
+      --pine-mid:     #4C5E46;
+      --pine-light:   #697A50;
+      --pine-sage:    #8D9967;
+      --pine-soft:    rgba(51,74,54,0.07);
+      --rust:         #A84A2A;
+      --text-dark:    #1C180E;
+      --text-mid:     #4A4435;
+      --text-soft:    #7A7060;
+      --text-muted:   #A89F8E;
+      --white:        #FDFAF4;
+      --font-serif:   'Lora', Georgia, serif;
+      --font-sans:    'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--text-dark);
+      font-size: 1rem;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 22px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    nav.nav--scrolled {
+      background: rgba(245, 240, 230, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--cream-deeper);
+    }
+    .wordmark {
+      font-family: var(--font-sans);
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--pine-dark);
+      letter-spacing: -0.03em;
+    }
+    .nav-link {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--pine);
+      border-bottom: 1.5px solid var(--pine);
+      padding-bottom: 1px;
+      transition: opacity 0.15s;
+    }
+    .nav-link:hover { opacity: 0.55; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 80px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: clamp(3.2rem, 7.5vw, 6.5rem);
+      color: var(--pine-dark);
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin-bottom: 36px;
+      max-width: 18ch;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--pine);
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      color: var(--text-soft);
+      max-width: 48ch;
+      line-height: 1.65;
+      margin-bottom: 44px;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn--fill {
+      background: var(--pine);
+      color: var(--white);
+      padding: 13px 28px;
+      border-radius: 6px;
+      border: none;
+    }
+    .btn--fill:hover { background: var(--pine-dark); transform: translateY(-1px); }
+    .btn--ghost {
+      color: var(--text-soft);
+      font-size: 0.875rem;
+      font-weight: 500;
+      border: none;
+      background: none;
+    }
+    .btn--ghost:hover { color: var(--text-dark); }
+    .btn--ghost svg { transition: transform 0.15s; }
+    .btn--ghost:hover svg { transform: translateY(2px); }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--cream-deeper);
+      margin: 0;
+    }
+
+    /* ─── SECTION BASE ─── */
+    .section { padding: 100px 48px; max-width: 1280px; margin: 0 auto; }
+    .section--wide { max-width: none; padding-left: 48px; padding-right: 48px; }
+    .section--tight { padding-top: 72px; padding-bottom: 72px; }
+
+    .label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--pine-mid);
+      display: block;
+      margin-bottom: 40px;
+    }
+
+    /* ─── PROBLEM ─── */
+    .problem-section {
+      background: var(--pine-dark);
+      padding: 100px 48px;
+    }
+    .problem-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .problem-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .problem-intro {
+      font-size: 1rem;
+      color: rgba(253,250,244,0.55);
+      margin-bottom: 64px;
+    }
+    .problem-list { list-style: none; }
+    .problem-item {
+      padding: 32px 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .problem-item:last-child { border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .problem-title {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      color: var(--white);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 1.5px;
+    }
+    .problem-quote {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+      color: rgba(253,250,244,0.72);
+      line-height: 1.5;
+      max-width: 52ch;
+    }
+
+    /* philosophy section removed */
+
+    /* ─── CONTACT FORM ─── */
+    .contact-section {
+      background: var(--cream);
+      padding: 100px 48px;
+    }
+    .contact-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .contact-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      color: var(--pine-dark);
+      margin-bottom: 12px;
+    }
+    .contact-sub {
+      font-size: 1rem;
+      color: var(--text-soft);
+      margin-bottom: 48px;
+      max-width: 48ch;
+      line-height: 1.6;
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 24px; }
+    .contact-form label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-mid);
+    }
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      padding: 12px 16px;
+      border: 1px solid var(--cream-deeper);
+      border-radius: 6px;
+      background: var(--white);
+      color: var(--text-dark);
+      transition: border-color 0.15s;
+    }
+    .contact-form input:focus,
+    .contact-form select:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--pine-mid);
+    }
+    .contact-form textarea { min-height: 100px; resize: vertical; }
+    .contact-form select { cursor: pointer; }
+    .contact-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .contact-submit {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.95rem;
+      background: var(--pine);
+      color: var(--white);
+      padding: 14px 32px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+      align-self: flex-start;
+    }
+    .contact-submit:hover { background: var(--pine-dark); transform: translateY(-1px); }
+
+    /* ─── HOW IT WORKS ─── */
+    .steps-list { list-style: none; }
+    .step-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0;
+      padding: 52px 0;
+      border-top: 1px solid var(--cream-deeper);
+      align-items: start;
+    }
+    .step-item:last-child { border-bottom: 1px solid var(--cream-deeper); }
+    .step-num {
+      font-family: var(--font-serif);
+      font-size: 3.5rem;
+      font-weight: 600;
+      color: var(--cream-deeper);
+      line-height: 1;
+      padding-top: 4px;
+      letter-spacing: -0.03em;
+    }
+    .step-content { }
+    .step-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--pine-dark);
+      margin-bottom: 10px;
+    }
+    .step-desc {
+      font-size: 0.925rem;
+      color: var(--text-soft);
+      max-width: 52ch;
+      line-height: 1.7;
+    }
+
+    /* ─── DELIVERABLES ─── */
+    .deliverables-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 600;
+      color: var(--pine-dark);
+      line-height: 1.28;
+      max-width: 28ch;
+      margin-bottom: 64px;
+    }
+    .deliverables-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--cream-deeper);
+      margin-bottom: 48px;
+    }
+    .deliverable-cell {
+      background: var(--cream);
+      padding: 32px 28px;
+    }
+    .deliverable-cell strong {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+    .deliverable-cell span {
+      font-size: 0.825rem;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+    .deliverables-coda {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--pine);
+      border-left: 2px solid var(--pine-sage);
+      padding-left: 20px;
+    }
+
+    /* ─── WHY NOBO ─── */
+    .why-section {
+      background: var(--pine-soft);
+      padding: 100px 48px;
+    }
+    .why-section-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .why-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .why-photo {
+      border-radius: 4px;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      position: sticky;
+      top: 100px;
+    }
+    .why-text .label { margin-bottom: 20px; }
+    .why-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+      font-weight: 600;
+      color: var(--pine-dark);
+      line-height: 1.28;
+      margin-bottom: 36px;
+    }
+    .why-body p {
+      font-size: 0.95rem;
+      color: var(--text-mid);
+      line-height: 1.78;
+      margin-bottom: 18px;
+    }
+    .why-body p:last-child { margin-bottom: 0; }
+    .why-body strong { color: var(--text-dark); }
+
+    /* ─── SOCIAL PROOF ─── */
+    .proof-box {
+      border: 1px solid var(--cream-deeper);
+      border-left: 2px solid var(--pine-sage);
+      padding: 36px 40px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-style: italic;
+      line-height: 1.6;
+      background: var(--white);
+      border-radius: 4px;
+    }
+
+    /* ─── INVESTMENT ─── */
+    .pricing-header {
+      margin-bottom: 48px;
+    }
+    .pricing-header .pricing-note-header {
+      margin-top: 16px;
+      max-width: 58ch;
+    }
+    .pricing-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 600;
+      color: var(--pine-dark);
+      line-height: 1.25;
+    }
+    .pricing-note-header {
+      font-size: 0.875rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+      padding-bottom: 4px;
+    }
+    .pricing-table {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--cream-deeper);
+      border: 1px solid var(--cream-deeper);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .pricing-col {
+      background: var(--white);
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+    }
+    .pricing-col--featured {
+      background: var(--pine);
+    }
+    .pricing-col-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .pricing-col--featured .pricing-col-label { color: rgba(253,250,244,0.45); }
+    .pricing-col-name {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--pine-dark);
+      margin-bottom: 4px;
+      line-height: 1.1;
+    }
+    .pricing-col--featured .pricing-col-name { color: var(--white); }
+    .pricing-col-price {
+      font-size: 0.875rem;
+      color: var(--text-soft);
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--cream-deeper);
+    }
+    .pricing-col--featured .pricing-col-price { color: rgba(253,250,244,0.55); border-color: rgba(255,255,255,0.12); }
+    .pricing-col-desc {
+      font-size: 0.875rem;
+      color: var(--text-mid);
+      line-height: 1.65;
+      margin-bottom: 28px;
+      flex: 1;
+    }
+    .pricing-col--featured .pricing-col-desc { color: rgba(253,250,244,0.72); }
+    .pricing-items-list { list-style: none; margin-bottom: 32px; flex: 1; }
+    .pricing-li {
+      font-size: 0.825rem;
+      color: var(--text-soft);
+      padding: 7px 0;
+      border-bottom: 1px solid var(--cream-dark);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.4;
+    }
+    .pricing-li::before {
+      content: '';
+      width: 4px; height: 4px;
+      background: var(--pine-sage);
+      border-radius: 50%;
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+    .pricing-col--featured .pricing-li { color: rgba(253,250,244,0.65); border-color: rgba(255,255,255,0.1); }
+    .retainer-sub { margin-bottom: 32px; flex: 1; }
+    .retainer-row {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--cream-deeper);
+    }
+    .retainer-row:first-child { border-top: 1px solid var(--cream-deeper); }
+    .retainer-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+    .retainer-row-name { font-weight: 700; font-size: 0.875rem; color: var(--text-dark); }
+    .retainer-row-price { font-size: 0.825rem; color: var(--pine-mid); font-weight: 600; }
+    .retainer-row-desc { font-size: 0.8rem; color: var(--text-soft); line-height: 1.45; }
+    .pricing-cta {
+      background: var(--pine);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.875rem;
+      padding: 12px 20px;
+      border-radius: 5px;
+      text-align: center;
+      display: block;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      margin-top: auto;
+    }
+    .pricing-cta:hover { background: var(--pine-dark); transform: translateY(-1px); }
+    .pricing-col--featured .pricing-cta { background: var(--white); color: var(--pine-dark); }
+    .pricing-col--featured .pricing-cta:hover { background: var(--cream); }
+    .pricing-cta--outline {
+      background: transparent;
+      color: var(--pine);
+      border: 1.5px solid var(--cream-deeper);
+    }
+    .pricing-cta--outline:hover { border-color: var(--pine-mid); background: var(--pine-soft); }
+    .pricing-footer-note {
+      margin-top: 20px;
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* ─── NEWSLETTER ─── */
+    .newsletter-capture {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+    }
+    .newsletter-line {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .newsletter-form {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .newsletter-input {
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      color: var(--text-dark);
+      background: var(--white);
+      border: 1px solid var(--cream-deeper);
+      border-radius: 6px;
+      padding: 10px 16px;
+      width: 260px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .newsletter-input::placeholder { color: var(--text-muted); }
+    .newsletter-input:focus { border-color: var(--pine-mid); }
+    .newsletter-btn {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.875rem;
+      background: var(--pine);
+      color: var(--white);
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .newsletter-btn:hover { background: var(--pine-dark); transform: translateY(-1px); }
+
+    /* ─── FAQ ─── */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 80px;
+    }
+    .faq-aside {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 600;
+      color: var(--pine-dark);
+      line-height: 1.3;
+      position: sticky;
+      top: 100px;
+    }
+    .faq-items { }
+    .faq-item {
+      padding: 28px 0;
+      border-top: 1px solid var(--cream-deeper);
+    }
+    .faq-item:last-child { border-bottom: 1px solid var(--cream-deeper); }
+    .faq-q {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--pine-dark);
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+    .faq-a {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.75;
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      background: var(--pine-dark);
+      padding: 120px 48px;
+      text-align: left;
+    }
+    .cta-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 80px;
+    }
+    .cta-headline {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+    .cta-sub {
+      font-size: 1rem;
+      color: rgba(253,250,244,0.58);
+      max-width: 46ch;
+      line-height: 1.65;
+    }
+    .cta-action {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .btn--cta-main {
+      background: var(--white);
+      color: var(--pine-dark);
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 15px 36px;
+      border-radius: 6px;
+      white-space: nowrap;
+      transition: background 0.15s, transform 0.1s;
+      display: inline-block;
+    }
+    .btn--cta-main:hover { background: var(--cream); transform: translateY(-1px); }
+    .cta-note {
+      font-size: 0.78rem;
+      color: rgba(253,250,244,0.35);
+      text-align: right;
+    }
+
+    /* ─── FLATIRONS ─── */
+    .flatirons-wrap {
+      padding: 0 48px;
+      margin: 80px 0;
+    }
+    .flatirons-inner {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      will-change: border-radius;
+    }
+    .flatirons-img {
+      width: 100%;
+      height: 70vh;
+      min-height: 420px;
+      max-height: 680px;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+      /* placeholder styling — remove once real image added */
+      background: linear-gradient(160deg, #4C5E46 0%, #263E31 40%, #8D9967 100%);
+    }
+    .flatirons-caption {
+      position: absolute;
+      bottom: 20px;
+      right: 24px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(253,250,244,0.55);
+    }
+    /* placeholder label — remove once real image added */
+    .flatirons-inner::before {
+      content: 'Add Flatirons photo here — replace FLATIRONS_IMAGE_PLACEHOLDER.jpg';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.8rem;
+      color: rgba(253,250,244,0.5);
+      font-weight: 500;
+      text-align: center;
+      width: 80%;
+      pointer-events: none;
+    }
+    @media (max-width: 960px) {
+      .contact-section { padding: 72px 24px; }
+      .contact-row { grid-template-columns: 1fr; }
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--pine-dark);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 36px 48px;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-wordmark { font-weight: 800; font-size: 1rem; color: var(--white); letter-spacing: -0.02em; }
+    .footer-links { display: flex; gap: 28px; }
+    .footer-links a { font-size: 0.82rem; color: rgba(253,250,244,0.42); transition: color 0.15s; }
+    .footer-links a:hover { color: rgba(253,250,244,0.8); }
+    .footer-copy { font-size: 0.78rem; color: rgba(253,250,244,0.28); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 960px) {
+      nav { padding: 18px 24px; }
+      .hero { padding: 0 24px 64px; }
+      .section { padding: 72px 24px; }
+      .problem-section { padding: 72px 24px; }
+      .cta-section { padding: 80px 24px; }
+      footer { padding: 32px 24px; }
+      .problem-item { padding: 24px 0; }
+      .why-section { padding: 72px 24px; }
+      .why-inner { grid-template-columns: 1fr; gap: 48px; }
+      .why-photo { position: static; aspect-ratio: 4/3; max-width: 400px; }
+      .pricing-table { grid-template-columns: 1fr; }
+      .pricing-header { grid-template-columns: 1fr; }
+      .faq-grid { grid-template-columns: 1fr; gap: 40px; }
+      .faq-aside { position: static; }
+      .cta-inner { grid-template-columns: 1fr; gap: 40px; }
+      .cta-action { align-items: flex-start; }
+      .cta-note { text-align: left; }
+      .deliverables-grid { grid-template-columns: repeat(2, 1fr); }
+      /* philosophy removed */
+      .step-item { grid-template-columns: 72px 1fr; }
+      .step-num { font-size: 2.5rem; }
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: clamp(2.6rem, 8vw, 3.5rem); }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+      .deliverables-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <span class="wordmark">nobo</span>
+    <a href="#contact" class="nav-link">Let's grab coffee</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-eyebrow">Boulder's AI studio</p>
+    <h1>AI could be doing<br>a lot more<br><em>for your business.</em></h1>
+    <p class="hero-sub">We design the systems and build the automations that make AI actually work for your team.</p>
+    <div class="hero-actions">
+      <a href="#how-it-works" class="btn btn--ghost">
+        See how it works
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M7 1v12M1 7l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem-section">
+    <div class="problem-inner">
+      <h2 class="problem-heading">Does this sound familiar?</h2>
+      <p class="problem-intro">These are the things I keep hearing from Boulder business owners.</p>
+      <ul class="problem-list">
+        <li class="problem-item">
+          <p class="problem-title">There's got to be more</p>
+          <p class="problem-quote">"I know we could be getting more out of AI. I just don't have time to figure it out while running the business."</p>
+        </li>
+        <li class="problem-item">
+          <p class="problem-title">It doesn't know our business</p>
+          <p class="problem-quote">"Every time someone on my team opens Claude, they start from scratch. It doesn't know our clients, our processes, or how we work."</p>
+        </li>
+        <li class="problem-item">
+          <p class="problem-title">Just do it myself</p>
+          <p class="problem-quote">"We spend more time going back and forth with AI than it would take to just do the work ourselves."</p>
+        </li>
+        <li class="problem-item">
+          <p class="problem-title">This should run itself</p>
+          <p class="problem-quote">"Too much of our week goes to work that feels like it should be automated, we just don't know where to start."</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <div class="section" id="how-it-works">
+    <span class="label">How it works</span>
+    <ul class="steps-list">
+      <li class="step-item">
+        <span class="step-num">01</span>
+        <div class="step-content">
+          <p class="step-name">We figure out where AI should be working</p>
+          <p class="step-desc">We sit down and map where your team's time is going. What's repetitive, what requires judgment, what's falling through the cracks. You walk away knowing exactly what to build and why.</p>
+        </div>
+      </li>
+      <li class="step-item">
+        <span class="step-num">02</span>
+        <div class="step-content">
+          <p class="step-name">We build the system</p>
+          <p class="step-desc">Two things, depending on what you need. An AI system that knows your business so your team gets consistent results without re-explaining context every time. And custom automations that handle the work that shouldn't need a person. Scoped, built, tested, and handed off with documentation your team can actually use.</p>
+        </div>
+      </li>
+      <li class="step-item">
+        <span class="step-num">03</span>
+        <div class="step-content">
+          <p class="step-name">We stay involved</p>
+          <p class="step-desc">New automations when you need them. Adjustments when something's off. In-person check-ins when it makes sense. This isn't a handoff. It's a working relationship with someone who's in Boulder and still here next month.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- CONTACT FORM -->
+  <section class="contact-section" id="contact">
+    <div class="contact-inner">
+      <h2 class="contact-heading">Let's grab coffee.</h2>
+      <p class="contact-sub">Tell me a little about your business and I'll reach out to find a time. In person in Boulder, or video call if you're not local.</p>
+      <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY">
+        <input type="hidden" name="subject" value="New inquiry from nobo.works">
+        <input type="hidden" name="redirect" value="https://nobo.works/thanks">
+        <div class="contact-row">
+          <label>
+            Name
+            <input type="text" name="name" required placeholder="First and last">
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" required placeholder="you@company.com">
+          </label>
+        </div>
+        <label>
+          Business name
+          <input type="text" name="business" required>
+        </label>
+        <div class="contact-row">
+          <label>
+            Team size
+            <select name="team_size" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Just me">Just me</option>
+              <option value="2-5">2-5</option>
+              <option value="6-15">6-15</option>
+              <option value="16-50">16-50</option>
+            </select>
+          </label>
+          <label>
+            How is your team using AI today?
+            <select name="ai_usage" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Not yet">Not yet</option>
+              <option value="Individual tools">Individual tools (ChatGPT, Claude, etc.)</option>
+              <option value="Some workflows">Some workflows but nothing systematic</option>
+              <option value="Have a system">We have a system but it's not working</option>
+            </select>
+          </label>
+        </div>
+        <label>
+          What's the biggest thing you'd want AI to handle?
+          <textarea name="biggest_need" placeholder="No wrong answer. Even 'I don't know yet' is fine."></textarea>
+        </label>
+        <label>
+          How did you hear about Nobo?
+          <select name="source">
+            <option value="" disabled selected>Select</option>
+            <option value="Referral">Referral</option>
+            <option value="Google">Google</option>
+            <option value="Social media">Social media</option>
+            <option value="Cold email">Cold email</option>
+            <option value="Event or meetup">Event or meetup</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+        <button type="submit" class="contact-submit">Send it over</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- WHY NOBO -->
+  <section class="why-section">
+   <div class="why-section-inner">
+    <div class="why-inner">
+      <div class="why-photo">
+        <!-- REPLACE: james.jpg with your actual headshot -->
+        <img src="brand/james.jpg" alt="James Mason, founder of Nobo" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:4px;">
+      </div>
+      <div class="why-text">
+        <span class="label">Why Nobo</span>
+        <h2 class="why-headline">The first person in Boulder you can actually sit down with about AI.</h2>
+        <div class="why-body">
+          <p>I'm James Mason, the founder of Nobo. Most AI services are remote and transactional. <strong>I'm in Boulder.</strong> I'll meet you at Rayback, learn your business, and still be here next month.</p>
+          <p>Before Nobo, I spent 10 years at Stripe and Lyft building the systems that keep large operations running. Now I apply that same rigor to small and mid sized businesses.</p>
+          <p>I'm a Claude certified AI systems architect. I design and build Claude systems and automations for businesses.</p>
+          <p>I'm not selling a package. I'll tell you what will actually move the needle for your business, even if it's simpler than you expected. That's the whole point.</p>
+        </div>
+      </div>
+    </div>
+   </div>
+  </section>
+
+  <!-- FAQ -->
+  <div class="section">
+    <div class="faq-grid">
+      <h2 class="faq-aside">Honest answers.</h2>
+      <div class="faq-items">
+        <div class="faq-item">
+          <p class="faq-q">Why does it feel like we're still stuck at square one?</p>
+          <p class="faq-a">Most teams plateau. More prompts, more back-and-forth, grinding through the same loop without ever landing on what good actually looks like for your business. That's not a Claude problem. That's a system problem. What I build defines the standard once — your voice, your context, your expectations — so every output starts from the right place.</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-q">Why does every session feel like Claude has never met us before?</p>
+          <p class="faq-a">Because it hasn't. Claude doesn't retain anything between sessions by default. It doesn't know your clients, your process, or how you like things done. Once we build that layer in, your team picks up where they left off instead of starting over every time.</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-q">Why does it take more work to explain what I need than to just do it myself?</p>
+          <p class="faq-a">You're doing the work twice. That's the sign of a system that isn't really a system yet. The goal isn't just getting Claude to follow instructions — it's getting you to the point where you trust it enough to actually delegate. That's what we build toward.</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-q">We've tried to automate things before. Why does it always end up breaking?</p>
+          <p class="faq-a">Usually because it was held together with too many pieces and no one really owned it. What I build has fewer moving parts, solid documentation, and I stay involved after handoff. This isn't a build-it-and-disappear situation.</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-q">Is this actually worth it for a team our size?</p>
+          <p class="faq-a">Small teams feel the cost of manual work more than anyone. Every hour spent on something that could run itself is an hour you're not spending on clients, strategy, or growth. If I don't think it'll move the needle for you, I'll tell you in the first conversation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-wordmark">nobo</span>
+      <div class="footer-links">
+        <!-- REPLACE: james@nobo.works with your email address -->
+        <a href="mailto:james@nobo.works">james@nobo.works</a>
+        <a href="#">LinkedIn</a>
+      </div>
+      <span class="footer-copy">© 2026 Nobo</span>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('nav--scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // Flatirons scroll expansion (Anthropic-style)
+    const flatironsWrap = document.querySelector('.flatirons-wrap');
+    const flatironsInner = document.querySelector('.flatirons-inner');
+
+    function updateFlatirons() {
+      if (!flatironsWrap) return;
+      const rect = flatironsWrap.getBoundingClientRect();
+      const windowH = window.innerHeight;
+
+      // progress: 0 = element top hits bottom of viewport, 1 = element centered
+      const progress = Math.max(0, Math.min(1,
+        (windowH - rect.top) / (windowH * 0.85)
+      ));
+
+      const eased = progress < 0.5
+        ? 2 * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+      const maxInset = window.innerWidth > 960 ? 48 : 24;
+      const inset = maxInset * (1 - eased);
+      const radius = 16 * (1 - eased);
+
+      flatironsWrap.style.paddingLeft  = `${inset}px`;
+      flatironsWrap.style.paddingRight = `${inset}px`;
+      flatironsInner.style.borderRadius = `${radius}px`;
+    }
+
+    window.addEventListener('scroll', updateFlatirons, { passive: true });
+    updateFlatirons();
+  </script>
+
+</body>
+</html>
