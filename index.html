@@ -766,6 +766,69 @@
     .footer-links a:hover { color: rgba(253,250,244,0.8); }
     .footer-copy { font-size: 0.78rem; color: rgba(253,250,244,0.28); }
 
+    /* ─── WHAT'S POSSIBLE ─── */
+    .possible-section {
+      background: var(--pine-soft);
+      padding: 100px 48px;
+    }
+    .possible-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .possible-tracks {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      margin-bottom: 72px;
+    }
+    .track-name {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--pine-dark);
+      margin-bottom: 20px;
+    }
+    .track-items {
+      list-style: none;
+    }
+    .track-items li {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(51,74,54,0.08);
+      line-height: 1.4;
+    }
+    .track-items li:first-child { border-top: 1px solid rgba(51,74,54,0.08); }
+    .track-accordion {
+      border-bottom: 1px solid rgba(51,74,54,0.08);
+    }
+    .track-accordion:first-child { border-top: 1px solid rgba(51,74,54,0.08); }
+    .track-accordion summary {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-mid);
+      padding: 14px 0;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .track-accordion summary::-webkit-details-marker { display: none; }
+    .track-accordion summary::after {
+      content: '+';
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-muted);
+      transition: transform 0.2s;
+    }
+    .track-accordion[open] summary::after {
+      content: '−';
+    }
+    .track-accordion .track-items {
+      padding-bottom: 16px;
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 960px) {
       nav { padding: 18px 24px; }
@@ -789,6 +852,8 @@
       /* philosophy removed */
       .step-item { grid-template-columns: 72px 1fr; }
       .step-num { font-size: 2.5rem; }
+      .possible-section { padding: 72px 24px; }
+      .possible-tracks { grid-template-columns: 1fr; gap: 48px; }
     }
     @media (max-width: 600px) {
       .hero h1 { font-size: clamp(2.6rem, 8vw, 3.5rem); }
@@ -846,9 +911,78 @@
     </div>
   </section>
 
+  <!-- WHAT'S POSSIBLE -->
+  <section class="possible-section">
+    <div class="possible-inner">
+      <span class="label">Here's what's possible</span>
+
+      <div class="possible-tracks">
+
+        <!-- Track 1: AI System Setup -->
+        <div class="track">
+          <h3 class="track-name">AI System Setup</h3>
+          <details class="track-accordion">
+            <summary>Claude configured around your business</summary>
+            <ul class="track-items">
+              <li>Company context and brand voice</li>
+              <li>Team member profiles</li>
+              <li>Custom delegation skills</li>
+              <li>Specialist skill library</li>
+              <li>Training session and documentation</li>
+              <li>30-day check-in</li>
+            </ul>
+          </details>
+        </div>
+
+        <!-- Track 2: Workflow Automations -->
+        <div class="track">
+          <h3 class="track-name">Workflow Automations</h3>
+          <details class="track-accordion">
+            <summary>Operations</summary>
+            <ul class="track-items">
+              <li>Client onboarding</li>
+              <li>Project scoping</li>
+              <li>Document processing</li>
+              <li>Internal reporting</li>
+            </ul>
+          </details>
+          <details class="track-accordion">
+            <summary>Sales and marketing</summary>
+            <ul class="track-items">
+              <li>Lead pipeline automation</li>
+              <li>Outreach sequences</li>
+              <li>Content workflows</li>
+              <li>CRM integration</li>
+            </ul>
+          </details>
+          <details class="track-accordion">
+            <summary>Support and service</summary>
+            <ul class="track-items">
+              <li>Support ticket triage</li>
+              <li>Customer follow-up</li>
+              <li>Scheduling and dispatch</li>
+              <li>Status notifications</li>
+            </ul>
+          </details>
+          <details class="track-accordion">
+            <summary>Intelligence</summary>
+            <ul class="track-items">
+              <li>Daily and weekly planning agents</li>
+              <li>Data reporting</li>
+              <li>Performance dashboards</li>
+              <li>Competitive monitoring</li>
+            </ul>
+          </details>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
   <!-- HOW IT WORKS -->
   <div class="section" id="how-it-works">
-    <span class="label">How it works</span>
+    <span class="label">How we get you there</span>
     <ul class="steps-list">
       <li class="step-item">
         <span class="step-num">01</span>
