@@ -768,65 +768,151 @@
 
     /* ─── WHAT'S POSSIBLE ─── */
     .possible-section {
-      background: var(--pine-soft);
+      background: var(--cream);
       padding: 100px 48px;
     }
     .possible-inner {
       max-width: 1280px;
       margin: 0 auto;
     }
-    .possible-tracks {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      margin-bottom: 72px;
+    .possible-eyebrow {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--pine-mid);
+      margin-bottom: 24px;
     }
-    .track-name {
+    .possible-stat {
       font-family: var(--font-serif);
-      font-size: 1.25rem;
+      font-size: clamp(1.6rem, 3vw, 2rem);
       font-weight: 600;
       color: var(--pine-dark);
-      margin-bottom: 20px;
+      line-height: 1.35;
+      margin-bottom: 80px;
+      max-width: 52ch;
     }
-    .track-items {
-      list-style: none;
+    .possible-track {
+      margin-bottom: 72px;
     }
-    .track-items li {
-      font-size: 0.9rem;
-      color: var(--text-mid);
-      padding: 9px 0;
-      border-bottom: 1px solid rgba(51,74,54,0.08);
-      line-height: 1.4;
+    .possible-track:last-child {
+      margin-bottom: 0;
     }
-    .track-items li:first-child { border-top: 1px solid rgba(51,74,54,0.08); }
-    .track-accordion {
-      border-bottom: 1px solid rgba(51,74,54,0.08);
-    }
-    .track-accordion:first-child { border-top: 1px solid rgba(51,74,54,0.08); }
-    .track-accordion summary {
-      font-size: 0.9rem;
+    .possible-track-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 2.5vw, 1.75rem);
       font-weight: 600;
+      color: var(--pine-dark);
+      margin-bottom: 12px;
+    }
+    .possible-track-sub {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      line-height: 1.65;
+      max-width: 56ch;
+      margin-bottom: 36px;
+    }
+
+    /* From / To grid */
+    .ba-headers {
+      display: grid;
+      grid-template-columns: 1fr 32px 1fr;
+      gap: 0;
+      margin-bottom: 16px;
+    }
+    .ba-col-header {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .ba-col-header--from { color: var(--rust); }
+    .ba-col-header--to { color: var(--pine); }
+    .ba-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ba-row {
+      display: grid;
+      grid-template-columns: 1fr 32px 1fr;
+      align-items: stretch;
+      gap: 0;
+    }
+    .ba-from, .ba-to {
+      padding: 18px 20px;
+      font-size: 0.925rem;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+    .ba-from {
+      background: var(--cream-dark);
+      border-left: 2px solid var(--rust);
       color: var(--text-mid);
-      padding: 14px 0;
-      cursor: pointer;
+    }
+    .ba-to {
+      background: var(--pine-soft);
+      border-left: 2px solid var(--pine);
+      color: var(--text-dark);
+    }
+    .ba-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--pine-light);
+    }
+    .ba-arrow svg { flex-shrink: 0; }
+
+    @media (max-width: 600px) {
+      .ba-headers, .ba-row {
+        grid-template-columns: 1fr 24px 1fr;
+      }
+      .ba-from, .ba-to {
+        padding: 14px 14px;
+        font-size: 0.84rem;
+      }
+      .ba-arrow svg { width: 16px; height: 16px; }
+      .ba-col-header { font-size: 0.62rem; }
+    }
+
+    /* Time-back list */
+    .tb-list {
       list-style: none;
+      margin-bottom: 36px;
+    }
+    .tb-item {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--cream-deeper);
+      font-size: 0.95rem;
     }
-    .track-accordion summary::-webkit-details-marker { display: none; }
-    .track-accordion summary::after {
-      content: '+';
+    .tb-item:first-child {
+      border-top: 1px solid var(--cream-deeper);
+    }
+    .tb-name {
+      color: var(--text-mid);
+    }
+    .tb-hours {
+      color: var(--pine);
+      font-weight: 700;
+      white-space: nowrap;
+      margin-left: 24px;
+    }
+    .possible-closer {
+      font-family: var(--font-serif);
+      font-style: italic;
       font-size: 1.1rem;
-      font-weight: 400;
-      color: var(--text-muted);
-      transition: transform 0.2s;
+      color: var(--pine);
+      line-height: 1.5;
+      margin-bottom: 16px;
     }
-    .track-accordion[open] summary::after {
-      content: '−';
-    }
-    .track-accordion .track-items {
-      padding-bottom: 16px;
+    .possible-roadmap {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      line-height: 1.7;
+      max-width: 60ch;
     }
 
     /* ─── RESPONSIVE ─── */
@@ -853,7 +939,8 @@
       .step-item { grid-template-columns: 72px 1fr; }
       .step-num { font-size: 2.5rem; }
       .possible-section { padding: 72px 24px; }
-      .possible-tracks { grid-template-columns: 1fr; gap: 48px; }
+      .possible-stat { margin-bottom: 56px; }
+      .possible-track { margin-bottom: 56px; }
     }
     @media (max-width: 600px) {
       .hero h1 { font-size: clamp(2.6rem, 8vw, 3.5rem); }
@@ -915,67 +1002,72 @@
   <!-- WHAT'S POSSIBLE -->
   <section class="possible-section">
     <div class="possible-inner">
-      <span class="label">Here's what's possible</span>
+      <p class="possible-eyebrow">Here's what's possible</p>
+      <p class="possible-stat">52% of businesses say their biggest challenge with AI is "I don't know where to start."</p>
 
-      <div class="possible-tracks">
+      <!-- Offering 1: Claude Cowork System Setup -->
+      <div class="possible-track">
+        <h2 class="possible-track-heading">Claude Cowork System Setup</h2>
+        <p class="possible-track-sub">Your team gets an AI system that actually knows your business — your context, your voice, your standards — so every session starts where the last one left off.</p>
 
-        <!-- Track 1: Claude Cowork System Setup -->
-        <div class="track">
-          <h3 class="track-name">Claude Cowork System Setup</h3>
-          <details class="track-accordion">
-            <summary>Claude configured around your business</summary>
-            <ul class="track-items">
-              <li>Company context and brand voice</li>
-              <li>Team member profiles</li>
-              <li>Custom delegation skills</li>
-              <li>Specialist skill library</li>
-              <li>Training session and documentation</li>
-              <li>30-day check-in</li>
-            </ul>
-          </details>
+        <div class="ba-headers">
+          <span class="ba-col-header ba-col-header--from">From</span>
+          <span></span>
+          <span class="ba-col-header ba-col-header--to">To</span>
         </div>
-
-        <!-- Track 2: Workflow Automations -->
-        <div class="track">
-          <h3 class="track-name">Workflow Automations</h3>
-          <details class="track-accordion">
-            <summary>Operations</summary>
-            <ul class="track-items">
-              <li>Client onboarding</li>
-              <li>Project scoping</li>
-              <li>Document processing</li>
-              <li>Internal reporting</li>
-            </ul>
-          </details>
-          <details class="track-accordion">
-            <summary>Sales and marketing</summary>
-            <ul class="track-items">
-              <li>Lead pipeline automation</li>
-              <li>Outreach sequences</li>
-              <li>Content workflows</li>
-              <li>CRM integration</li>
-            </ul>
-          </details>
-          <details class="track-accordion">
-            <summary>Support and service</summary>
-            <ul class="track-items">
-              <li>Support ticket triage</li>
-              <li>Customer follow-up</li>
-              <li>Scheduling and dispatch</li>
-              <li>Status notifications</li>
-            </ul>
-          </details>
-          <details class="track-accordion">
-            <summary>Intelligence</summary>
-            <ul class="track-items">
-              <li>Daily and weekly planning agents</li>
-              <li>Data reporting</li>
-              <li>Performance dashboards</li>
-              <li>Competitive monitoring</li>
-            </ul>
-          </details>
+        <div class="ba-rows">
+          <div class="ba-row">
+            <div class="ba-from">Every session starts from scratch</div>
+            <div class="ba-arrow"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="ba-to">Claude already knows your business</div>
+          </div>
+          <div class="ba-row">
+            <div class="ba-from">Everyone uses AI differently</div>
+            <div class="ba-arrow"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="ba-to">One system, one standard, consistent output</div>
+          </div>
+          <div class="ba-row">
+            <div class="ba-from">More time prompting than working</div>
+            <div class="ba-arrow"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="ba-to">Delegate like to a coworker</div>
+          </div>
         </div>
+      </div>
 
+      <!-- Offering 2: Workflow Automations -->
+      <div class="possible-track">
+        <h2 class="possible-track-heading">Workflow Automations — measured in time back</h2>
+        <p class="possible-track-sub">The work that eats your week but follows the same steps every time. I build the automations that handle it.</p>
+
+        <ul class="tb-list">
+          <li class="tb-item">
+            <span class="tb-name">Client onboarding</span>
+            <span class="tb-hours">~3 hrs/week</span>
+          </li>
+          <li class="tb-item">
+            <span class="tb-name">Lead follow-up + outreach</span>
+            <span class="tb-hours">~3 hrs/week</span>
+          </li>
+          <li class="tb-item">
+            <span class="tb-name">Email triage + scheduling</span>
+            <span class="tb-hours">~3 hrs/week</span>
+          </li>
+          <li class="tb-item">
+            <span class="tb-name">Document processing</span>
+            <span class="tb-hours">~2 hrs/week</span>
+          </li>
+          <li class="tb-item">
+            <span class="tb-name">Internal reporting</span>
+            <span class="tb-hours">~2 hrs/week</span>
+          </li>
+          <li class="tb-item">
+            <span class="tb-name">Customer follow-up</span>
+            <span class="tb-hours">~2 hrs/week</span>
+          </li>
+        </ul>
+
+        <p class="possible-closer">That's 10–15 hours back — and we haven't touched your list yet.</p>
+        <p class="possible-roadmap">You'll have ideas too. Part of the process is building a prioritized roadmap together, mapped to what gives your team the most time back first.</p>
       </div>
 
     </div>
