@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Friday Field Notes — Issue 01 · Editorial Unleashed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600;1,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F2ECE0;
+  --cream-dark:#E6DECC;
+  --cream-deeper:#D4C9B0;
+  --paper:#FBF6EA;
+  --pine:#2E4430;
+  --pine-dark:#1E3524;
+  --pine-sage:#8D9967;
+  --rust:#A84A2A;
+  --gold:#C0883A;
+  --ink:#14110A;
+  --ink-soft:#4A4435;
+  --ink-faint:#7A7060;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth; scroll-padding-top:72px}
+body{
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  background:var(--cream); color:var(--ink);
+  font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;
+  position:relative; overflow-x:hidden;
+}
+
+/* grain overlay — subtle paper texture */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:200;
+  opacity:.5; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.11 0 0 0 0 0.09 0 0 0 0 0.05 0 0 0 0.11 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+a{color:var(--rust); text-decoration:none; transition:color .2s, box-shadow .2s}
+a:not(.clean){box-shadow:inset 0 -1px 0 rgba(168,74,42,.35)}
+a:not(.clean):hover{color:#C9603E; box-shadow:inset 0 -1px 0 var(--rust)}
+em{font-style:italic; color:var(--ink-soft)}
+code{font-family:'JetBrains Mono',ui-monospace,monospace; font-size:.88em; background:var(--cream-dark); padding:2px 6px; border-radius:2px; color:var(--pine-dark)}
+
+.serif{font-family:'Fraunces',serif}
+.sans{font-family:'Plus Jakarta Sans',sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.caps{
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:700;
+  font-size:.72rem; text-transform:uppercase; letter-spacing:.18em;
+}
+.ornament{
+  display:inline-block; width:10px; height:10px;
+  background:var(--rust); border-radius:50%;
+  vertical-align:middle; margin:0 6px;
+}
+
+/* progress */
+.progress-track{position:fixed;top:0;left:0;right:0;height:3px;background:var(--cream-dark);z-index:150}
+.progress-fill{height:100%;width:0%;background:var(--rust);transition:width .08s linear}
+
+/* folio — print-magazine style top nav */
+.folio{
+  position:sticky; top:3px; z-index:90;
+  background:color-mix(in srgb, var(--cream) 92%, transparent);
+  backdrop-filter:saturate(1.1) blur(10px);
+  border-bottom:1px solid var(--cream-deeper);
+}
+.folio-inner{
+  max-width:1400px; margin:0 auto; padding:14px 48px;
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:24px;
+}
+.folio-left, .folio-right{
+  font-family:'JetBrains Mono',monospace; font-size:.7rem;
+  color:var(--ink-faint); letter-spacing:.14em; text-transform:uppercase;
+}
+.folio-right{text-align:right}
+.folio-center{
+  font-family:'Fraunces',serif; font-weight:500; font-style:italic;
+  font-size:1rem; color:var(--pine-dark); white-space:nowrap;
+}
+.folio-center .amp{color:var(--rust); font-weight:400}
+
+/* ============= COVER ============= */
+.cover{
+  max-width:1400px; margin:0 auto; padding:36px 48px 80px;
+  position:relative;
+}
+.cover-strip{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:14px 0 28px; border-bottom:1px solid var(--ink);
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--ink); letter-spacing:.12em; text-transform:uppercase;
+}
+.cover-strip .center{text-align:center; flex:1}
+.cover-strip .left, .cover-strip .right{flex:0 0 auto; min-width:160px}
+.cover-strip .right{text-align:right}
+
+.cover-grid{
+  display:grid; grid-template-columns:1fr 320px; gap:64px;
+  padding-top:56px; align-items:end;
+}
+
+.cover-title{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:clamp(4rem, 14vw, 13rem);
+  line-height:.86; letter-spacing:-0.04em;
+  color:var(--pine-dark); text-wrap:balance;
+  position:relative;
+}
+.cover-title .friday{display:block; font-weight:400; font-style:normal}
+.cover-title .field{display:block; font-style:italic; font-weight:300; color:var(--pine)}
+.cover-title .notes{display:block; font-weight:600}
+.cover-title .dot{color:var(--rust)}
+
+/* giant issue number bleed */
+.cover-number{
+  position:relative;
+  display:flex; flex-direction:column; align-items:flex-end;
+  justify-content:flex-end;
+}
+.cover-number .num{
+  font-family:'Fraunces',serif; font-weight:300;
+  font-size:clamp(8rem, 20vw, 18rem);
+  line-height:.8; color:var(--rust); letter-spacing:-0.05em;
+  font-variant-numeric:oldstyle-nums;
+  margin-bottom:-12px;
+}
+.cover-number .label{
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--ink-soft); letter-spacing:.2em; text-transform:uppercase;
+  margin-top:16px;
+}
+
+.cover-sub{
+  margin-top:48px;
+  display:grid; grid-template-columns:1fr auto; gap:40px; align-items:end;
+  border-top:1px solid var(--ink); padding-top:28px;
+}
+.cover-sub p{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+  font-size:clamp(1.4rem, 2.4vw, 2rem); line-height:1.25;
+  color:var(--ink); max-width:720px; text-wrap:balance;
+}
+.cover-sub .dateline{
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--ink-faint); letter-spacing:.12em; text-transform:uppercase;
+  white-space:nowrap; text-align:right;
+}
+
+/* ============= OPENER ============= */
+.opener{
+  max-width:1400px; margin:0 auto; padding:72px 48px 40px;
+  display:grid; grid-template-columns:280px 1fr; gap:64px;
+}
+.opener-aside{
+  position:relative;
+}
+.opener-aside .marker{
+  font-family:'Fraunces',serif; font-weight:300; font-style:italic;
+  font-size:3rem; color:var(--rust); line-height:.9; margin-bottom:12px;
+}
+.opener-aside .marker-label{
+  font-family:'JetBrains Mono',monospace; font-size:.68rem;
+  color:var(--ink-faint); letter-spacing:.16em; text-transform:uppercase;
+}
+.opener-body p{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:1.35rem; line-height:1.55; color:var(--ink);
+  margin-bottom:20px; max-width:680px;
+}
+.opener-body p:first-child{
+  font-family:'Fraunces',serif; font-weight:500; font-style:italic;
+  font-size:2.4rem; line-height:1.2; color:var(--pine-dark);
+  letter-spacing:-0.015em; margin-bottom:28px;
+}
+
+/* ============= IN THIS EDITION ============= */
+.edition{
+  max-width:1400px; margin:0 auto 96px; padding:48px 48px;
+  border-top:1px solid var(--cream-deeper);
+  border-bottom:1px solid var(--cream-deeper);
+  display:grid; grid-template-columns:280px 1fr; gap:64px;
+  align-items:start;
+}
+.edition-label{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:500;
+  font-size:1.4rem; color:var(--pine-dark);
+}
+.edition-label .sub{
+  display:block; font-family:'JetBrains Mono',monospace; font-size:.68rem;
+  color:var(--ink-faint); letter-spacing:.16em; text-transform:uppercase;
+  font-style:normal; margin-top:8px;
+}
+.edition-list{list-style:none; counter-reset:ed}
+.edition-list li{
+  counter-increment:ed; padding:18px 0;
+  border-bottom:1px solid var(--cream-deeper);
+  display:grid; grid-template-columns:48px 1fr 120px; gap:24px; align-items:baseline;
+}
+.edition-list li:last-child{border-bottom:0}
+.edition-list li::before{
+  content:counter(ed,decimal-leading-zero);
+  font-family:'JetBrains Mono',monospace; font-size:.75rem;
+  color:var(--rust); letter-spacing:.1em; padding-top:6px;
+}
+.edition-list li a{
+  font-family:'Fraunces',serif; font-weight:500; color:var(--ink);
+  font-size:1.15rem; line-height:1.35; box-shadow:none; text-wrap:pretty;
+}
+.edition-list li a:hover{color:var(--pine)}
+.edition-list li .pg{
+  font-family:'JetBrains Mono',monospace; font-size:.7rem;
+  color:var(--ink-faint); letter-spacing:.1em; text-align:right;
+}
+
+/* ============= SECTION / SPREAD ============= */
+.spread{
+  max-width:1400px; margin:0 auto 96px; padding:0 48px;
+  scroll-margin-top:84px; position:relative;
+}
+.spread-head{
+  display:grid; grid-template-columns:280px 1fr; gap:64px;
+  margin-bottom:48px; align-items:end;
+  padding-bottom:36px; border-bottom:1px solid var(--ink);
+}
+.spread-num-col{position:relative}
+.spread-num{
+  font-family:'Fraunces',serif; font-weight:300;
+  font-size:10rem; line-height:.8; color:var(--cream-deeper);
+  letter-spacing:-0.05em; margin-bottom:12px;
+}
+.spread-label{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:500;
+  font-size:1.4rem; color:var(--rust); line-height:1;
+}
+.spread-label-sub{
+  font-family:'JetBrains Mono',monospace; font-size:.68rem;
+  color:var(--ink-faint); letter-spacing:.16em; text-transform:uppercase;
+  margin-top:10px;
+}
+
+.spread-title{
+  font-family:'Fraunces',serif; font-weight:500;
+  font-size:clamp(2.2rem, 4.6vw, 4rem); line-height:1.02;
+  color:var(--pine-dark); letter-spacing:-0.025em;
+  text-wrap:balance;
+}
+.spread-title em{color:var(--pine); font-style:italic; font-weight:400}
+
+.spread-body{
+  display:grid; grid-template-columns:280px 1fr; gap:64px;
+  align-items:start;
+}
+.spread-aside{
+  position:sticky; top:90px;
+  font-family:'Fraunces',serif; font-weight:400; font-style:italic;
+  font-size:1rem; line-height:1.55; color:var(--ink-soft);
+  padding-right:12px;
+}
+.spread-aside .tag{
+  display:inline-block; font-family:'JetBrains Mono',monospace;
+  font-size:.66rem; color:var(--rust); letter-spacing:.14em;
+  text-transform:uppercase; font-style:normal; margin-bottom:14px;
+  padding:3px 9px; border:1px solid var(--rust); border-radius:20px;
+}
+.spread-aside .sep{
+  margin:20px 0; height:1px; background:var(--cream-deeper); width:40px;
+}
+
+.prose{max-width:720px}
+.prose h3{
+  font-family:'Fraunces',serif; font-weight:600; font-style:italic;
+  font-size:1.05rem; color:var(--pine-dark);
+  margin:36px 0 14px; position:relative; padding-left:24px;
+}
+.prose h3::before{
+  content:""; position:absolute; left:0; top:.72em;
+  width:14px; height:1px; background:var(--rust);
+}
+.prose h3:first-child{margin-top:0}
+.prose p{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:1.18rem; line-height:1.6; color:var(--ink); margin-bottom:20px;
+}
+.prose p em{color:var(--pine-dark); font-style:italic}
+
+/* first letter in first paragraph of first spread */
+.prose.dropcap p:first-of-type::first-letter{
+  font-family:'Fraunces',serif; font-weight:500; font-style:italic;
+  font-size:4.6rem; float:left; line-height:.9;
+  padding:6px 14px 0 0; color:var(--rust);
+}
+
+/* MASSIVE pull quote */
+.pullquote{
+  margin:56px -48px; padding:72px 10vw;
+  background:var(--pine-dark); color:var(--cream);
+  position:relative; overflow:hidden;
+}
+.pullquote::before{
+  content:"\201C"; /* opening quote */
+  position:absolute; left:4vw; top:-2vw;
+  font-family:'Fraunces',serif; font-weight:300;
+  font-size:24rem; line-height:1; color:var(--pine);
+  opacity:.6;
+}
+.pullquote-text{
+  position:relative; z-index:2;
+  font-family:'Fraunces',serif; font-weight:400; font-style:italic;
+  font-size:clamp(1.8rem, 4vw, 3.4rem); line-height:1.15;
+  letter-spacing:-0.02em; color:var(--cream);
+  max-width:1100px; text-wrap:balance;
+}
+.pullquote-attr{
+  position:relative; z-index:2; margin-top:32px;
+  font-family:'JetBrains Mono',monospace; font-size:.76rem;
+  color:var(--pine-sage); letter-spacing:.14em; text-transform:uppercase;
+}
+
+/* ============= BUILD WALKTHROUGH ============= */
+.walkthrough{
+  margin:40px 0 0; background:var(--paper);
+  border:1px solid var(--cream-deeper); border-radius:2px;
+  overflow:hidden; position:relative;
+}
+.walkthrough::before{
+  content:""; position:absolute; left:0; top:0; bottom:0;
+  width:4px; background:var(--rust);
+}
+.walkthrough-head{
+  padding:28px 32px 28px 36px; display:flex; justify-content:space-between;
+  align-items:center; gap:24px; cursor:pointer; width:100%;
+  background:transparent; border:none; text-align:left;
+  transition:background .2s;
+}
+.walkthrough-head:hover{background:var(--cream)}
+.walkthrough-head-title{
+  font-family:'Fraunces',serif; font-weight:500; font-style:italic;
+  font-size:1.3rem; color:var(--pine-dark);
+}
+.walkthrough-head-hook{
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:400;
+  color:var(--ink-soft); font-size:.92rem; margin-top:6px;
+}
+.walkthrough-head .arrow{
+  flex-shrink:0; width:44px; height:44px; border-radius:50%;
+  background:var(--pine-dark); color:var(--cream);
+  display:inline-flex; align-items:center; justify-content:center;
+  transition:transform .4s cubic-bezier(.2,.8,.2,1), background .2s;
+  font-family:'Fraunces',serif; font-size:1.1rem;
+}
+.walkthrough.open .walkthrough-head .arrow{transform:rotate(90deg); background:var(--rust)}
+.walkthrough-body{max-height:0; overflow:hidden; transition:max-height .5s ease; background:var(--paper)}
+.walkthrough.open .walkthrough-body{max-height:2400px}
+.walkthrough-steps{
+  padding:8px 36px 32px; list-style:none; counter-reset:step;
+  border-top:1px solid var(--cream-deeper); margin-top:0;
+}
+.walkthrough-steps li{
+  counter-increment:step; display:grid; grid-template-columns:80px 1fr;
+  gap:24px; padding:24px 0; align-items:flex-start;
+  border-bottom:1px solid var(--cream-deeper);
+}
+.walkthrough-steps li:last-child{border-bottom:0}
+.walkthrough-steps li::before{
+  content:"Step " counter(step,decimal-leading-zero);
+  font-family:'JetBrains Mono',monospace; font-size:.7rem;
+  color:var(--rust); letter-spacing:.14em; text-transform:uppercase;
+  padding-top:4px;
+}
+.walkthrough-steps li > div{font-family:'Fraunces',serif; font-size:1.08rem; line-height:1.55; color:var(--ink)}
+
+.build-offer{
+  margin:40px 0 0; padding:36px; background:var(--paper);
+  border:1px dashed var(--pine); border-radius:2px; position:relative;
+}
+.build-offer::before{
+  content:"OR"; position:absolute; top:-12px; left:32px;
+  background:var(--cream); padding:0 12px;
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--rust); letter-spacing:.2em; font-weight:500;
+}
+.build-offer p{font-family:'Fraunces',serif; font-size:1.15rem; line-height:1.55; margin:0; color:var(--ink)}
+.build-offer strong{font-style:italic; color:var(--pine-dark); font-weight:600}
+
+/* ============= ALSO THIS WEEK ============= */
+.also{
+  max-width:1400px; margin:0 auto 96px; padding:0 48px;
+  scroll-margin-top:84px;
+}
+.also-grid{
+  display:grid; grid-template-columns:repeat(12, 1fr);
+  gap:32px 48px; margin-top:40px;
+}
+.also-card{
+  grid-column:span 6; padding:28px 0 32px;
+  border-top:1px solid var(--ink);
+  position:relative;
+}
+.also-card.feat{grid-column:span 12}
+.also-card.small{grid-column:span 4}
+.also-card-num{
+  font-family:'JetBrains Mono',monospace; font-size:.7rem;
+  color:var(--rust); letter-spacing:.14em; margin-bottom:14px;
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+.also-card-num .handle{color:var(--pine); font-weight:500}
+.also-card h4{
+  font-family:'Fraunces',serif; font-weight:500;
+  color:var(--pine-dark); line-height:1.15; letter-spacing:-0.015em;
+  margin-bottom:12px; text-wrap:pretty;
+}
+.also-card.feat h4{font-size:2.2rem; font-style:italic; font-weight:400}
+.also-card h4{font-size:1.5rem}
+.also-card.small h4{font-size:1.2rem}
+.also-card p{
+  font-family:'Fraunces',serif; font-weight:400;
+  color:var(--ink-soft); font-size:1rem; line-height:1.55; margin-bottom:16px;
+}
+.also-card.feat p{font-size:1.15rem}
+.also-card.small p{font-size:.96rem}
+.also-card .link{
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:600;
+  font-size:.8rem; color:var(--rust); box-shadow:none;
+  text-transform:uppercase; letter-spacing:.12em;
+}
+.also-card .link::after{content:" \2192"; transition:margin-left .2s}
+.also-card .link:hover::after{margin-left:4px}
+
+/* ============= ONE MORE THING ============= */
+.one-more{
+  background:var(--pine-dark); color:var(--cream); overflow:hidden;
+  padding:120px 0; margin-bottom:96px; position:relative;
+  scroll-margin-top:84px;
+}
+.one-more::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.90 0 0 0 0 0.78 0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.one-more-inner{
+  max-width:1100px; margin:0 auto; padding:0 48px; position:relative; z-index:2;
+}
+.one-more .tag{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+  font-size:1.2rem; color:var(--pine-sage); margin-bottom:24px;
+  display:flex; align-items:center; gap:16px;
+}
+.one-more .tag::before, .one-more .tag::after{
+  content:""; flex:1; max-width:80px; height:1px; background:var(--pine-sage); opacity:.5;
+}
+.one-more h2{
+  font-family:'Fraunces',serif; font-weight:400; font-style:italic;
+  font-size:clamp(2.4rem, 5vw, 4rem); line-height:1.08;
+  color:var(--cream); letter-spacing:-0.02em; text-wrap:balance;
+  text-align:center; margin-bottom:48px;
+}
+.one-more-body{
+  max-width:720px; margin:0 auto;
+}
+.one-more-body p{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:1.2rem; line-height:1.6; color:var(--cream); opacity:.92;
+  margin-bottom:20px;
+}
+.one-more-body em{color:var(--pine-sage); font-style:italic}
+.one-more-body a{color:var(--pine-sage); box-shadow:inset 0 -1px 0 rgba(141,153,103,.4)}
+.one-more-body a:hover{color:var(--cream); box-shadow:inset 0 -1px 0 var(--cream)}
+.one-more-filed{
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--pine-sage); letter-spacing:.16em; text-transform:uppercase;
+  margin-top:36px; text-align:center;
+}
+
+/* ============= BEFORE YOU GO ============= */
+.bye{
+  max-width:1400px; margin:0 auto 72px; padding:0 48px;
+  scroll-margin-top:84px;
+}
+.bye-inner{
+  display:grid; grid-template-columns:280px 1fr; gap:64px; align-items:start;
+  padding-top:48px; border-top:1px solid var(--ink);
+}
+.bye-label{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:500;
+  font-size:1.4rem; color:var(--rust);
+}
+.bye-label .sub{
+  display:block; font-family:'JetBrains Mono',monospace; font-size:.68rem;
+  color:var(--ink-faint); letter-spacing:.16em; text-transform:uppercase;
+  font-style:normal; margin-top:8px;
+}
+.bye-body{max-width:720px}
+.bye-body h2{
+  font-family:'Fraunces',serif; font-weight:500;
+  font-size:clamp(2rem, 4vw, 3.2rem); line-height:1.08;
+  color:var(--pine-dark); letter-spacing:-0.02em; margin-bottom:24px; text-wrap:balance;
+}
+.bye-body h2 em{color:var(--rust); font-style:italic; font-weight:400}
+.bye-body p{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:1.2rem; line-height:1.55; color:var(--ink); margin-bottom:18px;
+}
+.cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:32px}
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:600;
+  font-size:.85rem; padding:14px 26px;
+  text-transform:uppercase; letter-spacing:.12em;
+  border:1px solid var(--pine-dark); cursor:pointer;
+  transition:all .2s; text-decoration:none; box-shadow:none;
+}
+.btn-primary{background:var(--pine-dark); color:var(--cream)}
+.btn-primary:hover{background:var(--rust); border-color:var(--rust); transform:translateY(-1px)}
+.btn-secondary{background:transparent; color:var(--pine-dark)}
+.btn-secondary:hover{background:var(--pine-dark); color:var(--cream)}
+
+/* ============= REACTIONS ============= */
+.subscribe{
+  max-width:1400px; margin:0 auto 64px; padding:48px 48px 0;
+  border-top:1px solid var(--cream-deeper); text-align:center;
+}
+.subscribe-label{
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--rust); letter-spacing:.18em; text-transform:uppercase;
+  margin-bottom:18px;
+}
+.subscribe h3{
+  font-family:'Fraunces',serif; font-weight:500; font-style:italic;
+  font-size:clamp(1.8rem, 3.2vw, 2.6rem); line-height:1.1;
+  color:var(--pine-dark); letter-spacing:-0.015em; margin-bottom:14px;
+  text-wrap:balance;
+}
+.subscribe p{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:1.1rem; line-height:1.5; color:var(--ink);
+  max-width:560px; margin:0 auto 24px;
+}
+.subscribe-form{
+  display:flex; gap:0; justify-content:center; flex-wrap:wrap;
+  max-width:480px; margin:0 auto;
+}
+.subscribe-form input[type="email"]{
+  flex:1 1 260px; min-width:0;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:.95rem;
+  padding:14px 16px; border:1px solid var(--ink); background:var(--cream);
+  color:var(--ink); border-right:none; border-radius:0;
+  -webkit-appearance:none; appearance:none;
+}
+.subscribe-form input[type="email"]:focus{outline:none; border-color:var(--pine-dark); background:#fff}
+.subscribe-form button{
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:600;
+  font-size:.82rem; letter-spacing:.1em; text-transform:uppercase;
+  padding:14px 24px; border:1px solid var(--pine-dark);
+  background:var(--pine-dark); color:var(--cream); cursor:pointer;
+  transition:background .2s;
+}
+.subscribe-form button:hover{background:var(--rust); border-color:var(--rust)}
+.subscribe-note{
+  font-family:'JetBrains Mono',monospace; font-size:.7rem;
+  color:var(--ink-faint); letter-spacing:.1em; margin-top:14px;
+}
+@media (max-width:560px){
+  .subscribe-form{flex-direction:column; gap:0}
+  .subscribe-form input[type="email"]{border-right:1px solid var(--ink); border-bottom:none}
+  .subscribe-form button{border-top:none}
+}
+
+/* ============= SIGN-OFF (above footer, on cream) ============= */
+.signoff{
+  max-width:1400px; margin:0 auto; padding:72px 48px 88px;
+  border-top:1px solid var(--ink);
+  display:grid; grid-template-columns:1fr auto; gap:48px; align-items:end;
+}
+.sign-off{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:500;
+  font-size:clamp(2.4rem, 4vw, 3.2rem); color:var(--pine-dark); line-height:1.05;
+  letter-spacing:-0.02em;
+}
+.sign-off-loc{
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--ink-faint); letter-spacing:.14em; text-transform:uppercase;
+  margin-top:16px;
+}
+.signoff-meta{
+  font-family:'JetBrains Mono',monospace; font-size:.68rem;
+  color:var(--ink-faint); letter-spacing:.12em; text-transform:uppercase;
+  text-align:right; line-height:1.8;
+}
+.signoff-meta b{
+  display:block; color:var(--rust); font-weight:500;
+  font-size:.7rem; letter-spacing:.16em;
+}
+
+/* ============= SITE FOOTER (pine-dark, matches nobo.works) ============= */
+.site-footer{
+  background:var(--pine-dark); color:rgba(253,250,244,.7);
+  padding:52px 0 36px; border-top:none;
+}
+.site-footer::before{
+  content:""; display:block; position:absolute; left:0; right:0;
+  height:1px; background:rgba(253,250,244,.08);
+}
+.foot-inner{
+  max-width:1400px; margin:0 auto; padding:0 48px;
+  display:grid; grid-template-columns:1.2fr repeat(3,1fr); gap:40px; align-items:start;
+}
+.foot-brand{display:flex; flex-direction:column; gap:14px}
+.foot-brand .foot-wordmark{
+  font-family:'Fraunces',serif; font-weight:500;
+  font-size:1.35rem; color:#FDFAF4; letter-spacing:-.01em;
+}
+.foot-brand .foot-wordmark .dot{color:var(--pine-sage); font-weight:700}
+.foot-brand p{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+  font-size:.92rem; line-height:1.5; max-width:30ch;
+  color:rgba(253,250,244,.7);
+}
+.foot-col h5{
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:700;
+  font-size:.7rem; letter-spacing:.14em; text-transform:uppercase;
+  color:rgba(253,250,244,.5); margin-bottom:14px;
+}
+.foot-col a{
+  display:block; font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.88rem; color:rgba(253,250,244,.8);
+  padding:4px 0; box-shadow:none; transition:color .15s;
+}
+.foot-col a:hover{color:var(--pine-sage)}
+.foot-col a.current{color:var(--pine-sage)}
+.foot-bottom{
+  max-width:1400px; margin:40px auto 0; padding:20px 48px 0;
+  border-top:1px solid rgba(253,250,244,.1);
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:rgba(253,250,244,.42); letter-spacing:.04em;
+}
+.foot-bottom .colophon-line{color:rgba(253,250,244,.55)}
+
+@media (max-width:760px){
+  .signoff{grid-template-columns:1fr; gap:24px}
+  .signoff-meta{text-align:left}
+  .foot-inner{grid-template-columns:1fr 1fr; gap:32px 24px; padding:0 24px}
+  .foot-brand{grid-column:1/-1}
+  .foot-bottom{padding:20px 24px 0; flex-direction:column; gap:10px}
+}
+
+/* ============= REVEAL ANIMATION ============= */
+.reveal{
+  opacity:0; transform:translateY(18px);
+  transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.reveal.in{opacity:1; transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1; transform:none}
+}
+
+/* ============= RESPONSIVE ============= */
+@media (max-width:1000px){
+  .cover-grid{grid-template-columns:1fr; gap:32px}
+  .cover-number{align-items:flex-start}
+  .cover-sub{grid-template-columns:1fr; gap:20px}
+  .cover-sub .dateline{text-align:left}
+  .opener, .edition, .spread-head, .spread-body, .bye-inner{grid-template-columns:1fr; gap:24px}
+  .spread-aside{position:static; margin-bottom:16px}
+  .opener-aside .marker{font-size:2.4rem}
+  .also-grid{grid-template-columns:repeat(6, 1fr); gap:28px}
+  .also-card, .also-card.feat, .also-card.small{grid-column:span 6}
+  .pullquote{margin:40px -24px; padding:56px 24px}
+  .pullquote::before{font-size:14rem}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .folio-inner, .cover, .opener, .edition, .spread, .also, .bye, .subscribe, .signoff, .one-more-inner{
+    padding-left:24px; padding-right:24px;
+  }
+  .folio-inner{grid-template-columns:auto auto; gap:12px}
+  .folio-left{display:none}
+  .cover{padding-top:24px; padding-bottom:48px}
+  .cover-strip{flex-wrap:wrap; gap:8px; font-size:.62rem}
+  .cover-strip .left, .cover-strip .right{min-width:0; flex:1}
+  .cover-title{font-size:4.2rem; line-height:.9}
+  .cover-number .num{font-size:7rem}
+  .cover-sub p{font-size:1.2rem}
+  .opener-body p:first-child{font-size:1.6rem}
+  .spread-num{font-size:6rem}
+  .spread-title{font-size:2.2rem}
+  .prose p{font-size:1.1rem}
+  .prose.dropcap p:first-of-type::first-letter{font-size:3.4rem}
+  .pullquote{padding:48px 24px; margin:32px -24px}
+  .pullquote::before{font-size:10rem; top:-1rem}
+  .walkthrough-steps li{grid-template-columns:1fr; gap:8px}
+  .walkthrough-head, .walkthrough-steps{padding-left:24px; padding-right:24px}
+  .one-more{padding:72px 0}
+  .sign-off{font-size:1.8rem}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="folio">
+  <div class="folio-inner">
+    <div class="folio-left"><a href="https://nobo.works" class="clean" style="color:inherit">Nobo</a> · Field Notes</div>
+    <div class="folio-center">A weekly dispatch from the field</div>
+    <div class="folio-right">No. 01 · IV · MMXXVI</div>
+  </div>
+</nav>
+
+<!-- ============= COVER ============= -->
+<header class="cover">
+  <div class="cover-strip">
+    <div class="left">Volume I · No. 01</div>
+    <div class="center">By James Mason · Boulder, Colorado</div>
+    <div class="right">17 April 2026</div>
+  </div>
+
+  <div class="cover-grid">
+    <h1 class="cover-title reveal">
+      <span class="friday">Friday</span>
+      <span class="field">Field</span>
+      <span class="notes">Notes<span class="dot">.</span></span>
+    </h1>
+    <div class="cover-number reveal">
+      <div class="num">01</div>
+      <div class="label">The inaugural issue</div>
+    </div>
+  </div>
+
+  <div class="cover-sub">
+    <p class="reveal">What's worth paying attention to in AI this week, <em>for people running their business.</em></p>
+    <div class="dateline reveal">11 min read<br>Ed. James</div>
+  </div>
+</header>
+
+<!-- ============= OPENER ============= -->
+<section class="opener">
+  <aside class="opener-aside reveal">
+    <div class="marker">Hey.</div>
+    <div class="marker-label">Editor's letter</div>
+  </aside>
+  <div class="opener-body reveal">
+    <p>Hey from Boulder.</p>
+    <p>I spend most of my week on the applied frontier of AI — reading research, building production systems, talking to other practitioners working out what's real.</p>
+    <p>Most of what I see is hype. I send you the part that isn't.</p>
+    <p>These are the field notes.</p>
+  </div>
+</section>
+
+<!-- ============= IN THIS EDITION ============= -->
+<section class="edition reveal">
+  <div class="edition-label">
+    In this edition
+    <span class="sub">Contents · IV.17.26</span>
+  </div>
+  <ol class="edition-list">
+    <li><a href="#top-of-mind">Shopify just handed every AI agent the keys to the platform</a><span class="pg">§ 01</span></li>
+    <li><a href="#the-shift">Opus 4.7 shipped, and the system you already built got an upgrade for free</a><span class="pg">§ 02</span></li>
+    <li><a href="#build">An onboarding agent that delivers your best onboarding — every time</a><span class="pg">§ 03</span></li>
+    <li><a href="#also">Five more things from the week</a><span class="pg">§ 04</span></li>
+    <li><a href="#one-more">The coolest thing I saw someone do with Claude had nothing to do with their business</a><span class="pg">§ 05</span></li>
+  </ol>
+</section>
+
+<!-- ============= § 01 TOP OF MIND ============= -->
+<article class="spread" id="top-of-mind">
+  <header class="spread-head">
+    <div class="spread-num-col reveal">
+      <div class="spread-num">01</div>
+      <div class="spread-label">Top of mind</div>
+      <div class="spread-label-sub">The platform play of the year</div>
+    </div>
+    <h2 class="spread-title reveal">Shopify just <em>wired itself</em> into the agent layer.</h2>
+  </header>
+
+  <div class="spread-body">
+    <aside class="spread-aside reveal">
+      <span class="tag">Analysis</span>
+      "Ubiquity over control." A commerce platform, rewired as a protocol.
+    </aside>
+    <div class="prose dropcap reveal">
+      <h3>What happened</h3>
+      <p>On April 9, Shopify shipped the AI Toolkit. One install command, and every AI agent surface you care about (Claude Code, Cursor, Codex, Gemini CLI, VS Code, Cowork) gets direct write access to the Shopify backend. Products, orders, inventory, SEO, images. The announcement hit 3.8 million views in a week.</p>
+      <h3>Why it matters</h3>
+      <p>Shopify is the biggest ecommerce platform outside of Amazon, and they just wired themselves into the agent layer. A merchant running their day in Cowork can pull in Claude Design to mock a product page, push it live to their Shopify store, run an inventory check, rewrite the meta description for AI search, and schedule the day-7 cross-sell, without leaving a single surface.</p>
+      <p>It's also the first time a major commerce platform has chosen ubiquity over control. Every platform watching this land will ship its own version in the next 12 months — QuickBooks, HubSpot, Stripe, Notion, Airtable. Each one opens a wave of merchant demand for someone who can turn the toolkit into the three or four things a specific business actually needs.</p>
+      <p>The second-order unlock is the one nobody is talking about yet: any team running on Shopify can now build their own internal tools that plug into their store through the same MCP. A custom returns workflow, a fulfillment ops dashboard, a private skill library for the three things their team does 40 times a week. Not a Shopify App Store app. A private Claude system wired into their store, built for them, running in the surface they already work in.</p>
+    </div>
+  </div>
+
+  <aside class="pullquote reveal">
+    <div class="pullquote-text">A private Claude system wired into their store, built for them, <em>running in the surface they already work in.</em></div>
+  </aside>
+
+  <div class="spread-body" style="margin-top:56px">
+    <aside class="spread-aside"></aside>
+    <div class="prose reveal">
+      <h3>What to do</h3>
+      <p>If you run a Shopify store, pick the one product page you've always known was your weakest. Open Cowork, pull in Claude Design, rewrite the hero copy, regenerate the image, update the metadata, push it live in one pass. That's the new loop. Then do it for the next ten pages.</p>
+      <p>If you run a Shopify partner agency, the pitch is services-as-software layered on AI agent architecture. Your Shopify expertise is the part an agent can't replicate. The sharpest offer you can bring a client is <em>"we'll design the agent system that runs your store."</em></p>
+    </div>
+  </div>
+</article>
+
+<!-- ============= § 02 THE SHIFT ============= -->
+<article class="spread" id="the-shift">
+  <header class="spread-head">
+    <div class="spread-num-col reveal">
+      <div class="spread-num">02</div>
+      <div class="spread-label">The shift</div>
+      <div class="spread-label-sub">Model jumps, system compounds</div>
+    </div>
+    <h2 class="spread-title reveal">The model got better. <em>So did the system</em> you built on top of it.</h2>
+  </header>
+
+  <div class="spread-body">
+    <aside class="spread-aside reveal">
+      <span class="tag">Thesis</span>
+      Every new model ships two upgrades: the model itself, and the system you already built.
+    </aside>
+    <div class="prose reveal">
+      <h3>What happened</h3>
+      <p>On Wednesday, Anthropic shipped Opus 4.7 (<a href="https://www.anthropic.com/news/claude-opus-4-7">announcement</a>). Real capability jump on the things that have been holding agents back: long-running tasks, following multi-step instructions precisely, verifying its own output before reporting back.</p>
+      <p>Two days earlier, Garry Tan published "Thin Harness, Fat Skills" (<a href="https://x.com/garrytan/status/2042925773300908103">read it</a>). His central claim: the people getting 2x productivity out of AI and the people getting 100x are using the same models. The difference isn't intelligence. It's architecture.</p>
+      <h3>Why it matters</h3>
+      <p>Opus 4.7 is a real capability jump. Use cases that were marginal a week ago — an onboarding agent that drifts at step seven, a research loop that summarizes but doesn't verify, a client intake that handles the easy 80% — are now in range. That's not hype. That's a model that stays on task long enough to finish.</p>
+      <p>But the jump only shows up if you've already built the system. A system isn't a clever prompt. It's a set of reusable skills — markdown files that teach the model how to handle a specific kind of work — with reliable plumbing underneath. You write the skill once. It runs tomorrow, next quarter, next year. Every time the model underneath gets smarter, every skill you've written gets smarter with it.</p>
+      <p>If you spent last month on that, Opus 4.7 just lifted all of it without you touching a line. If you spent it on one-off prompts, those still work — they just don't stack. You're getting answers, one at a time, and none of them become an asset.</p>
+      <p><em>Every model upgrade is a free upgrade to the system you already built.</em></p>
+      <h3>What to do</h3>
+      <p>The question worth asking isn't which model. It's this: am I building a system that will compound over time and upgrade with every model release automatically? That's the question that separates a tool you rent from a compounding asset you own.</p>
+    </div>
+  </div>
+</article>
+
+<!-- ============= § 03 BUILD ============= -->
+<article class="spread" id="build">
+  <header class="spread-head">
+    <div class="spread-num-col reveal">
+      <div class="spread-num">03</div>
+      <div class="spread-label">Build this week</div>
+      <div class="spread-label-sub">One afternoon, one agent</div>
+    </div>
+    <h2 class="spread-title reveal"><em>An onboarding agent</em> that delivers your best onboarding — every time.</h2>
+  </header>
+
+  <div class="spread-body">
+    <aside class="spread-aside reveal">
+      <span class="tag">Tactical</span>
+      For agencies, coaches, consultants, therapists, real estate, law. Anyone whose onboarding process lives in their head.
+    </aside>
+    <div class="prose reveal">
+      <h3>Client signs. Then what?</h3>
+      <p>If the answer depends on who's available, what they remember, and which folder the template is in — that's the problem. Not the tools. The process lives in your head and it runs differently every time.</p>
+      <p>An onboarding agent encodes your actual process into a system. Client intake comes in, the agent produces your kickoff materials, schedules your follow-ups, and writes everything in your voice — because it knows your business, not because it's filling in a template.</p>
+
+      <div class="walkthrough" id="walkthrough">
+        <button class="walkthrough-head" onclick="toggleWalkthrough()">
+          <div>
+            <div class="walkthrough-head-title">How to build it yourself</div>
+            <div class="walkthrough-head-hook">First build takes about two hours. Every client after that takes fifteen minutes.</div>
+          </div>
+          <span class="arrow">›</span>
+        </button>
+        <div class="walkthrough-body">
+          <ol class="walkthrough-steps">
+            <li><div>Create a Claude project with one skill file: <code>process-new-client-intake.md</code>. It reads the intake form submission and produces the internal kickoff doc, the client welcome packet, and a day 7 check-in email draft.</div></li>
+            <li><div>Point it at wherever your templates actually live (Google Drive, Notion, your laptop).</div></li>
+            <li><div>Wire it up to a scheduled routine. Claude shipped routines this week, so this is suddenly much easier (see below). Triggers on day 0, day 7, day 21.</div></li>
+            <li><div>Test it with one fake client. Keep iterating on the skill file until it produces output you'd actually send.</div></li>
+            <li><div>Point your real intake form at it.</div></li>
+          </ol>
+        </div>
+      </div>
+
+      <h3>Why it works</h3>
+      <p>The agent reads from a context file that knows your business. The welcome packet sounds like you. The follow-up references details from the actual intake, not "hope things are going well." The internal handoff doc hits the same format every time.</p>
+
+      <h3>Why it compounds</h3>
+      <p>After five clients, you start noticing patterns — which questions always come up in week one, which deliverables clients actually open, where things stall. You update the skill file. The tenth onboarding is better than the first. That's a system, not a template.</p>
+
+      <div class="build-offer">
+        <p><strong>Want me to build it for you?</strong> Reply with your intake form and current onboarding process.</p>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ============= § 04 ALSO ============= -->
+<section class="also" id="also">
+  <header class="spread-head">
+    <div class="spread-num-col reveal">
+      <div class="spread-num">04</div>
+      <div class="spread-label">Also this week</div>
+      <div class="spread-label-sub">Six quick hits</div>
+    </div>
+    <h2 class="spread-title reveal">Six more things worth <em>a minute each.</em></h2>
+  </header>
+
+  <div class="also-grid">
+
+    <article class="also-card feat reveal">
+      <div class="also-card-num"><span>No. 01 · Platform · IV.14</span><span class="handle">@claudeai</span></div>
+      <h4>What you build now runs on its own.</h4>
+      <p>Claude shipped scheduled routines. Agents now run on Anthropic's infrastructure on a schedule, from an API call, or in response to an event. The weekly report that wakes up at 8am with a first draft in your inbox? That's a config file now.</p>
+      <a href="https://claude.com/blog/introducing-routines-in-claude-code" class="link" target="_blank" rel="noopener">Read the announcement</a>
+    </article>
+
+    <article class="also-card reveal">
+      <div class="also-card-num"><span>No. 02 · Tool release · IV.17</span><span class="handle">@claudeai · 15,000 bookmarks</span></div>
+      <h4>Claude Design shipped today.</h4>
+      <p>Make prototypes, slides, and one-pagers by talking to Claude. If you've been paying $500 to mock up a landing page before knowing whether the idea's worth building, that math just changed. The trick, per Anthropic's own team: set up your design system first, then every invocation reads from the same foundation.</p>
+      <a href="https://www.anthropic.com/news/claude-design-anthropic-labs" class="link" target="_blank" rel="noopener">Read the announcement</a>
+    </article>
+
+    <article class="also-card reveal">
+      <div class="also-card-num"><span>No. 03 · Worked example · IV.17</span><span class="handle">Nobo · James Mason</span></div>
+      <h4>An operating system, not a chatbot.</h4>
+      <p>What I've been building. Raw sources — emails, notes, proposals — compile into a living wiki of your business state. Skills read from the wiki instead of starting from scratch. Claude knows every client, every project, every decision before you type a word. Karpathy's pattern, adapted for small teams.</p>
+      <a href="https://nobo.works/systems/company-os" class="link" target="_blank" rel="noopener">See the system</a>
+    </article>
+
+    <article class="also-card small reveal">
+      <div class="also-card-num"><span>No. 04 · Essay · IV.13</span><span class="handle">@levie</span></div>
+      <h4>The role you'll be hiring for next year.</h4>
+      <p>Aaron Levie calls it the "Agent Deployer and Manager." They probably already exist on your team and you haven't noticed yet. Go find them.</p>
+      <a href="https://x.com/levie/status/2043883641366032638?s=20" class="link" target="_blank" rel="noopener">Read the thread</a>
+    </article>
+
+    <article class="also-card small reveal">
+      <div class="also-card-num"><span>No. 05 · Report · IV.16</span><span class="handle">@mckinsey</span></div>
+      <h4>Every process, redrawn end-to-end.</h4>
+      <p>Agentic gains don't come from bolting AI onto existing workflows. Alexis Krivkovich makes the case for redrawing the whole thing — "hire to onboard" instead of "post a job." SWAT teams redesign the process end-to-end, then the AI slots in.</p>
+      <a href="https://www.mckinsey.com/capabilities/people-and-organizational-performance/our-insights/ai-is-everywhere-the-agentic-organization-isnt-yet" class="link" target="_blank" rel="noopener">Read the report</a>
+    </article>
+
+    <article class="also-card small reveal">
+      <div class="also-card-num"><span>No. 06 · Essay · IV.15</span><span class="handle">@rauchg</span></div>
+      <h4>Internal tools are the new SaaS.</h4>
+      <p>Vercel's CEO on Basement Studio's custom shader tool, shipped with Claude Code: it's now easier to assemble software from building blocks than to procure SaaS. Every team becomes its own design factory.</p>
+      <a href="https://x.com/rauchg/status/2044445445636972578" class="link" target="_blank" rel="noopener">Read the thread</a>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============= § 05 ONE MORE THING ============= -->
+<section class="one-more" id="one-more">
+  <div class="one-more-inner">
+    <div class="tag reveal">§ 05 · One more thing</div>
+    <h2 class="reveal">The coolest thing I saw someone do with Claude this week had nothing to do with their business.</h2>
+    <div class="one-more-body reveal">
+      <p>Jason Zook (<a href="https://x.com/jasondoesstuff/status/2044432143477006348" target="_blank" rel="noopener">@jasondoesstuff</a>) has Claude build him a personal magazine every morning. Curated Hacker News stories on the things he actually cares about — AI tools, dev tools, privacy, creative software — styled, timestamped, waiting when he wakes up.</p>
+      <p>Your AI doesn't have to work <em>for</em> your business to be worth building. Sometimes the best thing it does is hand you a better morning.</p>
+    </div>
+    <div class="one-more-filed">Filed under · Personal systems</div>
+  </div>
+</section>
+
+<!-- ============= § 06 BEFORE YOU GO ============= -->
+<section class="bye" id="bye">
+  <div class="bye-inner">
+    <aside class="bye-label reveal">
+      Before you go
+      <span class="sub">§ 06 · Reply · Show up</span>
+    </aside>
+    <div class="bye-body reveal">
+      <h2>Reply and tell me <em>what you're building.</em></h2>
+      <p>Or what you wish you were. I read every one.</p>
+      <p>Office hours are open Thursday, 10am to noon, at Rayback Collective. No agenda, no pitch, just show up.</p>
+      <div class="cta-row">
+        <a href="mailto:james@nobo.works?subject=Re%3A%20Field%20Notes%20No.%2001" class="btn btn-primary clean">Reply to this issue</a>
+        <button class="btn btn-secondary" onclick="addToCalendar()">Add office hours to calendar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= SUBSCRIBE ============= -->
+<section class="subscribe reveal">
+  <div class="subscribe-label">Next Friday · in your inbox</div>
+  <h3>Get the next dispatch.</h3>
+  <p>Weekly field notes every Friday. What's worth paying attention to in AI this week, for people running their business.</p>
+  <form class="subscribe-form" action="https://script.google.com/macros/s/AKfycbzNCP7NBA9vjdqTQZc7x5C9blNaVJPh--Xqub1exx_fJ2_ZK0pJgsmhit0NqfV4SEw1fQ/exec" method="POST" onsubmit="handleSubscribe(event)">
+    <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address">
+    <button type="submit">Subscribe</button>
+  </form>
+  <div class="subscribe-note" id="subscribeNote">One issue a week. Unsubscribe in one click.</div>
+</section>
+
+<!-- ============= SIGN-OFF ============= -->
+<section class="signoff reveal">
+  <div>
+    <div class="sign-off">— James,<br><em>Boulder.</em></div>
+    <div class="sign-off-loc">See you next Friday</div>
+  </div>
+  <div class="signoff-meta">
+    <b>Filed</b>
+    17 April 2026<br>
+    from Boulder, Colorado
+  </div>
+</section>
+
+<!-- ============= SITE FOOTER ============= -->
+<footer class="site-footer">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <span class="foot-wordmark">nobo<span class="dot">.</span></span>
+      <p>— your ai partner in boulder.</p>
+    </div>
+    <div class="foot-col">
+      <h5>Site</h5>
+      <a href="https://nobo.works">What I build</a>
+      <a href="mailto:james@nobo.works">james@nobo.works</a>
+    </div>
+    <div class="foot-col">
+      <h5>Read</h5>
+      <a href="#" class="current">Friday Field Notes</a>
+    </div>
+    <div class="foot-col">
+      <h5>Find me</h5>
+      <a href="https://x.com/james_t_mason3" target="_blank" rel="noopener">Twitter / X</a>
+      <a href="https://www.linkedin.com/in/james-t-mason/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 nobo works llc · boulder, co</span>
+    <span class="colophon-line">set in fraunces &amp; plus jakarta · a dispatch of nobo, est. 2025</span>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js" defer></script><script>
+// progress
+const pf = document.getElementById('progressFill');
+function updateProgress(){
+  const h = document.documentElement;
+  const scrolled = h.scrollTop || document.body.scrollTop;
+  const height = h.scrollHeight - h.clientHeight;
+  pf.style.width = Math.min(100, (scrolled / height) * 100) + '%';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+updateProgress();
+
+// reveal on scroll
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, {threshold:0.1, rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// walkthrough
+function toggleWalkthrough(){
+  document.getElementById('walkthrough').classList.toggle('open');
+}
+
+// subscribe — posts to an Apps Script webhook, shows inline confirmation
+function handleSubscribe(e){
+  e.preventDefault();
+  const form = e.target;
+  const endpoint = form.action;
+  const note = document.getElementById('subscribeNote');
+  const email = form.querySelector('input[name="email"]').value.trim();
+  if(!email) return;
+  // If the endpoint hasn't been wired yet, fall back to a mailto so nothing 404s.
+  if(endpoint.indexOf('PLACEHOLDER') !== -1){
+    window.location.href = `mailto:james@nobo.works?subject=Subscribe%20to%20Field%20Notes&body=${encodeURIComponent(email)}`;
+    return;
+  }
+  note.textContent = 'Sending…';
+  fetch(endpoint, {
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body: new URLSearchParams({email, source:'field-notes-01'}).toString()
+  }).then(()=>{
+    form.reset();
+    note.textContent = 'You\u2019re in. See you Friday.';
+    note.style.color = 'var(--pine-dark)';
+  }).catch(()=>{
+    note.textContent = 'Something went sideways. Email james@nobo.works and I\u2019ll add you.';
+    note.style.color = 'var(--rust)';
+  });
+}
+
+// calendar — next Thursday 10am–noon MT, weekly recurring
+function addToCalendar(){
+  const pad = n => String(n).padStart(2,'0');
+  const fmtUTC = d =>
+    `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
+  // Find next Thursday in Mountain Time. 10am MDT = 16:00 UTC, 10am MST = 17:00 UTC.
+  // Office hours run Mar–Nov during MDT primarily; use 16:00 UTC as the canonical time.
+  const now = new Date();
+  const dow = now.getUTCDay(); // 0=Sun..4=Thu
+  let daysUntilThu = (4 - dow + 7) % 7;
+  // If today is Thursday but past 10am MT, skip to next week
+  const hoursNowUTC = now.getUTCHours() + now.getUTCMinutes()/60;
+  if (daysUntilThu === 0 && hoursNowUTC >= 16) daysUntilThu = 7;
+  const start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + daysUntilThu, 16, 0, 0));
+  const end   = new Date(start.getTime() + 2*60*60*1000);
+  const uid   = `officehours-${fmtUTC(start).slice(0,8)}@nobo.works`;
+  const ics = [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Nobo//Field Notes//EN','CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    `UID:${uid}`,
+    `DTSTAMP:${fmtUTC(new Date())}`,
+    `DTSTART:${fmtUTC(start)}`,
+    `DTEND:${fmtUTC(end)}`,
+    'RRULE:FREQ=WEEKLY;BYDAY=TH',
+    'SUMMARY:Office hours with James (Nobo)',
+    'LOCATION:Rayback Collective, Boulder, CO',
+    'DESCRIPTION:No agenda, no pitch, just show up.',
+    'END:VEVENT','END:VCALENDAR'
+  ].join('\r\n');
+  const blob = new Blob([ics],{type:'text/calendar'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'nobo-office-hours.ics';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
