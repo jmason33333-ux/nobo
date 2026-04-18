@@ -3,7 +3,24 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Friday Field Notes — Issue 01 · Editorial Unleashed</title>
+<title>Friday Field Notes — Issue 01 · Nobo</title>
+<meta name="description" content="Shopify's AI Toolkit, Opus 4.7 shipped, and a 4-hour onboarding agent that pays for itself on day one. The first Friday Field Notes, from Boulder.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Nobo">
+<meta property="og:title" content="Friday Field Notes — Issue 01 · Thin harness, fat skills">
+<meta property="og:description" content="Shopify's AI Toolkit, Opus 4.7 shipped, and a 4-hour onboarding agent that pays for itself on day one. The first Friday Field Notes, from Boulder.">
+<meta property="og:url" content="https://nobo.works/field-notes/issue-01/">
+<meta property="og:image" content="https://nobo.works/field-notes/issue-01/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter / iMessage -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Friday Field Notes — Issue 01 · Thin harness, fat skills">
+<meta name="twitter:description" content="Shopify's AI Toolkit, Opus 4.7 shipped, and a 4-hour onboarding agent that pays for itself on day one.">
+<meta name="twitter:image" content="https://nobo.works/field-notes/issue-01/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600;1,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -564,7 +581,10 @@ code{font-family:'JetBrains Mono',ui-monospace,monospace; font-size:.88em; backg
 }
 @media (max-width:560px){
   .subscribe-form{flex-direction:column; gap:0}
-  .subscribe-form input[type="email"]{border-right:1px solid var(--ink); border-bottom:none}
+  .subscribe-form input[type="email"]{
+    flex:0 0 auto; width:100%;
+    border:1px solid var(--ink); border-bottom:none;
+  }
   .subscribe-form button{border-top:none}
 }
 
