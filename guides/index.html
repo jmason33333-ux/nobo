@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nobo — How to Set Up Claude Cowork So It Actually Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════
+   NOBO · CRAFTSMAN REGISTER · GUIDE TEMPLATE
+   Third register alongside Practitioner (nobo.works)
+   and Editor (Field Notes). This is a field manual.
+
+   Shared DNA:
+     · cream/pine/rust palette
+     · wordmark with bold period
+     · Roman-ish chrome (phases), bold period on titles
+     · mono metadata, paper grain, Plus Jakarta body
+
+   Register-specific:
+     · Display is Lora (not Fraunces) — quieter,
+       less expressive than Field Notes
+     · Primary numeric chrome is Arabic (01, 02, 03)
+       for steps; phases use single letters (A, B, C)
+     · Layout is single-column, max 680px body
+     · Callouts carry the weight instead of drop caps
+     · "What you'll need" + "When to stop" pattern
+     · Generous whitespace per step
+   ═══════════════════════════════════════════════════ */
+
+:root{
+  --cream:#F5F0E6;
+  --cream-soft:#F9F5EC;
+  --cream-dark:#EBE4D6;
+  --cream-deeper:#D9CFB8;
+  --white:#FDFAF4;
+  --pine:#334A36;
+  --pine-dark:#263E31;
+  --pine-mid:#4C6F51;
+  --pine-sage:#8D9967;
+  --pine-soft:#DFE3D2;
+  --rust:#A84A2A;
+  --rust-soft:#C46A4A;
+  --gold:#C0883A;
+  --ink:#1C180E;
+  --ink-mid:#3A342A;
+  --ink-soft:#6B6255;
+  --ink-muted:#8A8272;
+
+  --serif:'Lora', Georgia, serif;
+  --sans:'Plus Jakarta Sans', system-ui, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  font-family:var(--sans);
+  background:var(--cream);
+  color:var(--ink);
+  font-size:17px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"ss01","kern","liga";
+}
+a{color:inherit;text-decoration:none}
+code{font-family:var(--mono);font-size:.88em;background:var(--cream-dark);padding:2px 7px;border-radius:3px;color:var(--pine-dark);font-weight:500}
+strong,b{font-weight:700;color:var(--pine-dark)}
+em{font-style:italic}
+
+/* paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1000;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(28,24,14,.015) 1px, transparent 1.5px),
+    radial-gradient(circle at 78% 82%, rgba(28,24,14,.012) 1px, transparent 1.5px),
+    radial-gradient(circle at 42% 62%, rgba(28,24,14,.018) 1px, transparent 1.5px);
+  background-size:8px 8px,14px 14px,20px 20px;
+  opacity:.8;mix-blend-mode:multiply;
+}
+
+.dot{color:var(--rust);font-weight:700}
+
+/* ─── STICKY HEADER ─── */
+.mast{
+  position:sticky;top:0;z-index:100;
+  background:rgba(245,240,230,.92);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--cream-deeper);
+  padding:14px 32px;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+}
+.mast-l{display:flex;align-items:center;gap:14px}
+.mast-wordmark{
+  font-family:var(--serif);font-weight:700;font-size:1.15rem;
+  color:var(--pine-dark);letter-spacing:-.01em;text-transform:none;
+}
+.mast-pipe{color:var(--cream-deeper)}
+.mast-c{
+  font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:.95rem;color:var(--ink-mid);
+  text-transform:none;letter-spacing:.01em;
+}
+.mast-r{justify-self:end;text-align:right}
+.mast-progress{
+  position:absolute;bottom:-1px;left:0;height:2px;background:var(--rust);
+  transition:width .15s;width:0;
+}
+
+/* ─── TOP · TITLE BLOCK ─── */
+.title-block{
+  max-width:880px;margin:0 auto;padding:80px 32px 56px;
+}
+.title-meta{
+  display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:baseline;
+  padding-bottom:20px;border-bottom:1px solid var(--cream-deeper);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+}
+.title-meta span:nth-child(2){
+  font-family:var(--serif);font-style:italic;font-weight:500;
+  text-transform:none;letter-spacing:.01em;color:var(--ink-mid);font-size:.95rem;
+}
+.title-meta span:last-child{text-align:right}
+
+.guide-num{
+  font-family:var(--serif);font-weight:500;font-style:italic;
+  font-size:1.2rem;color:var(--rust);margin:48px 0 8px;letter-spacing:.02em;
+}
+.title-block h1{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(2.4rem, 5.5vw, 3.8rem);line-height:1.05;letter-spacing:-.02em;
+  color:var(--pine-dark);text-wrap:balance;margin-bottom:22px;max-width:20ch;
+}
+.title-block h1 em{font-style:italic;font-weight:500;color:var(--pine)}
+.title-block .lede{
+  font-family:var(--serif);font-weight:400;
+  font-size:1.25rem;line-height:1.55;color:var(--ink-mid);max-width:56ch;
+  margin-bottom:28px;
+}
+
+.title-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border-top:1px solid var(--cream-deeper);border-bottom:1px solid var(--cream-deeper);
+  margin-top:12px;
+}
+.title-stats > div{
+  padding:22px 24px;border-right:1px solid var(--cream-deeper);
+}
+.title-stats > div:first-child{padding-left:0}
+.title-stats > div:last-child{border-right:none;padding-right:0}
+.title-stats .v{
+  font-family:var(--serif);font-weight:600;font-size:1.8rem;color:var(--pine-dark);
+  line-height:1;letter-spacing:-.01em;margin-bottom:6px;
+}
+.title-stats .v em{font-style:italic;color:var(--rust);font-weight:500}
+.title-stats .l{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+
+/* ─── PREREQ CARD (Craftsman signature move) ─── */
+.prereq{
+  max-width:880px;margin:40px auto 0;padding:0 32px;
+}
+.prereq-card{
+  background:var(--pine-dark);color:var(--cream);
+  border-radius:12px;padding:32px 36px;
+  position:relative;overflow:hidden;
+}
+.prereq-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 85% 10%, rgba(141,153,103,.16), transparent 55%);
+  pointer-events:none;
+}
+.prereq-card .kicker{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--pine-sage);margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;
+}
+.prereq-card .kicker::before{
+  content:"";width:18px;height:1px;background:var(--pine-sage);
+}
+.prereq-card h3{
+  font-family:var(--serif);font-weight:600;font-size:1.4rem;
+  color:var(--cream);margin-bottom:20px;letter-spacing:-.01em;
+}
+.prereq-card h3 .dot{color:var(--rust-soft)}
+.prereq-list{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:14px 32px;
+  position:relative;z-index:1;
+}
+.prereq-list div{
+  font-family:var(--serif);font-size:1rem;line-height:1.45;color:rgba(253,250,244,.92);
+  padding-left:22px;position:relative;
+}
+.prereq-list div::before{
+  content:"\2713";position:absolute;left:0;top:0;
+  color:var(--pine-sage);font-family:var(--sans);font-weight:700;font-size:.95rem;
+}
+.prereq-list div b{color:var(--cream);font-family:var(--sans);font-weight:700}
+
+/* ─── CHAPTER HEADER (replaces Phase A/B) ─── */
+.phase{max-width:880px;margin:96px auto 0;padding:0 32px}
+.phase-kicker{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--rust);font-weight:500;margin-bottom:14px;
+  display:flex;align-items:center;gap:12px;
+}
+.phase-kicker::before{
+  content:"";width:24px;height:1px;background:var(--rust);
+}
+.phase-head{
+  display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;
+  padding-bottom:22px;border-bottom:2px solid var(--pine-dark);
+}
+.phase-title{
+  font-family:var(--serif);font-weight:600;font-size:clamp(2rem,4vw,3rem);
+  line-height:1.08;color:var(--pine-dark);letter-spacing:-.02em;text-wrap:balance;max-width:18ch;
+}
+.phase-title .dot{color:var(--rust)}
+.phase-title em{font-style:italic;color:var(--pine);font-weight:500}
+.phase-meta{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);text-align:right;line-height:1.6;
+}
+.phase-meta b{
+  font-family:var(--serif);font-weight:600;font-size:1rem;color:var(--pine-dark);
+  text-transform:none;letter-spacing:-.005em;display:block;font-style:italic;
+}
+
+.phase-intro{
+  max-width:880px;margin:28px auto 0;padding:0 32px;
+}
+.phase-intro p{
+  font-family:var(--serif);font-size:1.15rem;line-height:1.65;
+  color:var(--ink-mid);max-width:60ch;
+}
+
+/* ─── STEPS ─── */
+.steps{max-width:880px;margin:36px auto 0;padding:0 32px}
+.step{
+  display:grid;grid-template-columns:80px 1fr;gap:32px;
+  padding:36px 0;border-top:1px solid var(--cream-deeper);
+  position:relative;
+}
+.step:last-child{border-bottom:1px solid var(--cream-deeper)}
+.step-num{
+  font-family:var(--serif);font-weight:500;font-size:2.8rem;color:var(--rust);
+  line-height:.9;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+}
+.step-body h3{
+  font-family:var(--serif);font-weight:600;font-size:1.5rem;
+  color:var(--pine-dark);line-height:1.2;letter-spacing:-.015em;
+  margin-bottom:12px;text-wrap:balance;
+}
+.step-body h3 .dot{color:var(--rust)}
+.step-body p{
+  font-family:var(--serif);font-size:1.1rem;line-height:1.65;color:var(--ink);margin-bottom:14px;max-width:58ch;
+}
+.step-body ul{list-style:none;margin:12px 0 18px}
+.step-body ul li{
+  font-family:var(--serif);font-size:1.02rem;line-height:1.55;color:var(--ink-mid);
+  padding:6px 0 6px 22px;position:relative;
+}
+.step-body ul li::before{
+  content:"\2014";position:absolute;left:0;top:6px;color:var(--pine-sage);font-weight:500;
+}
+.step-time{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-muted);margin-top:8px;
+}
+.step-time::before{
+  content:"";width:14px;height:1px;background:var(--cream-deeper);
+}
+
+/* ─── SKILL TABLE (this replaces the card grid) ─── */
+.skills-wrap{max-width:880px;margin:36px auto 0;padding:0 32px}
+.skills-cat{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--rust);font-weight:500;
+  padding:36px 0 12px;border-bottom:1px solid var(--cream-deeper);margin-bottom:0;
+  display:flex;align-items:baseline;justify-content:space-between;
+}
+.skills-cat:first-child{padding-top:8px}
+.skills-cat span{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--ink-muted);font-size:.8rem;text-transform:none;letter-spacing:.02em}
+.skill-row{
+  display:grid;grid-template-columns:220px 1fr;gap:56px;
+  padding:32px 0;border-bottom:1px solid var(--cream-deeper);
+  align-items:start;
+}
+.skill-row:last-of-type{border-bottom:1px solid var(--cream-deeper)}
+.skill-row .handle{
+  font-family:var(--mono);font-size:.92rem;color:var(--pine-dark);font-weight:500;
+  letter-spacing:-.01em;padding:4px 0;line-height:1.4;
+}
+.skill-row .handle::before{content:"\203A";color:var(--rust);margin-right:8px;font-weight:700}
+.skill-row .role{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-muted);margin-top:4px;
+}
+.skill-row h4{
+  font-family:var(--serif);font-weight:600;font-size:1.15rem;color:var(--pine-dark);
+  margin-bottom:6px;letter-spacing:-.01em;
+}
+.skill-row p{
+  font-family:var(--serif);font-size:1.02rem;line-height:1.55;color:var(--ink);margin-bottom:10px;max-width:56ch;
+}
+.skill-row .say{
+  font-family:var(--mono);font-size:.78rem;color:var(--ink-soft);line-height:1.6;
+  padding-top:8px;border-top:1px dashed var(--cream-deeper);letter-spacing:.01em;
+}
+.skill-row .say b{font-family:var(--sans);font-weight:700;color:var(--pine-dark);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-right:8px}
+
+/* ─── WORKFLOW (compound skill card) ─── */
+.workflow{
+  max-width:880px;margin:24px auto 0;padding:0 32px;
+}
+.workflow-card{
+  background:var(--white);border-left:3px solid var(--rust);
+  padding:28px 32px;margin-bottom:16px;
+  display:grid;grid-template-columns:1fr;gap:10px;
+}
+.workflow-card .handle{
+  font-family:var(--mono);font-size:.92rem;color:var(--pine-dark);font-weight:500;
+}
+.workflow-card .handle::before{content:"\203A";color:var(--rust);margin-right:8px;font-weight:700}
+.workflow-card h4{
+  font-family:var(--serif);font-weight:600;font-size:1.3rem;color:var(--pine-dark);
+  margin-top:4px;letter-spacing:-.01em;
+}
+.workflow-card h4 .dot{color:var(--rust)}
+.workflow-card p{
+  font-family:var(--serif);font-size:1.05rem;line-height:1.6;color:var(--ink);max-width:60ch;
+}
+.workflow-chain{
+  font-family:var(--mono);font-size:.75rem;color:var(--ink-soft);line-height:1.8;
+  padding:14px 16px;background:var(--cream-soft);border-radius:6px;margin-top:6px;
+  letter-spacing:.01em;
+}
+.workflow-chain b{font-family:var(--sans);font-weight:700;color:var(--pine-dark);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+.workflow-chain .arrow{color:var(--rust);font-weight:700;margin:0 6px}
+
+/* ─── CONTEXT FILE BLOCKS (file-manifest style) ─── */
+.files{max-width:880px;margin:28px auto 0;padding:0 32px}
+.files-intro{
+  font-family:var(--serif);font-size:1.12rem;line-height:1.65;color:var(--ink-mid);
+  max-width:58ch;margin-bottom:28px;
+}
+.files-intro em{font-style:italic}
+.file-row{
+  display:grid;grid-template-columns:280px 1fr;gap:28px;
+  padding:18px 0;border-top:1px solid var(--cream-deeper);align-items:baseline;
+}
+.file-row:last-of-type{border-bottom:1px solid var(--cream-deeper)}
+.file-name{
+  font-family:var(--mono);font-size:.88rem;color:var(--pine-dark);font-weight:500;
+  display:flex;align-items:center;gap:10px;
+}
+.file-name::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--pine-sage);flex-shrink:0;
+}
+.file-desc{
+  font-family:var(--serif);font-size:1rem;line-height:1.6;color:var(--ink-mid);
+}
+
+/* ─── WARN / CALLOUT ("When to stop" pattern) ─── */
+.warn{
+  max-width:880px;margin:40px auto 0;padding:0 32px;
+}
+.warn-inner{
+  border:1px solid var(--rust);background:var(--cream-soft);
+  border-radius:8px;padding:24px 28px;
+  display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;
+}
+.warn-icon{
+  font-family:var(--serif);font-weight:500;font-style:italic;font-size:2rem;
+  color:var(--rust);line-height:1;flex-shrink:0;padding-top:2px;
+}
+.warn-body h5{
+  font-family:var(--sans);font-weight:700;font-size:.72rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--rust);margin-bottom:8px;
+}
+.warn-body p{
+  font-family:var(--serif);font-size:1.05rem;line-height:1.6;color:var(--ink);
+}
+
+/* ─── LEARNING CARDS ─── */
+.learning{max-width:880px;margin:32px auto 0;padding:0 32px}
+.learning-card{
+  background:var(--white);border:1px solid var(--cream-deeper);
+  padding:28px 32px;margin-bottom:14px;border-radius:10px;
+  display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;
+}
+.learning-card .num{
+  font-family:var(--serif);font-weight:500;font-style:italic;
+  font-size:2rem;color:var(--rust);line-height:.9;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;flex-shrink:0;
+}
+.learning-card h4{
+  font-family:var(--serif);font-weight:600;font-size:1.2rem;color:var(--pine-dark);
+  margin-bottom:8px;letter-spacing:-.01em;
+}
+.learning-card h4 .dot{color:var(--rust)}
+.learning-card p{
+  font-family:var(--serif);font-size:1.02rem;line-height:1.6;color:var(--ink-mid);max-width:58ch;
+}
+
+/* ─── CTA SECTION ─── */
+.cta-section{
+  max-width:880px;margin:80px auto 0;padding:0 32px;
+}
+.cta-card{
+  background:var(--pine-dark);color:var(--cream);
+  border-radius:12px;padding:48px 40px;
+  position:relative;overflow:hidden;
+}
+.cta-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 15% 85%, rgba(141,153,103,.12), transparent 55%);
+  pointer-events:none;
+}
+.cta-card h3{
+  font-family:var(--serif);font-weight:600;font-size:1.6rem;
+  color:var(--cream);margin-bottom:36px;letter-spacing:-.01em;
+}
+.cta-card h3 .dot{color:var(--rust-soft)}
+.cta-paths{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:32px;
+  position:relative;z-index:1;
+}
+.cta-path h4{
+  font-family:var(--serif);font-weight:600;font-size:1.15rem;
+  color:var(--cream);margin-bottom:10px;letter-spacing:-.01em;
+}
+.cta-path p{
+  font-family:var(--serif);font-size:.98rem;line-height:1.55;
+  color:rgba(253,250,244,.78);margin-bottom:16px;
+}
+.cta-path a{
+  display:inline-block;font-family:var(--mono);font-size:.78rem;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--pine-sage);border-bottom:1px solid var(--pine-sage);
+  padding-bottom:2px;transition:color .2s,border-color .2s;
+}
+.cta-path a:hover{color:var(--cream);border-color:var(--cream)}
+
+/* ─── COLOPHON ─── */
+.colophon{
+  background:var(--cream-dark);padding:48px 0 32px;border-top:1px solid var(--cream-deeper);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--ink-soft);
+  margin-top:96px;
+}
+.colo-inner{
+  max-width:880px;margin:0 auto;padding:0 32px;
+  display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;
+}
+.colo h6{
+  font-family:var(--sans);font-weight:700;font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--pine-dark);margin-bottom:14px;
+}
+.colo-brand .wordmark{font-family:var(--serif);font-weight:700;font-size:1.3rem;color:var(--pine-dark);letter-spacing:-.01em;display:block;margin-bottom:10px;text-transform:none}
+.colo-brand .wordmark .dot{color:var(--rust)}
+.colo-brand p{font-family:var(--serif);font-style:italic;font-size:.95rem;color:var(--ink-mid);text-transform:none;letter-spacing:0;max-width:32ch;line-height:1.55}
+.colo a{display:block;color:var(--ink-mid);padding:3px 0;text-transform:none;font-size:.8rem;letter-spacing:.01em}
+.colo a:hover{color:var(--pine-dark)}
+.colo-bottom{
+  max-width:880px;margin:32px auto 0;padding:18px 32px 0;border-top:1px solid var(--cream-deeper);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+
+/* responsive */
+@media (max-width:780px){
+  .mast{grid-template-columns:1fr;text-align:center;gap:6px;padding:10px 20px}
+  .mast-l,.mast-r{justify-self:center}
+  .title-block,.phase,.phase-intro,.steps,.skills-wrap,.workflow,.files,.warn,.learning,.prereq,.cta-section{padding-left:20px;padding-right:20px}
+  .title-stats{grid-template-columns:repeat(2,1fr)}
+  .title-stats > div{border-right:none;border-bottom:1px solid var(--cream-deeper);padding:14px 0}
+  .prereq-list{grid-template-columns:1fr}
+  .phase-head{grid-template-columns:1fr;gap:8px}
+  .phase-meta{text-align:left}
+  .step{grid-template-columns:1fr;gap:12px}
+  .step-num{font-size:2rem}
+  .skill-row{grid-template-columns:1fr;gap:10px}
+  .file-row{grid-template-columns:1fr;gap:6px}
+  .cta-paths{grid-template-columns:1fr;gap:24px}
+  .colo-inner{grid-template-columns:1fr;gap:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     STICKY HEADER
+     ═══════════════════════════════════════════════════ -->
+<header class="mast">
+  <div class="mast-l">
+    <span class="mast-wordmark">nobo<span class="dot">.</span></span>
+    <span class="mast-pipe">&middot;</span>
+    <span>Guides</span>
+  </div>
+  <div class="mast-c">a practitioner's field manual</div>
+  <div class="mast-r">Guide &#8470; 02 &middot; apr 2026</div>
+  <div class="mast-progress" id="progress"></div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════
+     TITLE BLOCK
+     ═══════════════════════════════════════════════════ -->
+<section class="title-block">
+  <div class="title-meta">
+    <span>guide &#8470; 02</span>
+    <span>a practitioner's field manual</span>
+    <span>filed apr 2026</span>
+  </div>
+
+  <div class="guide-num">Guide &#8470; 02</div>
+  <h1>How to Set Up Claude Cowork So It Actually Works<span class="dot">.</span></h1>
+  <p class="lede">Same Claude. Same plan. Different system. This is the setup guide that turns a chatbot into a second employee.</p>
+
+  <div class="title-stats">
+    <div><div class="v">5</div><div class="l">steps</div></div>
+    <div><div class="v"><em>20 min</em></div><div class="l">setup</div></div>
+    <div><div class="v">0</div><div class="l">code required</div></div>
+    <div><div class="v">Day 1</div><div class="l">works on</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     WHAT YOU'LL NEED — Craftsman signature callout
+     ═══════════════════════════════════════════════════ -->
+<section class="prereq">
+  <div class="prereq-card">
+    <div class="kicker">Before you start</div>
+    <h3>What you'll need<span class="dot">.</span></h3>
+    <div class="prereq-list">
+      <div><b>Claude Pro or Max</b> subscription (Cowork requires a paid plan)</div>
+      <div><b>20 minutes</b> of uninterrupted setup time</div>
+      <div><b>A recent piece of writing</b> you're proud of &mdash; email, proposal, bio</div>
+      <div><b>Optional:</b> your brand guidelines or a document you wish you could delegate</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PART ONE · THE PAYOFF
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="payoff">
+  <div class="phase-kicker">Part One &middot; The Payoff</div>
+  <div class="phase-head">
+    <h2 class="phase-title">What changes when you set this up<span class="dot">.</span></h2>
+    <div class="phase-meta"><b>Why it matters</b>before the mechanics</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>Most people use Claude the same way they use Google: type a question, get a generic answer, rephrase, try again. That's not a system. That's a search bar with better grammar. What follows is the difference between Claude-as-chatbot and Claude-as-colleague.</p>
+</div>
+
+<div class="before-after-wrap" style="max-width:880px;margin:32px auto 0;padding:0 32px;">
+  <p style="font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:20px;">Same prompt, different system</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:36px;">
+    <div style="background:var(--cream-dark);border-radius:10px;padding:28px 28px 24px;border:1px solid var(--cream-deeper);">
+      <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:14px;">Without setup</div>
+      <p style="font-family:var(--serif);font-size:.95rem;line-height:1.6;color:var(--ink-soft);font-style:italic;">"Hi Sarah, Wanted to send a quick update on the project. We've made solid progress on the key deliverables this week and things are moving along on schedule. I'll circle back later this week with more specifics once a few items are finalized. Let me know if anything comes up in the meantime. Thanks, James"</p>
+      <div style="font-family:var(--mono);font-size:.65rem;color:var(--ink-muted);margin-top:14px;letter-spacing:.06em;">plausible &middot; no specifics &middot; could be any client</div>
+    </div>
+    <div style="background:var(--pine-dark);border-radius:10px;padding:28px 28px 24px;">
+      <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--pine-sage);margin-bottom:14px;">With setup</div>
+      <p style="font-family:var(--serif);font-size:.95rem;line-height:1.6;color:rgba(253,250,244,.88);font-style:italic;">"Hey Sarah — quick update on the website refresh. Marcus wrapped the content audit yesterday and we're moving into wireframes this week. Two things still open from Friday: the services-page architecture and whether we're rebuilding the blog or keeping it as-is. I'll have both mocked up by Thursday. Let me know if the timeline still works on your end."</p>
+      <div style="font-family:var(--mono);font-size:.65rem;color:var(--pine-sage);margin-top:14px;letter-spacing:.06em;">voice-matched &middot; project-specific &middot; ready to send</div>
+    </div>
+  </div>
+
+  <p style="font-family:var(--serif);font-size:1.05rem;line-height:1.6;color:var(--ink-mid);max-width:58ch;">Same prompt: <em>"write a client update email."</em> The difference is the system around it — context files that know your business, your voice, and this specific client.</p>
+</div>
+
+<div class="phase-intro" style="margin-top:32px">
+  <p>You don't need to be technical. You don't need to understand prompting. If you can describe how your business works, you can set this up.</p>
+  <p style="margin-top:16px">The teams getting the most from Claude treat it like a new hire who needs onboarding, not a search engine that needs better questions.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PART TWO · THE SETUP
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="setup">
+  <div class="phase-kicker">Part Two &middot; The Setup</div>
+  <div class="phase-head">
+    <h2 class="phase-title">Five steps, twenty minutes<span class="dot">.</span></h2>
+    <div class="phase-meta"><b>~20 minutes</b>in order, one time</div>
+  </div>
+</section>
+
+<div class="steps">
+
+  <div class="step">
+    <div class="step-num">01</div>
+    <div class="step-body">
+      <h3>Personal Preferences<span class="dot">.</span></h3>
+      <p>The always-on layer. Your name, how you want Claude to communicate, what kind of output you prefer. Two minutes of configuration that changes every conversation going forward.</p>
+      <p>Open Claude, go to <code>Settings &rarr; General &rarr; Personal Preferences</code>. Set the basics:</p>
+      <ul>
+        <li>Your name and what you want Claude to call you</li>
+        <li>Preferred response length (concise, detailed, or match the question)</li>
+        <li>Formatting style (bullets, prose, structured headings)</li>
+        <li>Tone (direct, warm, formal, casual)</li>
+      </ul>
+      <p>This is lightweight by design. Think of it as the baseline Claude reads before every single conversation, regardless of context.</p>
+      <div class="step-time">~2 minutes &middot; one-time</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">02</div>
+    <div class="step-body">
+      <h3>Global Instructions<span class="dot">.</span></h3>
+      <p>The business layer. Who you are, what you do, how you work, what matters. This is the single most impactful thing you can configure. It's why Claude stops sounding generic.</p>
+      <p>Open <code>Settings &rarr; Cowork &rarr; Global Instructions</code> and write a paragraph that covers the essentials. Start with something like this:</p>
+      <ul>
+        <li>I'm [name], I run [business]. We do [service] for [type of client].</li>
+        <li>My voice is [describe: direct, warm, technical, casual].</li>
+        <li>I prefer [format preferences: short emails, structured docs, bullet-first].</li>
+        <li>When writing for me, never use [words or phrases you avoid].</li>
+        <li>Our clients care about [what matters to your audience].</li>
+      </ul>
+      <p>The more specific you are here, the less you correct later. "We're a marketing agency" isn't enough. "We're a 6-person B2B content agency in Denver that writes long-form thought leadership for fintech founders" is.</p>
+      <div class="step-time">~5 minutes &middot; the most important step</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">03</div>
+    <div class="step-body">
+      <h3>Project Instructions<span class="dot">.</span></h3>
+      <p>The per-engagement layer. Create a project for each client, initiative, or area of work. Inside the project, the right-side panel holds three things that travel with every conversation in that project: <strong>Instructions</strong>, <strong>Scheduled</strong> tasks, and <strong>Context</strong> (folder access and memory).</p>
+      <p>Open a project, click the pencil next to <strong>Instructions</strong>, and write the specifics: who the client is, what the deliverable is, what's already been decided, and the one thing you can't get wrong. Three to five sentences is plenty.</p>
+
+      <!-- ─── Right-sidebar panel illustration ─── -->
+      <div style="background:var(--white);border:1px solid var(--cream-deeper);border-radius:10px;padding:18px;margin:22px 0 18px;max-width:420px;font-family:var(--sans);">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--cream-deeper);margin-bottom:12px;">
+          <span style="font-size:.78rem;font-weight:600;color:var(--pine-dark);letter-spacing:.02em;">Instructions</span>
+          <span style="font-family:var(--mono);font-size:.6rem;color:var(--ink-muted);">&#9998;</span>
+        </div>
+        <p style="font-family:var(--serif);font-size:.82rem;line-height:1.5;color:var(--ink-mid);margin-bottom:14px;font-style:italic;">You are Claude, working with Sarah on the Q2 website refresh. Tone: direct, no jargon. Don't assume the blog rebuild is approved &mdash; it's still open. Sign off as me, never as a team.</p>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0 8px;border-top:1px solid var(--cream-deeper);">
+          <span style="font-size:.78rem;font-weight:600;color:var(--pine-dark);letter-spacing:.02em;">Scheduled</span>
+          <span style="font-family:var(--mono);font-size:.6rem;color:var(--ink-muted);">+</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--cream-soft);border-radius:6px;margin-bottom:6px;">
+          <div>
+            <div style="font-size:.78rem;font-weight:600;color:var(--pine-dark);">Daily log</div>
+            <div style="font-family:var(--mono);font-size:.65rem;color:var(--ink-muted);margin-top:2px;">Every day at ~11:50 PM</div>
+          </div>
+          <span style="font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--pine-dark);background:var(--pine-soft);padding:3px 8px;border-radius:4px;">&#x25CF; Active</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--cream-deeper);">
+          <span style="font-size:.78rem;font-weight:600;color:var(--pine-dark);letter-spacing:.02em;">Context</span>
+          <span style="font-family:var(--mono);font-size:.6rem;color:var(--ink-muted);">+</span>
+        </div>
+        <div style="font-family:var(--mono);font-size:.7rem;color:var(--ink-soft);padding-top:8px;">&#x1F4C1; client-website-refresh &nbsp;&middot;&nbsp; &#x1F4AD; Memory</div>
+      </div>
+
+      <p>The <strong>Scheduled</strong> block is where this gets powerful. Attach a recurring task to the project &mdash; a daily log, a weekly status draft, a Monday briefing &mdash; and it runs on its own. Project instructions plus scheduled tasks turns the project from a folder of conversations into a system that does work while you're not in it.</p>
+      <div class="step-time">~2 minutes per project</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">04</div>
+    <div class="step-body">
+      <h3>Your Voice File<span class="dot">.</span></h3>
+      <p>The personality layer. Take that piece of writing you brought (the one from the prereqs). Paste it into a Claude conversation and ask:</p>
+      <p><em>"Extract my writing patterns: sentence length, vocabulary, tone, formality level, what I seem to avoid."</em></p>
+
+      <!-- ─── Standout: what to do with the analysis ─── -->
+      <div style="background:var(--pine-dark);color:var(--cream);border-radius:8px;padding:20px 24px;margin:18px 0;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;">
+        <div style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.6rem;color:var(--rust-soft);line-height:1;">&rarr;</div>
+        <div>
+          <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--pine-sage);margin-bottom:6px;">Then do this</div>
+          <p style="font-family:var(--serif);font-size:1.05rem;line-height:1.5;color:var(--cream);margin:0;">Copy the analysis. Paste it into your <strong style="color:var(--cream);font-weight:700;">Global Instructions</strong> from Step 02. That's it. Every conversation now reads with your voice as the baseline.</p>
+        </div>
+      </div>
+
+      <p>This is what makes output sound like you, not like AI. The difference is immediate and obvious.</p>
+      <div class="step-time">~5 minutes &middot; high impact</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">05</div>
+    <div class="step-body">
+      <h3>Your First Real Task<span class="dot">.</span></h3>
+      <p>Not a test. An actual task you'd normally spend 30 minutes on: a client email, a proposal introduction, a meeting prep document. Run it through the configured system and compare the output to what you'd normally write.</p>
+      <p>This is where the "oh, this is different" moment happens. The output won't be perfect. But it will be recognizably <em>yours</em> in a way that unconfigured Claude never is. That's the proof that the setup works.</p>
+      <div class="step-time">~5 minutes &middot; the moment it clicks</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PART THREE · MAKE IT YOURS
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="skills">
+  <div class="phase-kicker">Part Three &middot; Make It Yours</div>
+  <div class="phase-head">
+    <h2 class="phase-title">Organize the work, then extend the system<span class="dot">.</span></h2>
+    <div class="phase-meta"><b>~15 minutes</b>after the basics are solid</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>Steps 01&ndash;05 set up the personal layer. This part is where Claude stops being a generalist assistant and starts being <em>shaped to how you actually work</em>. Two moves: organize your work into projects, then add capabilities that match what your day looks like.</p>
+</div>
+
+<!-- ─── 3A · PROJECTS ─── -->
+<div style="max-width:880px;margin:44px auto 0;padding:0 32px;">
+  <div style="font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);font-weight:500;margin-bottom:20px;display:flex;align-items:center;gap:12px;"><span style="width:24px;height:1px;background:var(--rust);display:inline-block;"></span>3A &middot; Organize with Projects</div>
+
+  <h3 style="font-family:var(--serif);font-weight:600;font-size:1.75rem;color:var(--pine-dark);line-height:1.15;letter-spacing:-.015em;margin-bottom:14px;text-wrap:balance;">A project is a container for one body of work<span class="dot">.</span></h3>
+
+  <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.65;color:var(--ink);max-width:60ch;margin-bottom:16px;">Everything inside a project stays in scope: the instructions you wrote in Step 03, the scheduled tasks that run on their own, the context folder Claude can read from, and every conversation you've had in that project. Open a project and you drop back into the right headspace in one click.</p>
+
+  <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.65;color:var(--ink-mid);max-width:60ch;margin-bottom:24px;">Create one per <strong>client</strong>, per <strong>initiative</strong>, or per <strong>area of responsibility</strong>. Don't over-engineer it. Most people need three to five projects to cover 80&percnt; of their work.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;">
+    <div style="background:var(--white);border:1px solid var(--cream-deeper);border-radius:8px;padding:18px 20px;">
+      <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;">Example</div>
+      <div style="font-family:var(--serif);font-weight:600;font-size:1.05rem;color:var(--pine-dark);margin-bottom:4px;">Acme &mdash; Q2 Rebrand</div>
+      <div style="font-family:var(--serif);font-size:.9rem;color:var(--ink-soft);line-height:1.4;">one client, one engagement</div>
+    </div>
+    <div style="background:var(--white);border:1px solid var(--cream-deeper);border-radius:8px;padding:18px 20px;">
+      <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;">Example</div>
+      <div style="font-family:var(--serif);font-weight:600;font-size:1.05rem;color:var(--pine-dark);margin-bottom:4px;">Sales Pipeline</div>
+      <div style="font-family:var(--serif);font-size:.9rem;color:var(--ink-soft);line-height:1.4;">ongoing function</div>
+    </div>
+    <div style="background:var(--white);border:1px solid var(--cream-deeper);border-radius:8px;padding:18px 20px;">
+      <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;">Example</div>
+      <div style="font-family:var(--serif);font-weight:600;font-size:1.05rem;color:var(--pine-dark);margin-bottom:4px;">My Business</div>
+      <div style="font-family:var(--serif);font-size:.9rem;color:var(--ink-soft);line-height:1.4;">the always-on layer</div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── 3B · CAPABILITIES ─── -->
+<div style="max-width:880px;margin:56px auto 0;padding:0 32px;">
+  <div style="font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);font-weight:500;margin-bottom:20px;display:flex;align-items:center;gap:12px;"><span style="width:24px;height:1px;background:var(--rust);display:inline-block;"></span>3B &middot; Extend the System</div>
+
+  <h3 style="font-family:var(--serif);font-weight:600;font-size:1.75rem;color:var(--pine-dark);line-height:1.15;letter-spacing:-.015em;margin-bottom:14px;text-wrap:balance;">Three ways to give Claude more reach<span class="dot">.</span></h3>
+
+  <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.65;color:var(--ink);max-width:60ch;margin-bottom:28px;">Out of the box, Claude can think and write. To let it <em>act in your tools</em> and <em>run repeatable work</em>, you add capabilities. Three types, stacked on top of each other.</p>
+
+  <!-- Three capability types -->
+  <div style="display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:32px;">
+
+    <div style="background:var(--white);border-left:3px solid var(--pine);padding:22px 26px;border-radius:0 10px 10px 0;display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:start;">
+      <div>
+        <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);font-weight:500;margin-bottom:4px;">Extender 01</div>
+        <div style="font-family:var(--serif);font-weight:600;font-size:1.3rem;color:var(--pine-dark);letter-spacing:-.01em;">Skills</div>
+      </div>
+      <div>
+        <p style="font-family:var(--serif);font-size:1.02rem;line-height:1.6;color:var(--ink);margin-bottom:8px;">Repeatable workflows Claude runs on demand. Each skill enforces its own output format, style, and completion criteria &mdash; so the same task produces consistent work every time.</p>
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);letter-spacing:.02em;">e.g. daily-log &middot; weekly-review &middot; call-prep &middot; draft-outreach</div>
+      </div>
+    </div>
+
+    <div style="background:var(--white);border-left:3px solid var(--pine);padding:22px 26px;border-radius:0 10px 10px 0;display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:start;">
+      <div>
+        <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);font-weight:500;margin-bottom:4px;">Extender 02</div>
+        <div style="font-family:var(--serif);font-weight:600;font-size:1.3rem;color:var(--pine-dark);letter-spacing:-.01em;">Connectors</div>
+      </div>
+      <div>
+        <p style="font-family:var(--serif);font-size:1.02rem;line-height:1.6;color:var(--ink);margin-bottom:8px;">Bridges to the tools your work already lives in. Connectors let Claude read from and act in Google Drive, Gmail, Calendar, ClickUp, Notion, Canva, Figma, Slack, Linear &mdash; and many, many more.</p>
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);letter-spacing:.02em;">e.g. Google Drive &middot; Gmail &middot; ClickUp &middot; Canva &middot; Figma &middot; Notion</div>
+      </div>
+    </div>
+
+    <div style="background:var(--white);border-left:3px solid var(--pine);padding:22px 26px;border-radius:0 10px 10px 0;display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:start;">
+      <div>
+        <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);font-weight:500;margin-bottom:4px;">Extender 03</div>
+        <div style="font-family:var(--serif);font-weight:600;font-size:1.3rem;color:var(--pine-dark);letter-spacing:-.01em;">Plugins</div>
+      </div>
+      <div>
+        <p style="font-family:var(--serif);font-size:1.02rem;line-height:1.6;color:var(--ink);margin-bottom:8px;">Packaged bundles of skills and connectors, typically organized by role. Install one plugin and you get the whole stack &mdash; the right skills <em>plus</em> the connectors those skills need.</p>
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--ink-soft);letter-spacing:.02em;">e.g. Operations &middot; Marketing &middot; Sales &middot; Product Management &middot; Data</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- How to access -->
+  <div style="background:var(--pine-dark);color:var(--cream);border-radius:10px;padding:24px 28px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;margin-bottom:24px;">
+    <div style="font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.8rem;color:var(--rust-soft);line-height:1;">&rarr;</div>
+    <div>
+      <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--pine-sage);margin-bottom:6px;">How to add them</div>
+      <p style="font-family:var(--serif);font-size:1.05rem;line-height:1.55;color:var(--cream);margin:0;">Click <strong style="color:var(--cream);font-weight:700;">Customize</strong> in the Cowork sidebar. Three tabs: Skills, Connectors, Plugins. Install what matches your work. Resist the urge to install everything &mdash; unused capabilities are noise.</p>
+    </div>
+  </div>
+
+  <p style="font-family:var(--serif);font-size:1.05rem;line-height:1.6;color:var(--ink-mid);max-width:60ch;">Start opinionated: <strong>install the Productivity plugin.</strong> It's useful for everyone. Then add the plugin that matches your work &mdash; Sales if you run a pipeline, Operations if you manage projects, Brand Voice if you write for clients.</p>
+</div>
+
+<!-- ─── 3C · BUILD YOUR FIRST SKILL ─── -->
+<div style="max-width:880px;margin:56px auto 0;padding:0 32px;">
+  <div style="font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);font-weight:500;margin-bottom:20px;display:flex;align-items:center;gap:12px;"><span style="width:24px;height:1px;background:var(--rust);display:inline-block;"></span>3C &middot; Build Your First Skill</div>
+
+  <h3 style="font-family:var(--serif);font-weight:600;font-size:1.75rem;color:var(--pine-dark);line-height:1.15;letter-spacing:-.015em;margin-bottom:14px;text-wrap:balance;">Build a daily log<span class="dot">.</span></h3>
+
+  <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.65;color:var(--ink);max-width:60ch;margin-bottom:16px;">Plugins give you pre-built capabilities. But the real unlock is building your own. Here's a skill you can create in two minutes that'll change how every session starts.</p>
+
+  <!-- Steps to create -->
+  <div style="margin-bottom:24px;">
+    <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--cream-deeper);">
+      <span style="font-family:var(--serif);font-weight:500;font-size:1.4rem;color:var(--rust);">01</span>
+      <span style="font-family:var(--serif);font-size:1.05rem;color:var(--ink);line-height:1.5;">Go to <strong>Customize</strong> &rarr; <strong>Skills</strong> &rarr; <strong>+ Create skill</strong> &rarr; <strong>Write skill instructions</strong></span>
+    </div>
+    <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--cream-deeper);">
+      <span style="font-family:var(--serif);font-weight:500;font-size:1.4rem;color:var(--rust);">02</span>
+      <span style="font-family:var(--serif);font-size:1.05rem;color:var(--ink);line-height:1.5;">Skill name: <code>daily-log</code></span>
+    </div>
+    <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid var(--cream-deeper);">
+      <span style="font-family:var(--serif);font-weight:500;font-size:1.4rem;color:var(--rust);">03</span>
+      <div>
+        <span style="font-family:var(--serif);font-size:1.05rem;color:var(--ink);line-height:1.5;">Description:</span>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--ink-mid);line-height:1.55;background:var(--cream-dark);padding:12px 16px;border-radius:6px;margin-top:8px;">End-of-day project log that captures what was accomplished, what was decided, what's unresolved, and what to pick up tomorrow. Designed to run as a scheduled task at end of day so every new session starts with full continuity.</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:40px 1fr;gap:16px;padding:12px 0;">
+      <span style="font-family:var(--serif);font-weight:500;font-size:1.4rem;color:var(--rust);">04</span>
+      <span style="font-family:var(--serif);font-size:1.05rem;color:var(--ink);line-height:1.5;">Instructions: paste the skill below &darr;</span>
+    </div>
+  </div>
+
+  <!-- Accordion -->
+  <div style="margin-bottom:24px;">
+    <button id="skill-toggle" onclick="document.getElementById('skill-content').classList.toggle('expanded');this.classList.toggle('open');" style="
+      width:100%;display:flex;align-items:center;justify-content:space-between;
+      background:var(--pine-dark);color:var(--cream);
+      border:none;border-radius:10px;padding:18px 24px;cursor:pointer;
+      font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;
+      transition:background .15s;
+    ">
+      <span>View full skill instructions &mdash; copy &amp; paste this</span>
+      <span id="skill-chevron" style="font-size:1.2rem;transition:transform .25s;">&#9662;</span>
+    </button>
+    <div id="skill-content" style="
+      max-height:0;overflow:hidden;transition:max-height .4s ease;
+      background:var(--cream-soft);border:1px solid var(--cream-deeper);border-top:none;
+      border-radius:0 0 10px 10px;
+    ">
+      <div style="padding:24px;position:relative;">
+        <button onclick="navigator.clipboard.writeText(document.getElementById('skill-text').innerText);this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',2000);" style="
+          position:absolute;top:16px;right:16px;
+          font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+          background:var(--pine);color:var(--cream);border:none;
+          padding:6px 14px;border-radius:5px;cursor:pointer;
+        ">Copy</button>
+        <pre id="skill-text" style="font-family:var(--mono);font-size:.78rem;line-height:1.7;color:var(--ink);white-space:pre-wrap;word-wrap:break-word;max-width:100%;padding-right:80px;">---
+name: daily-log
+description: >
+  End-of-day project log that captures what was accomplished, what was decided,
+  what's unresolved, and what to pick up tomorrow. Designed to run as a scheduled
+  task at end of day so every new session starts with full continuity.
+version: 0.1.0
+---
+
+# Daily Log
+
+You are the team's daily continuity system. Your job is to review everything that happened in today's session — tasks completed, decisions made, files created or changed, open threads — and write a structured log entry that lets tomorrow's session start exactly where today left off.
+
+## Critical Rules
+
+- **Format is non-negotiable.** Follow the entry structure exactly. No prose paragraphs. No filler. Every line carries information.
+- **Write for discovery.** Use consistent section headers, ISO dates, and short declarative lines so Claude can grep this file and find relevant context fast.
+- **Latest entry first.** New entries go at the top of the file, below the header.
+- **Rolling window.** Keep the last 5 business days in daily-log.md. Move older entries to daily-log-archive.md.
+- **One entry per day.** If invoked multiple times, update the existing entry — don't create duplicates.
+- **No fabrication.** Only log what actually happened.
+
+## Entry Format
+
+```
+## YYYY-MM-DD — [Day of week]
+
+### Done
+- [Specific deliverable — name the thing, not the activity]
+
+### Decided
+- [What was decided] — why: [one-line rationale]
+
+### Changed
+- `[filename]` — [what changed and why]
+
+### Open
+- **[Thread]** — waiting on: [who/what] · next step: [action]
+
+### Pick up tomorrow
+- [First priority]
+- [Second priority]
+- [Third priority]
+```
+
+### Format rules
+
+**Done:** Name deliverables, not activities. "Fee proposal for Greenleaf — $3,500 flat, sent to David" not "Worked on the fee proposal."
+
+**Decided:** Every decision gets a **why**. Three months from now, someone will grep this file asking "why did we go with flat fee?" and the answer needs to be here.
+
+**Open:** Bold the thread name. Always include what it's waiting on and next step.
+
+**Pick up tomorrow:** Ordered by priority. Max 3 items. This is what Claude reads first in the next session to orient.</pre>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #skill-content.expanded{max-height:2000px !important}
+    #skill-toggle.open #skill-chevron{transform:rotate(180deg)}
+    #skill-toggle:hover{background:var(--pine-mid)}
+  </style>
+
+  <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.65;color:var(--ink-mid);max-width:60ch;margin-bottom:24px;">Once you see it work, schedule it. <strong>Cowork &rarr; Scheduled &rarr; set it to run at end of day.</strong> Tomorrow morning, every project has yesterday's full context waiting. That's the compound effect &mdash; work keeps moving even when you're not at the keyboard.</p>
+
+  <!-- Scheduled ritual visual -->
+  <div style="background:var(--cream-soft);border:1px solid var(--cream-deeper);border-radius:10px;padding:20px 24px;display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:16px;">
+    <div style="padding-right:20px;border-right:1px solid var(--cream-deeper);">
+      <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px;">11:50 PM</div>
+      <div style="font-family:var(--serif);font-weight:600;font-size:.95rem;color:var(--pine-dark);line-height:1.3;">Daily log captures the day</div>
+    </div>
+    <div style="padding:0 20px;border-right:1px solid var(--cream-deeper);">
+      <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px;">Overnight</div>
+      <div style="font-family:var(--serif);font-weight:600;font-size:.95rem;color:var(--pine-dark);line-height:1.3;">Context updates while you sleep</div>
+    </div>
+    <div style="padding-left:20px;">
+      <div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:6px;">7:00 AM</div>
+      <div style="font-family:var(--serif);font-weight:600;font-size:.95rem;color:var(--pine-dark);line-height:1.3;">You start from a running start</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PART FOUR · WATCH FOR THIS
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="plateaus">
+  <div class="phase-kicker">Part Four &middot; Watch For This</div>
+  <div class="phase-head">
+    <h2 class="phase-title">Where most people get stuck<span class="dot">.</span></h2>
+    <div class="phase-meta"><b>Failure modes</b>after the initial setup</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>The setup takes twenty minutes. Keeping it useful takes awareness. Here are the four ways most configurations stop working.</p>
+</div>
+
+<div class="pitfalls" style="max-width:880px;margin:32px auto 0;padding:0 32px;">
+
+  <style>
+    .pitfall{
+      background:var(--white);border:1px solid var(--cream-deeper);
+      border-radius:10px;margin-bottom:14px;overflow:hidden;
+      display:grid;grid-template-columns:70px 1fr;
+      transition:border-color .25s,transform .25s;
+    }
+    .pitfall:hover{border-color:var(--rust);transform:translateX(2px);}
+    .pitfall-glyph{
+      background:var(--cream-soft);border-right:1px solid var(--cream-deeper);
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--serif);font-style:italic;font-weight:500;
+      font-size:2.2rem;color:var(--rust);line-height:1;
+    }
+    .pitfall-body{padding:22px 26px;}
+    .pitfall-body h4{
+      font-family:var(--serif);font-weight:600;font-size:1.2rem;
+      color:var(--pine-dark);margin-bottom:8px;letter-spacing:-.01em;
+    }
+    .pitfall-body h4 .dot{color:var(--rust)}
+    .pitfall-body > p{
+      font-family:var(--serif);font-size:1rem;line-height:1.6;
+      color:var(--ink-mid);max-width:58ch;margin-bottom:14px;
+    }
+    .pitfall-fix{
+      display:grid;grid-template-columns:auto 1fr;gap:12px;
+      padding-top:12px;border-top:1px dashed var(--cream-deeper);
+      align-items:start;
+    }
+    .pitfall-fix-label{
+      font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;
+      text-transform:uppercase;color:var(--pine);font-weight:700;
+      padding-top:3px;
+    }
+    .pitfall-fix-text{
+      font-family:var(--serif);font-size:.98rem;line-height:1.55;
+      color:var(--ink);font-style:italic;
+    }
+    @media (max-width:780px){
+      .pitfall{grid-template-columns:56px 1fr}
+      .pitfall-glyph{font-size:1.7rem}
+      .pitfall-body{padding:18px 20px}
+    }
+  </style>
+
+  <div class="pitfall">
+    <div class="pitfall-glyph">01</div>
+    <div class="pitfall-body">
+      <h4>Generic context<span class="dot">.</span></h4>
+      <p>"We're a marketing agency" isn't specific enough. The system works exactly as well as the context you give it. If your description could apply to any competitor, Claude's output will read the same way.</p>
+      <div class="pitfall-fix">
+        <span class="pitfall-fix-label">Fix</span>
+        <span class="pitfall-fix-text">Name your actual clients, your real process, the phrases you'd never use, and the thing that makes your work different.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-glyph">02</div>
+    <div class="pitfall-body">
+      <h4>Static context<span class="dot">.</span></h4>
+      <p>Nobody updates it. Three months in, Claude is working from stale information: old client names, outdated processes, a voice profile from before you changed direction.</p>
+      <div class="pitfall-fix">
+        <span class="pitfall-fix-label">Fix</span>
+        <span class="pitfall-fix-text">Review your context files monthly. Treat them like living documents, not one-time setup.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-glyph">03</div>
+    <div class="pitfall-body">
+      <h4>Too many skills<span class="dot">.</span></h4>
+      <p>Thousands of skills exist. None of them know your business until you configure them. Twenty installed-but-unconfigured skills is worse than two that are dialed in.</p>
+      <div class="pitfall-fix">
+        <span class="pitfall-fix-label">Fix</span>
+        <span class="pitfall-fix-text">Install the one plugin that matches your work. Use it for a week before adding anything else.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pitfall">
+    <div class="pitfall-glyph">04</div>
+    <div class="pitfall-body">
+      <h4>Back to chat<span class="dot">.</span></h4>
+      <p>The team uses the system for a week, then reverts to asking Claude questions the old way. The habit matters more than the setup &mdash; the routine is the product.</p>
+      <div class="pitfall-fix">
+        <span class="pitfall-fix-label">Fix</span>
+        <span class="pitfall-fix-text">Build it into your week: Monday weekly review, prep every call, draft every client email through the system.</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── WARNING CALLOUT ─── -->
+<section class="warn">
+  <div class="warn-inner">
+    <div class="warn-icon">!</div>
+    <div class="warn-body">
+      <h5>Check your context</h5>
+      <p>If your context files could describe any business in your industry, they're not specific enough yet. Go back to step 02 and add the details only you know: your actual clients, your real process, the phrases you'd never use, the thing that makes your work different from every competitor's.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PART FIVE · WHAT'S NEXT
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="whats-next">
+  <div class="phase-kicker">Part Five &middot; What's Next</div>
+  <div class="phase-head">
+    <h2 class="phase-title">You just unlocked Stage 2<span class="dot">.</span></h2>
+    <div class="phase-meta"><b>Progression</b>and what's ahead</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>This guide gets you to Stage 2 &mdash; that's already further than 90% of Claude users. Stage 3 is where it gets interesting: skills and automations working together so the system does real work without you driving every interaction. Stage 4 is where the system starts doing work your business couldn't afford before. I'm building guides for both. Click any stage below to see what's there.</p>
+</div>
+
+<!-- ─── INTERACTIVE STAGE PROGRESSION ─── -->
+<div class="stage-map" style="max-width:880px;margin:48px auto 0;padding:0 32px;">
+  <style>
+    .stages-track{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;padding:24px 0 8px;}
+    .stages-track::before{content:"";position:absolute;top:54px;left:8%;right:8%;height:2px;background:var(--cream-deeper);z-index:0;}
+    .stage{position:relative;z-index:1;text-align:center;display:flex;flex-direction:column;align-items:center;cursor:pointer;}
+    .stage-marker{
+      width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+      font-family:var(--serif);font-weight:600;font-size:1.25rem;margin-bottom:14px;
+      background:var(--cream);border:2px solid var(--cream-deeper);color:var(--ink-muted);
+      transition:transform .2s,box-shadow .2s,background .2s,border-color .2s,color .2s;
+    }
+    .stage:hover .stage-marker{transform:translateY(-2px);box-shadow:0 4px 12px rgba(28,24,14,.12);}
+    .stage.active .stage-marker{background:var(--rust);border-color:var(--rust);color:var(--cream);box-shadow:0 0 0 6px rgba(168,74,42,.18);}
+    .stage-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:4px;transition:color .2s;}
+    .stage.active .stage-label{color:var(--rust);font-weight:700;}
+    .stage-title{font-family:var(--serif);font-weight:600;font-size:1rem;color:var(--ink-mid);line-height:1.25;transition:color .2s;}
+    .stage.active .stage-title{color:var(--ink);}
+    .stage-card{
+      background:var(--pine-dark);color:var(--cream);border-radius:12px;padding:36px;
+      margin-top:40px;position:relative;overflow:hidden;min-height:200px;
+      transition:opacity .25s;
+    }
+    .stage-card::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 85% 15%, rgba(168,74,42,.14), transparent 55%);pointer-events:none;}
+    .stage-card-num{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--pine-sage);margin-bottom:8px;position:relative;z-index:1;}
+    .stage-card-title{font-family:var(--serif);font-weight:600;font-size:1.6rem;color:var(--cream);letter-spacing:-.01em;line-height:1.2;margin-bottom:16px;position:relative;z-index:1;}
+    .stage-card-title .dot{color:var(--rust-soft);}
+    .stage-card-desc{font-family:var(--serif);font-size:1.05rem;line-height:1.6;color:rgba(253,250,244,.85);margin-bottom:20px;max-width:56ch;position:relative;z-index:1;}
+    .stage-card-list{list-style:none;padding:0;margin:0;position:relative;z-index:1;}
+    .stage-card-list li{font-family:var(--serif);font-size:.92rem;line-height:1.5;color:rgba(253,250,244,.7);padding:8px 0 8px 22px;position:relative;border-top:1px dashed rgba(253,250,244,.12);}
+    .stage-card-list li:first-child{border-top:none;}
+    .stage-card-list li::before{content:"—";position:absolute;left:0;top:8px;color:var(--pine-sage);font-weight:500;}
+    @media(max-width:780px){
+      .stages-track{grid-template-columns:1fr;gap:14px;padding:16px 0;}
+      .stages-track::before{display:none;}
+      .stage{flex-direction:row;text-align:left;gap:16px;align-items:center;}
+      .stage-marker{margin-bottom:0;flex-shrink:0;}
+    }
+  </style>
+
+  <div class="stages-track">
+    <div class="stage" data-stage="1" onclick="showStage(1)">
+      <div class="stage-marker">01</div>
+      <div><div class="stage-label">Stage 01</div><div class="stage-title">Chat</div></div>
+    </div>
+    <div class="stage active" data-stage="2" onclick="showStage(2)">
+      <div class="stage-marker">02</div>
+      <div><div class="stage-label">Stage 02</div><div class="stage-title">Structured System</div></div>
+    </div>
+    <div class="stage" data-stage="3" onclick="showStage(3)">
+      <div class="stage-marker">03</div>
+      <div><div class="stage-label">Stage 03</div><div class="stage-title">Time-Saving Automations</div></div>
+    </div>
+    <div class="stage" data-stage="4" onclick="showStage(4)">
+      <div class="stage-marker">04</div>
+      <div><div class="stage-label">Stage 04</div><div class="stage-title">Capability Expansion</div></div>
+    </div>
+  </div>
+
+  <div class="stage-card" id="stage-card">
+    <div class="stage-card-num" id="sc-num">Stage 02</div>
+    <div class="stage-card-title" id="sc-title">Structured System<span class="dot">.</span></div>
+    <div class="stage-card-desc" id="sc-desc">Claude knows you, your voice, your work. This guide got you here. Output is recognizably yours — not generic AI, but something you'd actually send.</div>
+    <ul class="stage-card-list" id="sc-list">
+      <li>Context files teach Claude your business</li>
+      <li>Your voice file matches your patterns</li>
+      <li>Project instructions ground every session</li>
+    </ul>
+  </div>
+
+  <script>
+    const stageData = {
+      1: { num:'Stage 01', title:'Chat', desc:'Using Claude for drafts, research, one-off questions. No persistent context. Every conversation starts from scratch. You rewrite most of what it produces.', items:['Individual prompting, inconsistent results','No shared voice or standards','Every session is a blank slate'] },
+      2: { num:'Stage 02', title:'Structured System', desc:'Claude knows you, your voice, your work. This guide got you here. Output is recognizably yours — not generic AI, but something you\'d actually send.', items:['Context files teach Claude your business','Your voice file matches your patterns','Project instructions ground every session'] },
+      3: { num:'Stage 03', title:'Time-Saving Automations', desc:'The system starts doing real work without you driving every interaction. Scheduled tasks, automated workflows, compound skills that chain together.', items:['Daily briefing runs at 7am before you open Cowork','Client updates drafted automatically from project state','Skills chain together: intake → scope → proposal'] },
+      4: { num:'Stage 04', title:'Capability Expansion', desc:'The system enables work you couldn\'t do before — not faster versions of old tasks, but entirely new capabilities your business couldn\'t afford to staff.', items:['Competitive monitoring across your client portfolio','Proactive recommendations you\'d never run manually','The system surfaces insights you wouldn\'t have thought to ask for'] }
+    };
+    function showStage(n){
+      document.querySelectorAll('.stage').forEach(s=>s.classList.remove('active'));
+      document.querySelector('[data-stage="'+n+'"]').classList.add('active');
+      const d=stageData[n];
+      document.getElementById('sc-num').textContent=d.num;
+      document.getElementById('sc-title').innerHTML=d.title+'<span class="dot">.</span>';
+      document.getElementById('sc-desc').textContent=d.desc;
+      const ul=document.getElementById('sc-list');
+      ul.innerHTML=d.items.map(i=>'<li>'+i+'</li>').join('');
+    }
+  </script>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     CTA SECTION
+     ═══════════════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="cta-card">
+    <h3>What's your next move<span class="dot">.</span></h3>
+    <div class="cta-paths">
+      <div class="cta-path">
+        <h4>Ready to go?</h4>
+        <p>Tell me what your Tuesday looks like. I'll tell you what changes.</p>
+        <a href="https://nobo.works/#contact">book a call &rarr;</a>
+      </div>
+      <div class="cta-path">
+        <h4>Want to learn more first?</h4>
+        <p>A weekly dispatch from the field. What's working, what isn't, what I'm building next.</p>
+        <a href="https://www.nobo.works/field-notes/issue-01">friday field notes &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     COLOPHON
+     ═══════════════════════════════════════════════════ -->
+<footer class="colophon">
+  <div class="colo colo-inner">
+    <div class="colo-brand">
+      <span class="wordmark">nobo<span class="dot">.</span></span>
+      <p>&mdash; your ai partner in boulder.</p>
+    </div>
+    <div>
+      <h6>This guide</h6>
+      <a href="#payoff">One. The payoff</a>
+      <a href="#setup">Two. The setup</a>
+      <a href="#skills">Three. Make it yours</a>
+      <a href="#plateaus">Four. Where people get stuck</a>
+      <a href="#whats-next">Five. What's next</a>
+    </div>
+    <div>
+      <h6>Find me</h6>
+      <a href="https://nobo.works">back to nobo.works &rarr;</a>
+      <a href="https://www.nobo.works/field-notes/issue-01">friday field notes &rarr;</a>
+    </div>
+  </div>
+  <div class="colo colo-bottom">
+    <span>James Mason &middot; Nobo &middot; Boulder, CO &middot; 2026</span>
+    <span>Guide &#8470; 02 &middot; Filed April 2026</span>
+    <span>Set in Lora &amp; Plus Jakarta &middot; Printed on cream</span>
+  </div>
+</footer>
+
+<script>
+// Sticky-header progress bar
+const prog = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  prog.style.width = pct + '%';
+});
+</script>
+</body>
+</html>
