@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nobo Foundation Plugin — Guide № 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════
+   NOBO · CRAFTSMAN REGISTER · GUIDE TEMPLATE
+   Third register alongside Practitioner (nobo.works)
+   and Editor (Field Notes). This is a field manual.
+
+   Shared DNA:
+     · cream/pine/rust palette
+     · wordmark with bold period
+     · Roman-ish chrome (phases), bold period on titles
+     · mono metadata, paper grain, Plus Jakarta body
+
+   Register-specific:
+     · Display is Lora (not Fraunces) — quieter,
+       less expressive than Field Notes
+     · Primary numeric chrome is Arabic (01, 02, 03)
+       for steps; phases use single letters (A, B, C)
+     · Layout is single-column, max 680px body
+     · Callouts carry the weight instead of drop caps
+     · "What you'll need" + "When to stop" pattern
+     · Generous whitespace per step
+   ═══════════════════════════════════════════════════ */
+
+:root{
+  --cream:#F5F0E6;
+  --cream-soft:#F9F5EC;
+  --cream-dark:#EBE4D6;
+  --cream-deeper:#D9CFB8;
+  --white:#FDFAF4;
+  --pine:#334A36;
+  --pine-dark:#263E31;
+  --pine-mid:#4C6F51;
+  --pine-sage:#8D9967;
+  --pine-soft:#DFE3D2;
+  --rust:#A84A2A;
+  --rust-soft:#C46A4A;
+  --gold:#C0883A;
+  --ink:#1C180E;
+  --ink-mid:#3A342A;
+  --ink-soft:#6B6255;
+  --ink-muted:#8A8272;
+
+  --serif:'Lora', Georgia, serif;
+  --sans:'Plus Jakarta Sans', system-ui, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  font-family:var(--sans);
+  background:var(--cream);
+  color:var(--ink);
+  font-size:17px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"ss01","kern","liga";
+}
+a{color:inherit;text-decoration:none}
+code{font-family:var(--mono);font-size:.88em;background:var(--cream-dark);padding:2px 7px;border-radius:3px;color:var(--pine-dark);font-weight:500}
+strong,b{font-weight:700;color:var(--pine-dark)}
+em{font-style:italic}
+
+/* paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1000;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(28,24,14,.015) 1px, transparent 1.5px),
+    radial-gradient(circle at 78% 82%, rgba(28,24,14,.012) 1px, transparent 1.5px),
+    radial-gradient(circle at 42% 62%, rgba(28,24,14,.018) 1px, transparent 1.5px);
+  background-size:8px 8px,14px 14px,20px 20px;
+  opacity:.8;mix-blend-mode:multiply;
+}
+
+.dot{color:var(--rust);font-weight:700}
+
+/* ─── STICKY HEADER ─── */
+.mast{
+  position:sticky;top:0;z-index:100;
+  background:rgba(245,240,230,.92);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--cream-deeper);
+  padding:14px 32px;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+}
+.mast-l{display:flex;align-items:center;gap:14px}
+.mast-wordmark{
+  font-family:var(--serif);font-weight:700;font-size:1.15rem;
+  color:var(--pine-dark);letter-spacing:-.01em;text-transform:none;
+}
+.mast-pipe{color:var(--cream-deeper)}
+.mast-c{
+  font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:.95rem;color:var(--ink-mid);
+  text-transform:none;letter-spacing:.01em;
+}
+.mast-r{justify-self:end;text-align:right}
+.mast-progress{
+  position:absolute;bottom:-1px;left:0;height:2px;background:var(--rust);
+  transition:width .15s;width:0;
+}
+
+/* ─── TOP · TITLE BLOCK ─── */
+.title-block{
+  max-width:880px;margin:0 auto;padding:80px 32px 56px;
+}
+.title-meta{
+  display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:baseline;
+  padding-bottom:20px;border-bottom:1px solid var(--cream-deeper);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+}
+.title-meta span:nth-child(2){
+  font-family:var(--serif);font-style:italic;font-weight:500;
+  text-transform:none;letter-spacing:.01em;color:var(--ink-mid);font-size:.95rem;
+}
+.title-meta span:last-child{text-align:right}
+
+.guide-num{
+  font-family:var(--serif);font-weight:500;font-style:italic;
+  font-size:1.2rem;color:var(--rust);margin:48px 0 8px;letter-spacing:.02em;
+}
+.title-block h1{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(2.4rem, 5.5vw, 3.8rem);line-height:1.05;letter-spacing:-.02em;
+  color:var(--pine-dark);text-wrap:balance;margin-bottom:22px;max-width:20ch;
+}
+.title-block h1 em{font-style:italic;font-weight:500;color:var(--pine)}
+.title-block .lede{
+  font-family:var(--serif);font-weight:400;
+  font-size:1.25rem;line-height:1.55;color:var(--ink-mid);max-width:56ch;
+  margin-bottom:28px;
+}
+
+.title-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border-top:1px solid var(--cream-deeper);border-bottom:1px solid var(--cream-deeper);
+  margin-top:12px;
+}
+.title-stats > div{
+  padding:22px 24px;border-right:1px solid var(--cream-deeper);
+}
+.title-stats > div:first-child{padding-left:0}
+.title-stats > div:last-child{border-right:none;padding-right:0}
+.title-stats .v{
+  font-family:var(--serif);font-weight:600;font-size:1.8rem;color:var(--pine-dark);
+  line-height:1;letter-spacing:-.01em;margin-bottom:6px;
+}
+.title-stats .v em{font-style:italic;color:var(--rust);font-weight:500}
+.title-stats .l{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+
+/* ─── PREREQ CARD (Craftsman signature move) ─── */
+.prereq{
+  max-width:880px;margin:40px auto 0;padding:0 32px;
+}
+.prereq-card{
+  background:var(--pine-dark);color:var(--cream);
+  border-radius:12px;padding:32px 36px;
+  position:relative;overflow:hidden;
+}
+.prereq-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 85% 10%, rgba(141,153,103,.16), transparent 55%);
+  pointer-events:none;
+}
+.prereq-card .kicker{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--pine-sage);margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;
+}
+.prereq-card .kicker::before{
+  content:"";width:18px;height:1px;background:var(--pine-sage);
+}
+.prereq-card h3{
+  font-family:var(--serif);font-weight:600;font-size:1.4rem;
+  color:var(--cream);margin-bottom:20px;letter-spacing:-.01em;
+}
+.prereq-card h3 .dot{color:var(--rust-soft)}
+.prereq-list{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:14px 32px;
+  position:relative;z-index:1;
+}
+.prereq-list div{
+  font-family:var(--serif);font-size:1rem;line-height:1.45;color:rgba(253,250,244,.92);
+  padding-left:22px;position:relative;
+}
+.prereq-list div::before{
+  content:"✓";position:absolute;left:0;top:0;
+  color:var(--pine-sage);font-family:var(--sans);font-weight:700;font-size:.95rem;
+}
+.prereq-list div b{color:var(--cream);font-family:var(--sans);font-weight:700}
+
+/* ─── CHAPTER HEADER (replaces Phase A/B) ─── */
+.phase{max-width:880px;margin:96px auto 0;padding:0 32px}
+.phase-kicker{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--rust);font-weight:500;margin-bottom:14px;
+  display:flex;align-items:center;gap:12px;
+}
+.phase-kicker::before{
+  content:"";width:24px;height:1px;background:var(--rust);
+}
+.phase-head{
+  display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;
+  padding-bottom:22px;border-bottom:2px solid var(--pine-dark);
+}
+.phase-title{
+  font-family:var(--serif);font-weight:600;font-size:clamp(2rem,4vw,3rem);
+  line-height:1.08;color:var(--pine-dark);letter-spacing:-.02em;text-wrap:balance;max-width:18ch;
+}
+.phase-title .dot{color:var(--rust)}
+.phase-title em{font-style:italic;color:var(--pine);font-weight:500}
+.phase-meta{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);text-align:right;line-height:1.6;
+}
+.phase-meta b{
+  font-family:var(--serif);font-weight:600;font-size:1rem;color:var(--pine-dark);
+  text-transform:none;letter-spacing:-.005em;display:block;font-style:italic;
+}
+
+.phase-intro{
+  max-width:880px;margin:28px auto 0;padding:0 32px;
+}
+.phase-intro p{
+  font-family:var(--serif);font-size:1.15rem;line-height:1.65;
+  color:var(--ink-mid);max-width:60ch;
+}
+
+/* ─── STEPS ─── */
+.steps{max-width:880px;margin:36px auto 0;padding:0 32px}
+.step{
+  display:grid;grid-template-columns:80px 1fr;gap:32px;
+  padding:36px 0;border-top:1px solid var(--cream-deeper);
+  position:relative;
+}
+.step:last-child{border-bottom:1px solid var(--cream-deeper)}
+.step-num{
+  font-family:var(--serif);font-weight:500;font-size:2.8rem;color:var(--rust);
+  line-height:.9;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+}
+.step-body h3{
+  font-family:var(--serif);font-weight:600;font-size:1.5rem;
+  color:var(--pine-dark);line-height:1.2;letter-spacing:-.015em;
+  margin-bottom:12px;text-wrap:balance;
+}
+.step-body h3 .dot{color:var(--rust)}
+.step-body p{
+  font-family:var(--serif);font-size:1.1rem;line-height:1.65;color:var(--ink);margin-bottom:14px;max-width:58ch;
+}
+.step-body ul{list-style:none;margin:12px 0 18px}
+.step-body ul li{
+  font-family:var(--serif);font-size:1.02rem;line-height:1.55;color:var(--ink-mid);
+  padding:6px 0 6px 22px;position:relative;
+}
+.step-body ul li::before{
+  content:"—";position:absolute;left:0;top:6px;color:var(--pine-sage);font-weight:500;
+}
+.step-time{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-muted);margin-top:8px;
+}
+.step-time::before{
+  content:"";width:14px;height:1px;background:var(--cream-deeper);
+}
+
+/* ─── SKILL TABLE (this replaces the card grid) ─── */
+.skills-wrap{max-width:880px;margin:36px auto 0;padding:0 32px}
+.skills-cat{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--rust);font-weight:500;
+  padding:36px 0 12px;border-bottom:1px solid var(--cream-deeper);margin-bottom:0;
+  display:flex;align-items:baseline;justify-content:space-between;
+}
+.skills-cat:first-child{padding-top:8px}
+.skills-cat span{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--ink-muted);font-size:.8rem;text-transform:none;letter-spacing:.02em}
+.skill-row{
+  display:grid;grid-template-columns:220px 1fr;gap:56px;
+  padding:32px 0;border-bottom:1px solid var(--cream-deeper);
+  align-items:start;
+}
+.skill-row:last-of-type{border-bottom:1px solid var(--cream-deeper)}
+.skill-row .handle{
+  font-family:var(--mono);font-size:.92rem;color:var(--pine-dark);font-weight:500;
+  letter-spacing:-.01em;padding:4px 0;line-height:1.4;
+}
+.skill-row .handle::before{content:"›";color:var(--rust);margin-right:8px;font-weight:700}
+.skill-row .role{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-muted);margin-top:4px;
+}
+.skill-row h4{
+  font-family:var(--serif);font-weight:600;font-size:1.15rem;color:var(--pine-dark);
+  margin-bottom:6px;letter-spacing:-.01em;
+}
+.skill-row p{
+  font-family:var(--serif);font-size:1.02rem;line-height:1.55;color:var(--ink);margin-bottom:10px;max-width:56ch;
+}
+.skill-row .say{
+  font-family:var(--mono);font-size:.78rem;color:var(--ink-soft);line-height:1.6;
+  padding-top:8px;border-top:1px dashed var(--cream-deeper);letter-spacing:.01em;
+}
+.skill-row .say b{font-family:var(--sans);font-weight:700;color:var(--pine-dark);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-right:8px}
+
+/* ─── WORKFLOW (compound skill card) ─── */
+.workflow{
+  max-width:880px;margin:24px auto 0;padding:0 32px;
+}
+.workflow-card{
+  background:var(--white);border-left:3px solid var(--rust);
+  padding:28px 32px;margin-bottom:16px;
+  display:grid;grid-template-columns:1fr;gap:10px;
+}
+.workflow-card .handle{
+  font-family:var(--mono);font-size:.92rem;color:var(--pine-dark);font-weight:500;
+}
+.workflow-card .handle::before{content:"›";color:var(--rust);margin-right:8px;font-weight:700}
+.workflow-card h4{
+  font-family:var(--serif);font-weight:600;font-size:1.3rem;color:var(--pine-dark);
+  margin-top:4px;letter-spacing:-.01em;
+}
+.workflow-card h4 .dot{color:var(--rust)}
+.workflow-card p{
+  font-family:var(--serif);font-size:1.05rem;line-height:1.6;color:var(--ink);max-width:60ch;
+}
+.workflow-chain{
+  font-family:var(--mono);font-size:.75rem;color:var(--ink-soft);line-height:1.8;
+  padding:14px 16px;background:var(--cream-soft);border-radius:6px;margin-top:6px;
+  letter-spacing:.01em;
+}
+.workflow-chain b{font-family:var(--sans);font-weight:700;color:var(--pine-dark);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+.workflow-chain .arrow{color:var(--rust);font-weight:700;margin:0 6px}
+
+/* ─── CONTEXT FILE BLOCKS (file-manifest style) ─── */
+.files{max-width:880px;margin:28px auto 0;padding:0 32px}
+.files-intro{
+  font-family:var(--serif);font-size:1.12rem;line-height:1.65;color:var(--ink-mid);
+  max-width:58ch;margin-bottom:28px;
+}
+.files-intro em{font-style:italic}
+.file-row{
+  display:grid;grid-template-columns:280px 1fr;gap:28px;
+  padding:18px 0;border-top:1px solid var(--cream-deeper);align-items:baseline;
+}
+.file-row:last-of-type{border-bottom:1px solid var(--cream-deeper)}
+.file-name{
+  font-family:var(--mono);font-size:.88rem;color:var(--pine-dark);font-weight:500;
+  display:flex;align-items:center;gap:10px;
+}
+.file-name::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--pine-sage);flex-shrink:0;
+}
+.file-desc{
+  font-family:var(--serif);font-size:1rem;line-height:1.6;color:var(--ink-mid);
+}
+
+/* ─── WARN / CALLOUT ("When to stop" pattern) ─── */
+.warn{
+  max-width:880px;margin:40px auto 0;padding:0 32px;
+}
+.warn-inner{
+  border:1px solid var(--rust);background:var(--cream-soft);
+  border-radius:8px;padding:24px 28px;
+  display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;
+}
+.warn-icon{
+  font-family:var(--serif);font-weight:500;font-style:italic;font-size:2rem;
+  color:var(--rust);line-height:1;flex-shrink:0;padding-top:2px;
+}
+.warn-body h5{
+  font-family:var(--sans);font-weight:700;font-size:.72rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--rust);margin-bottom:8px;
+}
+.warn-body p{
+  font-family:var(--serif);font-size:1.05rem;line-height:1.6;color:var(--ink);
+}
+
+/* ─── LEARNING CARDS ─── */
+.learning{max-width:880px;margin:32px auto 0;padding:0 32px}
+.learning-card{
+  background:var(--white);border:1px solid var(--cream-deeper);
+  padding:28px 32px;margin-bottom:14px;border-radius:10px;
+  display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;
+}
+.learning-card .num{
+  font-family:var(--serif);font-weight:500;font-style:italic;
+  font-size:2rem;color:var(--rust);line-height:.9;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;flex-shrink:0;
+}
+.learning-card h4{
+  font-family:var(--serif);font-weight:600;font-size:1.2rem;color:var(--pine-dark);
+  margin-bottom:8px;letter-spacing:-.01em;
+}
+.learning-card h4 .dot{color:var(--rust)}
+.learning-card p{
+  font-family:var(--serif);font-size:1.02rem;line-height:1.6;color:var(--ink-mid);max-width:58ch;
+}
+
+/* ─── COLOPHON ─── */
+.colophon{
+  background:var(--cream-dark);padding:48px 0 32px;border-top:1px solid var(--cream-deeper);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--ink-soft);
+  margin-top:96px;
+}
+.colo-inner{
+  max-width:880px;margin:0 auto;padding:0 32px;
+  display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;
+}
+.colo h6{
+  font-family:var(--sans);font-weight:700;font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--pine-dark);margin-bottom:14px;
+}
+.colo-brand .wordmark{font-family:var(--serif);font-weight:700;font-size:1.3rem;color:var(--pine-dark);letter-spacing:-.01em;display:block;margin-bottom:10px;text-transform:none}
+.colo-brand .wordmark .dot{color:var(--rust)}
+.colo-brand p{font-family:var(--serif);font-style:italic;font-size:.95rem;color:var(--ink-mid);text-transform:none;letter-spacing:0;max-width:32ch;line-height:1.55}
+.colo a{display:block;color:var(--ink-mid);padding:3px 0;text-transform:none;font-size:.8rem;letter-spacing:.01em}
+.colo a:hover{color:var(--pine-dark)}
+.colo-bottom{
+  max-width:880px;margin:32px auto 0;padding:18px 32px 0;border-top:1px solid var(--cream-deeper);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+
+/* responsive */
+@media (max-width:780px){
+  .mast{grid-template-columns:1fr;text-align:center;gap:6px;padding:10px 20px}
+  .mast-l,.mast-r{justify-self:center}
+  .title-block,.phase,.phase-intro,.steps,.skills-wrap,.workflow,.files,.warn,.learning,.prereq{padding-left:20px;padding-right:20px}
+  .title-stats{grid-template-columns:repeat(2,1fr)}
+  .title-stats > div{border-right:none;border-bottom:1px solid var(--cream-deeper);padding:14px 0}
+  .prereq-list{grid-template-columns:1fr}
+  .phase-head{grid-template-columns:1fr;gap:8px}
+  .phase-meta{text-align:left}
+  .step{grid-template-columns:1fr;gap:12px}
+  .step-num{font-size:2rem}
+  .skill-row{grid-template-columns:1fr;gap:10px}
+  .file-row{grid-template-columns:1fr;gap:6px}
+  .colo-inner{grid-template-columns:1fr;gap:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     STICKY HEADER
+     ═══════════════════════════════════════════════════ -->
+<header class="mast">
+  <div class="mast-l">
+    <span class="mast-wordmark">nobo<span class="dot">.</span></span>
+    <span class="mast-pipe">·</span>
+    <span>Guides</span>
+  </div>
+  <div class="mast-c">Guide &#8470; 03 — Foundation Plugin</div>
+  <div class="mast-r">~15 min setup</div>
+  <div class="mast-progress" id="progress"></div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════
+     TITLE BLOCK
+     ═══════════════════════════════════════════════════ -->
+<section class="title-block">
+  <div class="title-meta">
+    <span>guide &#8470; 03 · vol i</span>
+    <span>A field manual for installing your team's Claude system</span>
+    <span>filed 17 apr 2026</span>
+  </div>
+
+  <div class="guide-num">Guide &#8470; 03</div>
+  <h1>The Nobo Foundation Plugin<span class="dot">.</span></h1>
+  <p class="lede">Your team's Claude system — built around how you actually work. Install once, and every conversation starts with full context.</p>
+
+  <div class="title-stats">
+    <div><div class="v">17</div><div class="l">skills total</div></div>
+    <div><div class="v">10</div><div class="l">specialists</div></div>
+    <div><div class="v">4</div><div class="l">workflows</div></div>
+    <div><div class="v"><em>~15 min</em></div><div class="l">to first use</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     WHAT YOU'LL NEED — Craftsman signature callout
+     ═══════════════════════════════════════════════════ -->
+<section class="prereq">
+  <div class="prereq-card">
+    <div class="kicker">Before you start</div>
+    <h3>What you'll need<span class="dot">.</span></h3>
+    <div class="prereq-list">
+      <div><b>A Claude account</b> with Cowork enabled</div>
+      <div><b>Admin access</b> to your team's shared Google Drive</div>
+      <div><b>15 minutes</b> of uninterrupted time</div>
+      <div><b>One real project</b> to run it against (not a dry run)</div>
+    </div>
+  </div>
+</section>
+
+<!-- PAYOFF SECTION -->
+<div style="max-width:880px;margin:48px auto 0;padding:0 32px;">
+  <div style="font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:20px;">Same prompt, different system</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;">
+    <div style="background:var(--cream-dark);border-radius:10px;padding:28px;border:1px solid var(--cream-deeper);">
+      <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:14px;">Without Foundation</div>
+      <p style="font-family:var(--serif);font-size:.95rem;line-height:1.6;color:var(--ink-soft);font-style:italic;">"Dear Client, I hope this message finds you well. I wanted to provide you with an update on the current status of your project. We have been making progress on the deliverables outlined in our initial scope..."</p>
+      <div style="font-family:var(--mono);font-size:.65rem;color:var(--ink-muted);margin-top:14px;">generic &middot; no voice &middot; rewrite 80%</div>
+    </div>
+    <div style="background:var(--pine-dark);border-radius:10px;padding:28px;">
+      <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--pine-sage);margin-bottom:14px;">With Foundation</div>
+      <p style="font-family:var(--serif);font-size:.95rem;line-height:1.6;color:rgba(253,250,244,.88);font-style:italic;">"Hey Rob — quick update on the rebrand. Leah finished the style guide review, and we're moving into the template build this week. The two open items from Friday: the Shopify header treatment and the email signature format. I'll have both mocked up by Thursday."</p>
+      <div style="font-family:var(--mono);font-size:.65rem;color:var(--pine-sage);margin-top:14px;">voice-matched &middot; project-specific &middot; ready to send</div>
+    </div>
+  </div>
+  <p style="font-family:var(--serif);font-size:1.05rem;line-height:1.6;color:var(--ink-mid);max-width:58ch;">Same prompt: <em>"write a client update email."</em> The difference is everything Foundation configures — context files that know your business, your voice, and this specific client.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PART ONE — INSTALL & ONBOARD
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="setup">
+  <div class="phase-kicker">Part One · Setup</div>
+  <div class="phase-head">
+    <h2 class="phase-title">Install &amp; <em>onboard</em><span class="dot">.</span></h2>
+    <div class="phase-meta"><b>~15 minutes</b>four steps, in order</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>The plugin connects to your team's shared Drive folder where company context lives. Each teammate runs onboarding once. After that, every skill knows who they are, how they write, and how the company works.</p>
+</div>
+
+<div class="steps">
+
+  <div class="step">
+    <div class="step-num">01</div>
+    <div class="step-body">
+      <h3>Install the plugin<span class="dot">.</span></h3>
+      <p>In Cowork, open <code>Customize → Plugins</code>. Paste <code>jmason33333-ux/nobo-foundation-plugin</code> into the search bar. Click <b>Install</b>. All 17 skills load automatically.</p>
+      <div class="step-time">~2 minutes · one-time per workspace</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">02</div>
+    <div class="step-body">
+      <h3>Run <code>/onboard</code><span class="dot">.</span></h3>
+      <p>Type the slash command in any Claude conversation. A 10-minute guided dialog creates your personal profile:</p>
+      <ul>
+        <li>Your role &amp; responsibilities</li>
+        <li>Your voice — how you write, what you avoid</li>
+        <li>How you prefer to work — tools, schedule, output style</li>
+        <li>Your Google Drive connection for the shared company files</li>
+      </ul>
+      <p><em>No forms to fill out.</em> It's a conversation, not a questionnaire.</p>
+      <div class="step-time">~10 minutes · one-time per teammate</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">03</div>
+    <div class="step-body">
+      <h3>Start your first project<span class="dot">.</span></h3>
+      <p>Create a new project in Claude. Type <code>/new-project</code> and answer a few questions about the client or engagement. All context files are written automatically — every specialist now knows the landscape.</p>
+      <div class="step-time">~2 minutes · per engagement</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">04</div>
+    <div class="step-body">
+      <h3>Delegate<span class="dot">.</span></h3>
+      <p>Ask naturally, or invoke a skill by its slash handle. Claude picks the right specialist, reads your context, and produces output in your voice.</p>
+      <div class="step-time">From here on · every working day</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PART TWO — THE CONTEXT FILES
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="files">
+  <div class="phase-kicker">Part Two · Foundation</div>
+  <div class="phase-head">
+    <h2 class="phase-title">The <em>context files</em><span class="dot">.</span></h2>
+    <div class="phase-meta"><b>Foundation</b>the system behind the skills</div>
+  </div>
+</section>
+
+<div class="files">
+  <p class="files-intro">When you run <code>/onboard</code> and <code>/new-project</code>, the plugin creates context files every specialist reads before responding. These are <em>why output sounds like your company, not like a generic AI</em>. In your shared Drive folder they live as Google Docs with Title Case names (for example, <em>How We Communicate</em>). The plugin creates local working copies with the kebab-case names below when skills run.</p>
+
+  <div class="file-row">
+    <div class="file-name">how-we-communicate.md</div>
+    <div class="file-desc">Your brand voice, tone rules, preferred phrases, phrases to avoid. Primary reference for every writing skill.</div>
+  </div>
+  <div class="file-row">
+    <div class="file-name">what-is-[company].md</div>
+    <div class="file-desc">Company identity, positioning, values, and what you stand for. Ensures content reflects who you actually are.</div>
+  </div>
+  <div class="file-row">
+    <div class="file-name">how-we-work.md</div>
+    <div class="file-desc">Team structure, tools, processes, how decisions get made. Used by the project-management and operations skills.</div>
+  </div>
+  <div class="file-row">
+    <div class="file-name">who-i-am.md</div>
+    <div class="file-desc">Your role, responsibilities, what you own, who you report to. Shapes how skills tailor output to your level.</div>
+  </div>
+  <div class="file-row">
+    <div class="file-name">how-i-talk.md</div>
+    <div class="file-desc">Your personal communication style — sentence structure, warmth, directness, vocabulary. Drafts sound like you wrote them.</div>
+  </div>
+  <div class="file-row">
+    <div class="file-name">how-i-work.md</div>
+    <div class="file-desc">Your tools, schedule, output preferences, and pet peeves. Skills deliver work the way you actually want it.</div>
+  </div>
+  <div class="file-row">
+    <div class="file-name">project-brief.md</div>
+    <div class="file-desc">Client name, engagement type, key contacts, timeline, constraints. Created per-project by <code>/new-project</code>.</div>
+  </div>
+  <div class="file-row">
+    <div class="file-name">project-log.md</div>
+    <div class="file-desc">A running log of what's happened on the engagement. Skills read it to avoid repeating work and build on what's been done.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PART THREE — THE SPECIALISTS
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="specialists">
+  <div class="phase-kicker">Part Three · Specialists</div>
+  <div class="phase-head">
+    <h2 class="phase-title">The ten <em>specialists</em><span class="dot">.</span></h2>
+    <div class="phase-meta"><b>Reference</b>skim now, return later</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>Each skill reads your context files before responding — your brand voice, your team structure, the current engagement. The output sounds like your company wrote it, because in every meaningful sense, your company <em>did</em>.</p>
+</div>
+
+<div class="skills-wrap">
+
+  <div class="skills-cat">Client Operations <span>one specialist</span></div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/client-comms</div>
+      <div class="role">Communications</div>
+    </div>
+    <div>
+      <h4>Client Communications Specialist</h4>
+      <p>Drafts, reviews, and improves any message going to or from a client — status updates, follow-ups, meeting summaries, difficult conversations, scope discussions. Writes in your voice, calibrates tone to the situation, treats every message as relationship capital.</p>
+      <div class="say"><b>Say:</b> "Email Sarah about the timeline" · "Reply to this client message" · "Draft a follow-up from today's call"</div>
+    </div>
+  </div>
+
+  <div class="skills-cat">Content &amp; Marketing <span>one specialist</span></div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/content-strategist</div>
+      <div class="role">Content</div>
+    </div>
+    <div>
+      <h4>Content Strategist</h4>
+      <p>Writes brand-aligned content across every format — emails, proposals, blog posts, LinkedIn, case studies, newsletters, website copy. Adapts tone to the channel while staying inside your company's established voice. A LinkedIn post sounds different from a proposal, but both sound like you.</p>
+      <div class="say"><b>Say:</b> "Write a LinkedIn post about our new service" · "Draft the case study" · "Blog post on AI in professional services"</div>
+    </div>
+  </div>
+
+  <div class="skills-cat">Project Management <span>one specialist</span></div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/project-manager</div>
+      <div class="role">PM</div>
+    </div>
+    <div>
+      <h4>Project Manager</h4>
+      <p>Tracks project status, surfaces risks before they become problems, maps dependencies across people and timelines, keeps everyone aligned. Produces structured status reports — Progress / Risks / Next Actions — where every action has one named owner and every status is honest.</p>
+      <div class="say"><b>Say:</b> "Project status update" · "What's at risk?" · "Map out the dependencies" · "Who owns what?"</div>
+    </div>
+  </div>
+
+  <div class="skills-cat">Call Preparation <span>one specialist</span></div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/prep-for-call</div>
+      <div class="role">Preparation</div>
+    </div>
+    <div>
+      <h4>Call Preparation</h4>
+      <p>Produces a complete pre-meeting brief so you walk in informed, prepared, and able to send a follow-up within five minutes of hanging up. Works for both prospect meetings and existing-client check-ins.</p>
+      <div class="say"><b>Say:</b> "Prep me for the Greenleaf call" · "I have a meeting with Sarah at 2" · "Call prep for the new prospect"</div>
+    </div>
+  </div>
+
+</div>
+
+<div style="max-width:880px;margin:32px auto 0;padding:0 32px;">
+  <div style="font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px;">Also included</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div style="padding:14px 18px;background:var(--white);border:1px solid var(--cream-deeper);border-radius:8px;">
+      <div style="font-family:var(--mono);font-size:.85rem;color:var(--pine-dark);font-weight:500;margin-bottom:4px;"><span style="color:var(--rust);font-weight:700;margin-right:6px;">›</span>/brand-strategist</div>
+      <div style="font-family:var(--serif);font-size:.88rem;color:var(--ink-mid);">Reviews any draft for brand consistency</div>
+    </div>
+    <div style="padding:14px 18px;background:var(--white);border:1px solid var(--cream-deeper);border-radius:8px;">
+      <div style="font-family:var(--mono);font-size:.85rem;color:var(--pine-dark);font-weight:500;margin-bottom:4px;"><span style="color:var(--rust);font-weight:700;margin-right:6px;">›</span>/research-specialist</div>
+      <div style="font-family:var(--serif);font-size:.88rem;color:var(--ink-mid);">Structured research and synthesis</div>
+    </div>
+    <div style="padding:14px 18px;background:var(--white);border:1px solid var(--cream-deeper);border-radius:8px;">
+      <div style="font-family:var(--mono);font-size:.85rem;color:var(--pine-dark);font-weight:500;margin-bottom:4px;"><span style="color:var(--rust);font-weight:700;margin-right:6px;">›</span>/executive-comms</div>
+      <div style="font-family:var(--serif);font-size:.88rem;color:var(--ink-mid);">Sharp summaries for senior audiences</div>
+    </div>
+    <div style="padding:14px 18px;background:var(--white);border:1px solid var(--cream-deeper);border-radius:8px;">
+      <div style="font-family:var(--mono);font-size:.85rem;color:var(--pine-dark);font-weight:500;margin-bottom:4px;"><span style="color:var(--rust);font-weight:700;margin-right:6px;">›</span>/data-analyst</div>
+      <div style="font-family:var(--serif);font-size:.88rem;color:var(--ink-mid);">Makes sense of numbers for non-technical audiences</div>
+    </div>
+    <div style="padding:14px 18px;background:var(--white);border:1px solid var(--cream-deeper);border-radius:8px;">
+      <div style="font-family:var(--mono);font-size:.85rem;color:var(--pine-dark);font-weight:500;margin-bottom:4px;"><span style="color:var(--rust);font-weight:700;margin-right:6px;">›</span>/financial-analyst</div>
+      <div style="font-family:var(--serif);font-size:.88rem;color:var(--ink-mid);">Fee proposals, budgets, profitability analysis</div>
+    </div>
+    <div style="padding:14px 18px;background:var(--white);border:1px solid var(--cream-deeper);border-radius:8px;">
+      <div style="font-family:var(--mono);font-size:.85rem;color:var(--pine-dark);font-weight:500;margin-bottom:4px;"><span style="color:var(--rust);font-weight:700;margin-right:6px;">›</span>/process-optimizer</div>
+      <div style="font-family:var(--serif);font-size:.88rem;color:var(--ink-mid);">Maps, documents, and improves workflows</div>
+    </div>
+  </div>
+  <p style="font-family:var(--serif);font-size:.95rem;color:var(--ink-mid);margin-top:20px;">Full descriptions and example prompts for every skill: <a href="https://www.nobo.works/guides/delegation-guide" style="color:var(--pine);text-decoration:underline;text-decoration-color:var(--cream-deeper);text-underline-offset:3px;">Delegation Guide &rarr;</a></p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PART FOUR — THE WORKFLOWS
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="workflows">
+  <div class="phase-kicker">Part Four · Workflows</div>
+  <div class="phase-head">
+    <h2 class="phase-title">The four <em>workflows</em><span class="dot">.</span></h2>
+    <div class="phase-meta"><b>Compound</b>multi-step in one pass</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>These handle multi-step tasks in one pass and keep the system's memory current. The value isn't any one piece — it's the orchestration and continuity across everything you do.</p>
+</div>
+
+<div class="workflow">
+
+  <div class="workflow-card">
+    <div class="handle">/weekly-review</div>
+    <h4>Weekly Review<span class="dot">.</span></h4>
+    <p>A consolidated end-of-week brief across every active engagement. Run it once on Friday and walk away with a complete picture plus ready-to-send client check-ins. No engagement falls through the cracks.</p>
+    <div class="workflow-chain">
+      <b>Produces</b>
+      Multi-project status summary<span class="arrow">→</span>leadership-ready brief<span class="arrow">→</span>draft check-in email for each active client
+    </div>
+  </div>
+
+  <div class="workflow-card">
+    <div class="handle">/daily-log</div>
+    <h4>Daily Log<span class="dot">.</span></h4>
+    <p>Runs as a scheduled task at the end of each workday, or manually when you say <em>"wrap up the day."</em> Reviews everything from the session and writes a structured entry — what got done, what was decided and why, what files changed, what's still open, what to pick up tomorrow. Next morning, Claude reads this first, so every session starts where yesterday left off.</p>
+    <div class="workflow-chain">
+      <b>Produces</b>
+      Structured daily entry (done / decided / changed / open / priorities)<span class="arrow">→</span>rolling 5-day log<span class="arrow">→</span>automatic session continuity
+    </div>
+  </div>
+
+</div>
+
+<div style="max-width:880px;margin:24px auto 0;padding:0 32px;">
+  <div style="background:var(--cream-soft);border:1px solid var(--cream-deeper);border-radius:10px;padding:20px 24px;">
+    <div style="font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:10px;font-weight:500;">Schedule it</div>
+    <p style="font-family:var(--serif);font-size:1rem;line-height:1.55;color:var(--ink);max-width:56ch;margin-bottom:10px;">Go to <strong>Cowork &rarr; Scheduled</strong> &rarr; set daily-log to run at end of day. <strong>Important:</strong> schedule this within each project &mdash; one schedule doesn't run across all projects.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:12px;">
+      <div style="padding-right:16px;border-right:1px solid var(--cream-deeper);">
+        <div style="font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:4px;">11:50 PM</div>
+        <div style="font-family:var(--serif);font-weight:600;font-size:.88rem;color:var(--pine-dark);">Log captures the day</div>
+      </div>
+      <div style="padding:0 16px;border-right:1px solid var(--cream-deeper);">
+        <div style="font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:4px;">Overnight</div>
+        <div style="font-family:var(--serif);font-weight:600;font-size:.88rem;color:var(--pine-dark);">Context updates</div>
+      </div>
+      <div style="padding-left:16px;">
+        <div style="font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin-bottom:4px;">7:00 AM</div>
+        <div style="font-family:var(--serif);font-weight:600;font-size:.88rem;color:var(--pine-dark);">Running start</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="workflow">
+
+  <div class="workflow-card">
+    <div class="handle">/refine-voice</div>
+    <h4>Voice Profile Refinement<span class="dot">.</span></h4>
+    <p>Makes your voice profile more accurate over time by studying real evidence. Paste examples of what Claude wrote versus what you actually sent — the skill extracts the patterns that define your real voice and updates your profile so every skill produces better output going forward.</p>
+    <div class="workflow-chain">
+      <b>Produces</b>
+      Pattern analysis of your real writing<span class="arrow">→</span>updated voice profile<span class="arrow">→</span>better output from every skill
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     WHEN TO STOP — Craftsman signature callout
+     ═══════════════════════════════════════════════════ -->
+<section class="warn">
+  <div class="warn-inner">
+    <div class="warn-icon">!</div>
+    <div class="warn-body">
+      <h5>A note on when to stop</h5>
+      <p>Don't try to onboard your whole team on day one. Start with yourself. Run it against one real engagement for a week. When it feels like a tool you reach for without thinking, <em>then</em> roll it out to the next teammate. A plugin used well by one person beats a plugin installed poorly by ten.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PART FIVE — LEARNING SYSTEM
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="refinement">
+  <div class="phase-kicker">Part Five · Refinement</div>
+  <div class="phase-head">
+    <h2 class="phase-title">Gets smarter <em>over time</em><span class="dot">.</span></h2>
+    <div class="phase-meta"><b>Refinement</b>four feedback loops</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>The plugin doesn't stay static. Four mechanisms make it better with every use.</p>
+</div>
+
+<div class="learning">
+
+  <div class="learning-card">
+    <div class="num">01</div>
+    <div>
+      <h4>Voice learning<span class="dot">.</span></h4>
+      <p>When you correct a draft's tone — <em>"too formal," "I wouldn't say it that way"</em> — the skill adjusts and offers to save the learning to your voice profile. Next time, it gets it right without being told. This happens automatically in <code>/client-comms</code>, <code>/content-strategist</code>, and <code>/executive-comms</code>.</p>
+    </div>
+  </div>
+
+  <div class="learning-card">
+    <div class="num">02</div>
+    <div>
+      <h4>Project memory<span class="dot">.</span></h4>
+      <p>Every specialist appends a one-line entry to <code>project-log.md</code> after producing output. Next time any skill responds on the same engagement, it reads the log first — so it knows what's been communicated, what's been decided, what's been flagged. You don't have to re-explain.</p>
+    </div>
+  </div>
+
+  <div class="learning-card">
+    <div class="num">03</div>
+    <div>
+      <h4>Daily continuity<span class="dot">.</span></h4>
+      <p>At day's end, <code>/daily-log</code> captures what got done, what was decided and why, what changed, and what to pick up tomorrow. Every new session starts by reading it — Claude knows exactly where things stand without a re-brief. Decisions are logged with their reasoning, so <em>"why did we do it that way?"</em> always has an answer.</p>
+    </div>
+  </div>
+
+  <div class="learning-card">
+    <div class="num">04</div>
+    <div>
+      <h4>Voice profile refinement<span class="dot">.</span></h4>
+      <p>Run <code>/refine-voice</code> periodically with before/after examples — what Claude wrote versus what you actually sent. The skill extracts the real patterns that define your voice and updates your profile. After one session, drafts match significantly better. <em>Recommended at the 30-day check-in.</em></p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     COLOPHON
+     ═══════════════════════════════════════════════════ -->
+<footer class="colophon">
+  <div class="colo colo-inner">
+    <div class="colo-brand">
+      <span class="wordmark">nobo<span class="dot">.</span></span>
+      <p>— your ai partner in boulder.</p>
+    </div>
+    <div>
+      <h6>This guide</h6>
+      <a href="#setup">One. Install &amp; onboard</a>
+      <a href="#files">Two. The context files</a>
+      <a href="#specialists">Three. The specialists</a>
+      <a href="#workflows">Four. The workflows</a>
+      <a href="#refinement">Five. Gets smarter over time</a>
+    </div>
+    <div>
+      <h6>Find me</h6>
+      <a href="mailto:james@nobo.works">james@nobo.works</a>
+      <a href="https://www.nobo.works">Back to nobo.works &rarr;</a>
+      <a href="https://www.nobo.works/field-notes/issue-01">Friday Field Notes &rarr;</a>
+      <a href="https://www.nobo.works/guides">back to guides &rarr;</a>
+      <a href="https://www.nobo.works/guides/how-to-set-up-claude-cowork">Guide &#8470; 01: Setup &rarr;</a>
+      <a href="https://www.nobo.works/guides/delegation-guide">Guide &#8470; 02: Delegation &rarr;</a>
+    </div>
+  </div>
+  <div class="colo colo-bottom">
+    <span>&copy; 2026 Nobo Works LLC &middot; Boulder, Colorado</span>
+    <span>Guide &#8470; 03 &middot; Filed 17 April 2026</span>
+    <span>Set in Lora &amp; Plus Jakarta &middot; Printed on cream</span>
+  </div>
+</footer>
+
+<script>
+// Sticky-header progress bar
+const prog = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  prog.style.width = pct + '%';
+});
+</script>
+</body>
+</html>

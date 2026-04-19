@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Delegate to Claude — Guide № 02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════
+   NOBO · CRAFTSMAN REGISTER · GUIDE TEMPLATE
+   Third register alongside Practitioner (nobo.works)
+   and Editor (Field Notes). This is a field manual.
+
+   Shared DNA:
+     · cream/pine/rust palette
+     · wordmark with bold period
+     · Roman-ish chrome (phases), bold period on titles
+     · mono metadata, paper grain, Plus Jakarta body
+
+   Register-specific:
+     · Display is Lora (not Fraunces) — quieter,
+       less expressive than Field Notes
+     · Primary numeric chrome is Arabic (01, 02, 03)
+       for steps; phases use single letters (A, B, C)
+     · Layout is single-column, max 680px body
+     · Callouts carry the weight instead of drop caps
+     · "What you'll need" + "When to stop" pattern
+     · Generous whitespace per step
+   ═══════════════════════════════════════════════════ */
+
+:root{
+  --cream:#F5F0E6;
+  --cream-soft:#F9F5EC;
+  --cream-dark:#EBE4D6;
+  --cream-deeper:#D9CFB8;
+  --white:#FDFAF4;
+  --pine:#334A36;
+  --pine-dark:#263E31;
+  --pine-mid:#4C6F51;
+  --pine-sage:#8D9967;
+  --pine-soft:#DFE3D2;
+  --rust:#A84A2A;
+  --rust-soft:#C46A4A;
+  --gold:#C0883A;
+  --ink:#1C180E;
+  --ink-mid:#3A342A;
+  --ink-soft:#6B6255;
+  --ink-muted:#8A8272;
+
+  --serif:'Lora', Georgia, serif;
+  --sans:'Plus Jakarta Sans', system-ui, sans-serif;
+  --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  font-family:var(--sans);
+  background:var(--cream);
+  color:var(--ink);
+  font-size:17px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:"ss01","kern","liga";
+}
+a{color:inherit;text-decoration:none}
+code{font-family:var(--mono);font-size:.88em;background:var(--cream-dark);padding:2px 7px;border-radius:3px;color:var(--pine-dark);font-weight:500}
+strong,b{font-weight:700;color:var(--pine-dark)}
+em{font-style:italic}
+
+/* paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:1000;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(28,24,14,.015) 1px, transparent 1.5px),
+    radial-gradient(circle at 78% 82%, rgba(28,24,14,.012) 1px, transparent 1.5px),
+    radial-gradient(circle at 42% 62%, rgba(28,24,14,.018) 1px, transparent 1.5px);
+  background-size:8px 8px,14px 14px,20px 20px;
+  opacity:.8;mix-blend-mode:multiply;
+}
+
+.dot{color:var(--rust);font-weight:700}
+
+/* ─── STICKY HEADER ─── */
+.mast{
+  position:sticky;top:0;z-index:100;
+  background:rgba(245,240,230,.92);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--cream-deeper);
+  padding:14px 32px;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+}
+.mast-l{display:flex;align-items:center;gap:14px}
+.mast-wordmark{
+  font-family:var(--serif);font-weight:700;font-size:1.15rem;
+  color:var(--pine-dark);letter-spacing:-.01em;text-transform:none;
+}
+.mast-pipe{color:var(--cream-deeper)}
+.mast-c{
+  font-family:var(--serif);font-style:italic;font-weight:500;
+  font-size:.95rem;color:var(--ink-mid);
+  text-transform:none;letter-spacing:.01em;
+}
+.mast-r{justify-self:end;text-align:right}
+.mast-progress{
+  position:absolute;bottom:-1px;left:0;height:2px;background:var(--rust);
+  transition:width .15s;width:0;
+}
+
+/* ─── TOP · TITLE BLOCK ─── */
+.title-block{
+  max-width:880px;margin:0 auto;padding:80px 32px 56px;
+}
+.title-meta{
+  display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:baseline;
+  padding-bottom:20px;border-bottom:1px solid var(--cream-deeper);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+}
+.title-meta span:nth-child(2){
+  font-family:var(--serif);font-style:italic;font-weight:500;
+  text-transform:none;letter-spacing:.01em;color:var(--ink-mid);font-size:.95rem;
+}
+.title-meta span:last-child{text-align:right}
+
+.guide-num{
+  font-family:var(--serif);font-weight:500;font-style:italic;
+  font-size:1.2rem;color:var(--rust);margin:48px 0 8px;letter-spacing:.02em;
+}
+.title-block h1{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(2.4rem, 5.5vw, 3.8rem);line-height:1.05;letter-spacing:-.02em;
+  color:var(--pine-dark);text-wrap:balance;margin-bottom:22px;max-width:20ch;
+}
+.title-block h1 em{font-style:italic;font-weight:500;color:var(--pine)}
+.title-block .lede{
+  font-family:var(--serif);font-weight:400;
+  font-size:1.25rem;line-height:1.55;color:var(--ink-mid);max-width:56ch;
+  margin-bottom:28px;
+}
+
+.title-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border-top:1px solid var(--cream-deeper);border-bottom:1px solid var(--cream-deeper);
+  margin-top:12px;
+}
+.title-stats > div{
+  padding:22px 24px;border-right:1px solid var(--cream-deeper);
+}
+.title-stats > div:first-child{padding-left:0}
+.title-stats > div:last-child{border-right:none;padding-right:0}
+.title-stats .v{
+  font-family:var(--serif);font-weight:600;font-size:1.8rem;color:var(--pine-dark);
+  line-height:1;letter-spacing:-.01em;margin-bottom:6px;
+}
+.title-stats .v em{font-style:italic;color:var(--rust);font-weight:500}
+.title-stats .l{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+
+/* ─── PREREQ CARD (Craftsman signature move) ─── */
+.prereq{
+  max-width:880px;margin:40px auto 0;padding:0 32px;
+}
+.prereq-card{
+  background:var(--pine-dark);color:var(--cream);
+  border-radius:12px;padding:32px 36px;
+  position:relative;overflow:hidden;
+}
+.prereq-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 85% 10%, rgba(141,153,103,.16), transparent 55%);
+  pointer-events:none;
+}
+.prereq-card .kicker{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--pine-sage);margin-bottom:14px;
+  display:flex;align-items:center;gap:10px;
+}
+.prereq-card .kicker::before{
+  content:"";width:18px;height:1px;background:var(--pine-sage);
+}
+.prereq-card h3{
+  font-family:var(--serif);font-weight:600;font-size:1.4rem;
+  color:var(--cream);margin-bottom:20px;letter-spacing:-.01em;
+}
+.prereq-card h3 .dot{color:var(--rust-soft)}
+.prereq-list{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:14px 32px;
+  position:relative;z-index:1;
+}
+.prereq-list div{
+  font-family:var(--serif);font-size:1rem;line-height:1.45;color:rgba(253,250,244,.92);
+  padding-left:22px;position:relative;
+}
+.prereq-list div::before{
+  content:"✓";position:absolute;left:0;top:0;
+  color:var(--pine-sage);font-family:var(--sans);font-weight:700;font-size:.95rem;
+}
+.prereq-list div b{color:var(--cream);font-family:var(--sans);font-weight:700}
+
+/* ─── CHAPTER HEADER (replaces Phase A/B) ─── */
+.phase{max-width:880px;margin:96px auto 0;padding:0 32px}
+.phase-kicker{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--rust);font-weight:500;margin-bottom:14px;
+  display:flex;align-items:center;gap:12px;
+}
+.phase-kicker::before{
+  content:"";width:24px;height:1px;background:var(--rust);
+}
+.phase-head{
+  display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;
+  padding-bottom:22px;border-bottom:2px solid var(--pine-dark);
+}
+.phase-title{
+  font-family:var(--serif);font-weight:600;font-size:clamp(2rem,4vw,3rem);
+  line-height:1.08;color:var(--pine-dark);letter-spacing:-.02em;text-wrap:balance;max-width:18ch;
+}
+.phase-title .dot{color:var(--rust)}
+.phase-title em{font-style:italic;color:var(--pine);font-weight:500}
+.phase-meta{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);text-align:right;line-height:1.6;
+}
+.phase-meta b{
+  font-family:var(--serif);font-weight:600;font-size:1rem;color:var(--pine-dark);
+  text-transform:none;letter-spacing:-.005em;display:block;font-style:italic;
+}
+
+.phase-intro{
+  max-width:880px;margin:28px auto 0;padding:0 32px;
+}
+.phase-intro p{
+  font-family:var(--serif);font-size:1.15rem;line-height:1.65;
+  color:var(--ink-mid);max-width:60ch;
+}
+
+/* ─── STEPS ─── */
+.steps{max-width:880px;margin:36px auto 0;padding:0 32px}
+.step{
+  display:grid;grid-template-columns:80px 1fr;gap:32px;
+  padding:36px 0;border-top:1px solid var(--cream-deeper);
+  position:relative;
+}
+.step:last-child{border-bottom:1px solid var(--cream-deeper)}
+.step-num{
+  font-family:var(--serif);font-weight:500;font-size:2.8rem;color:var(--rust);
+  line-height:.9;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+}
+.step-body h3{
+  font-family:var(--serif);font-weight:600;font-size:1.5rem;
+  color:var(--pine-dark);line-height:1.2;letter-spacing:-.015em;
+  margin-bottom:12px;text-wrap:balance;
+}
+.step-body h3 .dot{color:var(--rust)}
+.step-body p{
+  font-family:var(--serif);font-size:1.1rem;line-height:1.65;color:var(--ink);margin-bottom:14px;max-width:58ch;
+}
+.step-body ul{list-style:none;margin:12px 0 18px}
+.step-body ul li{
+  font-family:var(--serif);font-size:1.02rem;line-height:1.55;color:var(--ink-mid);
+  padding:6px 0 6px 22px;position:relative;
+}
+.step-body ul li::before{
+  content:"—";position:absolute;left:0;top:6px;color:var(--pine-sage);font-weight:500;
+}
+.step-time{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-muted);margin-top:8px;
+}
+.step-time::before{
+  content:"";width:14px;height:1px;background:var(--cream-deeper);
+}
+
+/* ─── SKILL TABLE (this replaces the card grid) ─── */
+.skills-wrap{max-width:880px;margin:36px auto 0;padding:0 32px}
+.skills-cat{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--rust);font-weight:500;
+  padding:36px 0 12px;border-bottom:1px solid var(--cream-deeper);margin-bottom:0;
+  display:flex;align-items:baseline;justify-content:space-between;
+}
+.skills-cat:first-child{padding-top:8px}
+.skills-cat span{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--ink-muted);font-size:.8rem;text-transform:none;letter-spacing:.02em}
+.skill-row{
+  display:grid;grid-template-columns:220px 1fr;gap:56px;
+  padding:32px 0;border-bottom:1px solid var(--cream-deeper);
+  align-items:start;
+}
+.skill-row:last-of-type{border-bottom:1px solid var(--cream-deeper)}
+.skill-row .handle{
+  font-family:var(--mono);font-size:.92rem;color:var(--pine-dark);font-weight:500;
+  letter-spacing:-.01em;padding:4px 0;line-height:1.4;
+}
+.skill-row .handle::before{content:"›";color:var(--rust);margin-right:8px;font-weight:700}
+.skill-row .role{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-muted);margin-top:4px;
+}
+.skill-row h4{
+  font-family:var(--serif);font-weight:600;font-size:1.15rem;color:var(--pine-dark);
+  margin-bottom:6px;letter-spacing:-.01em;
+}
+.skill-row p{
+  font-family:var(--serif);font-size:1.02rem;line-height:1.55;color:var(--ink);margin-bottom:10px;max-width:56ch;
+}
+.skill-row .say{
+  font-family:var(--mono);font-size:.78rem;color:var(--ink-soft);line-height:1.6;
+  padding-top:8px;border-top:1px dashed var(--cream-deeper);letter-spacing:.01em;
+}
+.skill-row .say b{font-family:var(--sans);font-weight:700;color:var(--pine-dark);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-right:8px}
+
+/* ─── WORKFLOW (compound skill card) ─── */
+.workflow{
+  max-width:880px;margin:24px auto 0;padding:0 32px;
+}
+.workflow-card{
+  background:var(--white);border-left:3px solid var(--rust);
+  padding:28px 32px;margin-bottom:16px;
+  display:grid;grid-template-columns:1fr;gap:10px;
+}
+.workflow-card .handle{
+  font-family:var(--mono);font-size:.92rem;color:var(--pine-dark);font-weight:500;
+}
+.workflow-card .handle::before{content:"›";color:var(--rust);margin-right:8px;font-weight:700}
+.workflow-card h4{
+  font-family:var(--serif);font-weight:600;font-size:1.3rem;color:var(--pine-dark);
+  margin-top:4px;letter-spacing:-.01em;
+}
+.workflow-card h4 .dot{color:var(--rust)}
+.workflow-card p{
+  font-family:var(--serif);font-size:1.05rem;line-height:1.6;color:var(--ink);max-width:60ch;
+}
+.workflow-chain{
+  font-family:var(--mono);font-size:.75rem;color:var(--ink-soft);line-height:1.8;
+  padding:14px 16px;background:var(--cream-soft);border-radius:6px;margin-top:6px;
+  letter-spacing:.01em;
+}
+.workflow-chain b{font-family:var(--sans);font-weight:700;color:var(--pine-dark);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+.workflow-chain .arrow{color:var(--rust);font-weight:700;margin:0 6px}
+
+/* ─── CONTEXT FILE BLOCKS (file-manifest style) ─── */
+.files{max-width:880px;margin:28px auto 0;padding:0 32px}
+.files-intro{
+  font-family:var(--serif);font-size:1.12rem;line-height:1.65;color:var(--ink-mid);
+  max-width:58ch;margin-bottom:28px;
+}
+.files-intro em{font-style:italic}
+.file-row{
+  display:grid;grid-template-columns:280px 1fr;gap:28px;
+  padding:18px 0;border-top:1px solid var(--cream-deeper);align-items:baseline;
+}
+.file-row:last-of-type{border-bottom:1px solid var(--cream-deeper)}
+.file-name{
+  font-family:var(--mono);font-size:.88rem;color:var(--pine-dark);font-weight:500;
+  display:flex;align-items:center;gap:10px;
+}
+.file-name::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--pine-sage);flex-shrink:0;
+}
+.file-desc{
+  font-family:var(--serif);font-size:1rem;line-height:1.6;color:var(--ink-mid);
+}
+
+/* ─── WARN / CALLOUT ("When to stop" pattern) ─── */
+.warn{
+  max-width:880px;margin:40px auto 0;padding:0 32px;
+}
+.warn-inner{
+  border:1px solid var(--rust);background:var(--cream-soft);
+  border-radius:8px;padding:24px 28px;
+  display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;
+}
+.warn-icon{
+  font-family:var(--serif);font-weight:500;font-style:italic;font-size:2rem;
+  color:var(--rust);line-height:1;flex-shrink:0;padding-top:2px;
+}
+.warn-body h5{
+  font-family:var(--sans);font-weight:700;font-size:.72rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--rust);margin-bottom:8px;
+}
+.warn-body p{
+  font-family:var(--serif);font-size:1.05rem;line-height:1.6;color:var(--ink);
+}
+
+/* ─── LEARNING CARDS ─── */
+.learning{max-width:880px;margin:32px auto 0;padding:0 32px}
+.learning-card{
+  background:var(--white);border:1px solid var(--cream-deeper);
+  padding:28px 32px;margin-bottom:14px;border-radius:10px;
+  display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;
+}
+.learning-card .num{
+  font-family:var(--serif);font-weight:500;font-style:italic;
+  font-size:2rem;color:var(--rust);line-height:.9;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;flex-shrink:0;
+}
+.learning-card h4{
+  font-family:var(--serif);font-weight:600;font-size:1.2rem;color:var(--pine-dark);
+  margin-bottom:8px;letter-spacing:-.01em;
+}
+.learning-card h4 .dot{color:var(--rust)}
+.learning-card p{
+  font-family:var(--serif);font-size:1.02rem;line-height:1.6;color:var(--ink-mid);max-width:58ch;
+}
+
+/* ─── BRIEF CARD (callout for template) ─── */
+.brief-card{
+  max-width:880px;margin:32px auto 0;padding:0 32px;
+}
+.brief-inner{
+  background:var(--white);border:1px solid var(--cream-deeper);
+  border-radius:10px;padding:28px 32px;
+}
+.brief-inner .kicker{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--rust);font-weight:500;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.brief-inner .kicker::before{
+  content:"";width:18px;height:1px;background:var(--rust);
+}
+.brief-line{
+  font-family:var(--serif);font-size:1.05rem;line-height:1.65;color:var(--ink);
+  padding:8px 0;border-bottom:1px dashed var(--cream-deeper);
+}
+.brief-line:last-child{border-bottom:none}
+.brief-line strong{color:var(--pine-dark);font-family:var(--sans);font-weight:700}
+
+/* ─── CTA SECTION ─── */
+.cta-section{
+  max-width:880px;margin:80px auto 0;padding:0 32px;
+}
+.cta-card{
+  background:var(--pine-dark);color:var(--cream);
+  border-radius:12px;padding:48px 40px;
+  position:relative;overflow:hidden;
+}
+.cta-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 15% 85%, rgba(141,153,103,.12), transparent 55%);
+  pointer-events:none;
+}
+.cta-card h3{
+  font-family:var(--serif);font-weight:600;font-size:1.6rem;
+  color:var(--cream);margin-bottom:36px;letter-spacing:-.01em;
+}
+.cta-card h3 .dot{color:var(--rust-soft)}
+.cta-paths{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:32px;
+  position:relative;z-index:1;
+}
+.cta-path h4{
+  font-family:var(--serif);font-weight:600;font-size:1.15rem;
+  color:var(--cream);margin-bottom:10px;letter-spacing:-.01em;
+}
+.cta-path p{
+  font-family:var(--serif);font-size:.98rem;line-height:1.55;
+  color:rgba(253,250,244,.78);margin-bottom:16px;
+}
+.cta-path a{
+  display:inline-block;font-family:var(--mono);font-size:.78rem;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--pine-sage);border-bottom:1px solid var(--pine-sage);
+  padding-bottom:2px;transition:color .2s,border-color .2s;
+}
+.cta-path a:hover{color:var(--cream);border-color:var(--cream)}
+
+/* ─── COLOPHON ─── */
+.colophon{
+  background:var(--cream-dark);padding:48px 0 32px;border-top:1px solid var(--cream-deeper);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--ink-soft);
+  margin-top:96px;
+}
+.colo-inner{
+  max-width:880px;margin:0 auto;padding:0 32px;
+  display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;
+}
+.colo h6{
+  font-family:var(--sans);font-weight:700;font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--pine-dark);margin-bottom:14px;
+}
+.colo-brand .wordmark{font-family:var(--serif);font-weight:700;font-size:1.3rem;color:var(--pine-dark);letter-spacing:-.01em;display:block;margin-bottom:10px;text-transform:none}
+.colo-brand .wordmark .dot{color:var(--rust)}
+.colo-brand p{font-family:var(--serif);font-style:italic;font-size:.95rem;color:var(--ink-mid);text-transform:none;letter-spacing:0;max-width:32ch;line-height:1.55}
+.colo a{display:block;color:var(--ink-mid);padding:3px 0;text-transform:none;font-size:.8rem;letter-spacing:.01em}
+.colo a:hover{color:var(--pine-dark)}
+.colo-bottom{
+  max-width:880px;margin:32px auto 0;padding:18px 32px 0;border-top:1px solid var(--cream-deeper);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+
+/* responsive */
+@media (max-width:780px){
+  .mast{grid-template-columns:1fr;text-align:center;gap:6px;padding:10px 20px}
+  .mast-l,.mast-r{justify-self:center}
+  .title-block,.phase,.phase-intro,.steps,.skills-wrap,.workflow,.files,.warn,.learning,.prereq,.cta-section,.brief-card{padding-left:20px;padding-right:20px}
+  .title-stats{grid-template-columns:repeat(2,1fr)}
+  .title-stats > div{border-right:none;border-bottom:1px solid var(--cream-deeper);padding:14px 0}
+  .prereq-list{grid-template-columns:1fr}
+  .phase-head{grid-template-columns:1fr;gap:8px}
+  .phase-meta{text-align:left}
+  .step{grid-template-columns:1fr;gap:12px}
+  .step-num{font-size:2rem}
+  .skill-row{grid-template-columns:1fr;gap:10px}
+  .file-row{grid-template-columns:1fr;gap:6px}
+  .cta-paths{grid-template-columns:1fr;gap:24px}
+  .colo-inner{grid-template-columns:1fr;gap:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     STICKY HEADER
+     ═══════════════════════════════════════════════════ -->
+<header class="mast">
+  <div class="mast-l">
+    <a href="https://www.nobo.works" class="mast-wordmark">nobo<span class="dot">.</span></a>
+    <span class="mast-pipe">&middot;</span>
+    <span>Guides</span>
+  </div>
+  <div class="mast-c">a practitioner's field manual</div>
+  <div class="mast-r">guide &numero; 02 &middot; apr 2026</div>
+  <div class="mast-progress" id="progress"></div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════
+     TITLE BLOCK
+     ═══════════════════════════════════════════════════ -->
+<section class="title-block">
+  <div class="title-meta">
+    <span>guide &numero; 02 &middot; vol i</span>
+    <span>A practitioner's guide to delegation</span>
+    <span>filed 19 apr 2026</span>
+  </div>
+
+  <div class="guide-num">Guide &numero; 02</div>
+  <h1>How to Delegate to Claude<span class="dot">.</span></h1>
+  <p class="lede">You don't need to write clever prompts. The system already knows your business. Your job is to be clear about what you need.</p>
+
+  <div class="title-stats">
+    <div><div class="v">10</div><div class="l">specialists</div></div>
+    <div><div class="v">4</div><div class="l">workflows</div></div>
+    <div><div class="v">1</div><div class="l">brief format</div></div>
+    <div><div class="v"><em>day one</em></div><div class="l">works on</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     WHAT YOU'LL NEED
+     ═══════════════════════════════════════════════════ -->
+<section class="prereq">
+  <div class="prereq-card">
+    <div class="kicker">Before you start</div>
+    <h3>What you'll need<span class="dot">.</span></h3>
+    <div class="prereq-list">
+      <div><b>Foundation plugin</b> installed</div>
+      <div><b>/onboard</b> completed (your personal profile exists)</div>
+      <div><b>At least one project</b> set up with /new-project</div>
+      <div><b>One real task</b> to delegate (not a test run)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PART ONE · THE BRIEF FORMAT
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="brief-format">
+  <div class="phase-kicker">Part One &middot; The Brief Format</div>
+  <div class="phase-head">
+    <h2 class="phase-title">How to hand off work<span class="dot">.</span></h2>
+    <div class="phase-meta"><b>The format</b>one pattern for every task</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>Every task you hand off follows the same format. It doesn't need to be long. It needs to be clear.</p>
+</div>
+
+<div class="brief-card">
+  <div class="brief-inner">
+    <div class="kicker">The Brief Format</div>
+    <div class="brief-line"><strong>What I need:</strong> [Describe the output, not the process]</div>
+    <div class="brief-line"><strong>Context:</strong> [Anything Claude needs beyond your context files]</div>
+    <div class="brief-line"><strong>Voice / format:</strong> [Who receives this? Style notes?]</div>
+    <div class="brief-line"><strong>Save to:</strong> [Folder + file format]</div>
+  </div>
+</div>
+
+<div class="steps">
+
+  <div class="step">
+    <div class="step-num">01</div>
+    <div class="step-body">
+      <h3>Client email after a meeting<span class="dot">.</span></h3>
+      <p><strong>What I need:</strong> Follow-up email to Sarah Chen at Greenleaf. We met today to discuss their Q3 content calendar.</p>
+      <p><strong>Context:</strong> She wants to move from monthly to biweekly blog posts. Budget is fine, her concern is quality at higher volume. I told her we'd send a revised scope by Friday.</p>
+      <p><strong>Voice / format:</strong> Warm, she's been a client for 2 years. Short. Confirm the scope deadline and recap the volume conversation.</p>
+      <p><strong>Save to:</strong> Outputs/Comms/greenleaf-followup.docx</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">02</div>
+    <div class="step-body">
+      <h3>Meeting prep<span class="dot">.</span></h3>
+      <p><strong>What I need:</strong> Prep doc for my call with David Park at Summit Financial tomorrow at 2pm.</p>
+      <p><strong>Context:</strong> This is our second meeting. First call was an intro, he's interested in quarterly reporting automation. His team is 8 people, mostly analysts.</p>
+      <p><strong>Voice / format:</strong> Internal doc for me. Talking points, what to ask, potential concerns to address.</p>
+      <p><strong>Save to:</strong> Outputs/Meetings/summit-prep.md</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">03</div>
+    <div class="step-body">
+      <h3>Weekly status update<span class="dot">.</span></h3>
+      <p><strong>What I need:</strong> Weekly status summary across my active projects.</p>
+      <p><strong>Context:</strong> I'm managing Greenleaf (content calendar), Summit (proposal stage), and Ridgeline (brand refresh in progress).</p>
+      <p><strong>Voice / format:</strong> Internal. Structured by client. Progress, risks, next actions for each.</p>
+      <p><strong>Save to:</strong> Outputs/Comms/weekly-status.md</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PART TWO · THE SPECIALISTS
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="specialists">
+  <div class="phase-kicker">Part Two &middot; The Specialists</div>
+  <div class="phase-head">
+    <h2 class="phase-title">Ten roles your team can delegate to<span class="dot">.</span></h2>
+    <div class="phase-meta"><b>Reference</b>skim now, return later</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>Each specialist reads your context files before responding. The output sounds like your company wrote it.</p>
+</div>
+
+<div class="skills-wrap">
+
+  <div class="skills-cat">Client Operations <span>one specialist</span></div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/client-comms</div>
+      <div class="role">Communications</div>
+    </div>
+    <div>
+      <h4>Client Communications Specialist</h4>
+      <p>Drafts, reviews, and improves any message going to or from a client — status updates, follow-ups, meeting summaries, difficult conversations, scope discussions. Writes in your voice, calibrates tone to the situation, treats every message as relationship capital.</p>
+      <div class="say"><b>Say:</b> "Email Sarah about the timeline" &middot; "Reply to this client message" &middot; "Draft a follow-up from today's call"</div>
+    </div>
+  </div>
+
+  <div class="skills-cat">Content &amp; Marketing <span>two specialists</span></div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/content-strategist</div>
+      <div class="role">Content</div>
+    </div>
+    <div>
+      <h4>Content Strategist</h4>
+      <p>Writes brand-aligned content across every format — emails, proposals, blog posts, LinkedIn, case studies, newsletters, website copy. Adapts tone to the channel while staying inside your company's established voice. A LinkedIn post sounds different from a proposal, but both sound like you.</p>
+      <div class="say"><b>Say:</b> "Write a LinkedIn post about our new service" &middot; "Draft the case study" &middot; "Blog post on AI in professional services"</div>
+    </div>
+  </div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/brand-strategist</div>
+      <div class="role">Brand</div>
+    </div>
+    <div>
+      <h4>Brand Strategist</h4>
+      <p>Reviews any draft for brand consistency — voice, tone, messaging, visual identity. Every judgment traces back to your company's communication standards. Flags what's off, explains which principle it violates, shows the corrected version. Sharpens your voice; doesn't replace it.</p>
+      <div class="say"><b>Say:</b> "Does this sound like us?" &middot; "Brand check on this draft" &middot; "Is this on-brand?"</div>
+    </div>
+  </div>
+
+  <div class="skills-cat">Project Management <span>one specialist</span></div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/project-manager</div>
+      <div class="role">PM</div>
+    </div>
+    <div>
+      <h4>Project Manager</h4>
+      <p>Tracks project status, surfaces risks before they become problems, maps dependencies across people and timelines, keeps everyone aligned. Produces structured status reports — Progress / Risks / Next Actions — where every action has one named owner and every status is honest.</p>
+      <div class="say"><b>Say:</b> "Project status update" &middot; "What's at risk?" &middot; "Map out the dependencies" &middot; "Who owns what?"</div>
+    </div>
+  </div>
+
+  <div class="skills-cat">Research &amp; Intelligence <span>one specialist</span></div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/research-specialist</div>
+      <div class="role">Research</div>
+    </div>
+    <div>
+      <h4>Research Specialist</h4>
+      <p>Conducts structured research and synthesizes findings into actionable summaries — prospect briefs, competitive analysis, market overviews, topic backgrounders. Organizes by theme, evaluates source quality, rates confidence on key claims, and always tells you what's missing.</p>
+      <div class="say"><b>Say:</b> "Research Greenleaf before my call" &middot; "Competitive landscape for AI consulting" &middot; "Background on this company"</div>
+    </div>
+  </div>
+
+  <div class="skills-cat">Reporting &amp; Communication <span>two specialists</span></div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/executive-comms</div>
+      <div class="role">Executive</div>
+    </div>
+    <div>
+      <h4>Executive Communications Specialist</h4>
+      <p>Takes complex, lengthy, or messy information and turns it into sharp summaries for senior audiences — leadership teams, partners, clients, board members. Bottom line up front, always. Readable in under three minutes. Four formats: executive summary, briefing doc, condensed version, one-pager.</p>
+      <div class="say"><b>Say:</b> "Summarize this for the partner" &middot; "Executive summary" &middot; "Make this shorter" &middot; "Board update"</div>
+    </div>
+  </div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/data-analyst</div>
+      <div class="role">Data</div>
+    </div>
+    <div>
+      <h4>Data Analyst</h4>
+      <p>Makes sense of numbers — raw data, spreadsheets, metrics, reports — and turns them into clear findings for non-technical audiences. Leads with what matters, highlights outliers, explains what the data means for the work at hand. Always flags when data is incomplete.</p>
+      <div class="say"><b>Say:</b> "Analyze this spreadsheet" &middot; "What do these numbers tell us?" &middot; "Metrics report" &middot; "Trends in this data"</div>
+    </div>
+  </div>
+
+  <div class="skills-cat">Presentations <span>one specialist</span></div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/presentation-strategist</div>
+      <div class="role">Presentations</div>
+    </div>
+    <div>
+      <h4>Presentation Strategist</h4>
+      <p>Structures ideas into clear, persuasive slide narratives. Decides what goes on each slide, what order makes the story land, how to adapt the narrative for the audience. One idea per slide. No generic titles. Three narrative frameworks mapped to audience type — client pitch, internal update, executive briefing.</p>
+      <div class="say"><b>Say:</b> "Structure a deck for the client pitch" &middot; "Outline slides for the team update" &middot; "How should this presentation flow?"</div>
+    </div>
+  </div>
+
+  <div class="skills-cat">Business Operations <span>two specialists</span></div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/financial-analyst</div>
+      <div class="role">Finance</div>
+    </div>
+    <div>
+      <h4>Financial Analyst</h4>
+      <p>Handles the numbers side of engagements — fee proposals, cost estimates, budget tracking, profitability analysis, pricing comparisons. Clear tables, honest assumptions, flagged risks. States every assumption. Uses round numbers where precision doesn't matter. Never hides bad news.</p>
+      <div class="say"><b>Say:</b> "Build a fee proposal" &middot; "How's our budget tracking?" &middot; "Profitability on this engagement" &middot; "Compare pricing structures"</div>
+    </div>
+  </div>
+
+  <div class="skill-row">
+    <div>
+      <div class="handle">/process-optimizer</div>
+      <div class="role">Process</div>
+    </div>
+    <div>
+      <h4>Process Optimizer</h4>
+      <p>Maps, documents, and improves how work gets done — operational workflows, recurring processes, handoff points. Produces usable SOPs in plain imperative language, process maps with owners, improvement recommendations graded by effort. Works from what exists before suggesting changes.</p>
+      <div class="say"><b>Say:</b> "Document our onboarding process" &middot; "This workflow is too slow" &middot; "Write an SOP for this" &middot; "Where's the bottleneck?"</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     PART THREE · WORKFLOWS
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="workflows">
+  <div class="phase-kicker">Part Three &middot; Workflows</div>
+  <div class="phase-head">
+    <h2 class="phase-title">Multi-step <em>routines</em><span class="dot">.</span></h2>
+    <div class="phase-meta"><b>Compound</b>multi-step in one pass</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>These handle multi-step tasks in one pass and keep the system's memory current. The value isn't any one piece — it's the orchestration and continuity across everything you do.</p>
+</div>
+
+<div class="workflow">
+
+  <div class="workflow-card">
+    <div class="handle">/prep-for-call</div>
+    <h4>Call Preparation<span class="dot">.</span></h4>
+    <p>Produces a complete pre-meeting brief so you walk in informed, prepared, and able to send a follow-up within five minutes of hanging up. Works for both prospect meetings and existing-client check-ins.</p>
+    <div class="workflow-chain">
+      <b>Produces</b>
+      Prospect/client brief with hooks<span class="arrow">&rarr;</span>structured talking points<span class="arrow">&rarr;</span>pre-drafted follow-up email in your voice
+    </div>
+  </div>
+
+  <div class="workflow-card">
+    <div class="handle">/weekly-review</div>
+    <h4>Weekly Review<span class="dot">.</span></h4>
+    <p>A consolidated end-of-week brief across every active engagement. Run it once on Friday and walk away with a complete picture plus ready-to-send client check-ins. No engagement falls through the cracks.</p>
+    <div class="workflow-chain">
+      <b>Produces</b>
+      Multi-project status summary<span class="arrow">&rarr;</span>leadership-ready brief<span class="arrow">&rarr;</span>draft check-in email for each active client
+    </div>
+  </div>
+
+  <div class="workflow-card">
+    <div class="handle">/daily-log</div>
+    <h4>Daily Log<span class="dot">.</span></h4>
+    <p>Runs as a scheduled task at the end of each workday, or manually when you say <em>"wrap up the day."</em> Reviews everything from the session and writes a structured entry — what got done, what was decided and why, what files changed, what's still open, what to pick up tomorrow. Next morning, Claude reads this first, so every session starts where yesterday left off.</p>
+    <div class="workflow-chain">
+      <b>Produces</b>
+      Structured daily entry (done / decided / changed / open / priorities)<span class="arrow">&rarr;</span>rolling 5-day log<span class="arrow">&rarr;</span>automatic session continuity
+    </div>
+  </div>
+
+  <div class="workflow-card">
+    <div class="handle">/refine-voice</div>
+    <h4>Voice Profile Refinement<span class="dot">.</span></h4>
+    <p>Makes your voice profile more accurate over time by studying real evidence. Paste examples of what Claude wrote versus what you actually sent — the skill extracts the patterns that define your real voice and updates your profile so every skill produces better output going forward.</p>
+    <div class="workflow-chain">
+      <b>Produces</b>
+      Pattern analysis of your real writing<span class="arrow">&rarr;</span>updated voice profile<span class="arrow">&rarr;</span>better output from every skill
+    </div>
+  </div>
+
+</div>
+
+<!-- daily-log scheduling callout -->
+<section class="warn">
+  <div class="warn-inner">
+    <div class="warn-icon">!</div>
+    <div class="warn-body">
+      <h5>Scheduling daily-log</h5>
+      <p>Schedule daily-log within each project: Cowork &rarr; Scheduled &rarr; set to run at end of day. Important: each project needs its own schedule — one schedule doesn't run across all projects.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PART FOUR · QUALITY
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="quality">
+  <div class="phase-kicker">Part Four &middot; Quality</div>
+  <div class="phase-head">
+    <h2 class="phase-title">What done looks like<span class="dot">.</span></h2>
+    <div class="phase-meta"><b>Standards</b>three quality checks</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>Done isn't a chat response you copy-paste. Done is output you can open, review once, and use.</p>
+</div>
+
+<div class="learning">
+
+  <div class="learning-card">
+    <div class="num">01</div>
+    <div>
+      <h4>Done is a file in your Outputs folder<span class="dot">.</span></h4>
+      <p>Not a response in the chat window. Not bullet points. A file you can open, read once, and use. If you're reading Claude's output in the chat and copy-pasting it into a document, your brief is missing the "Save to" line.</p>
+    </div>
+  </div>
+
+  <div class="learning-card">
+    <div class="num">02</div>
+    <div>
+      <h4>Done means you review once and send<span class="dot">.</span></h4>
+      <p>If you're rewriting more than 20% of the output, something is off. Either the context files need updating (your voice has drifted), or the brief was too vague. Both are fixable.</p>
+    </div>
+  </div>
+
+  <div class="learning-card">
+    <div class="num">03</div>
+    <div>
+      <h4>Done doesn't mean perfect first try<span class="dot">.</span></h4>
+      <p>The system gets better as you use it. When you correct something, tell Claude why. If it keeps getting your tone wrong on a specific type of communication, run <code>/refine-voice</code> with a real example of what you would have written. The system learns.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- quality warning callout -->
+<section class="warn">
+  <div class="warn-inner">
+    <div class="warn-icon">!</div>
+    <div class="warn-body">
+      <h5>When output needs too much editing</h5>
+      <p>If you're rewriting more than 20% of the output, either your context files need updating or your brief was too vague. Both are fixable.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     PART FIVE · GET STARTED
+     ═══════════════════════════════════════════════════ -->
+<section class="phase" id="get-started">
+  <div class="phase-kicker">Part Five &middot; Get Started</div>
+  <div class="phase-head">
+    <h2 class="phase-title">New here? Start here<span class="dot">.</span></h2>
+    <div class="phase-meta"><b>Quick start</b>four steps to first output</div>
+  </div>
+</section>
+
+<div class="phase-intro">
+  <p>If you're new to the team or new to Cowork, here's your path to first real output.</p>
+</div>
+
+<div class="steps">
+
+  <div class="step">
+    <div class="step-num">01</div>
+    <div class="step-body">
+      <h3>Run <code>/onboard</code> if you haven't<span class="dot">.</span></h3>
+      <p>This creates your personal profile — your role, your voice, how you prefer to work. It's a conversation, not a questionnaire.</p>
+      <div class="step-time">~10 minutes &middot; one-time</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">02</div>
+    <div class="step-body">
+      <h3>Start a project with <code>/new-project</code><span class="dot">.</span></h3>
+      <p>Loads your company context, your personal profile, and asks a few questions about the specific engagement. Every specialist now knows the landscape.</p>
+      <div class="step-time">~2 minutes &middot; per engagement</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">03</div>
+    <div class="step-body">
+      <h3>Try a real task using the brief format<span class="dot">.</span></h3>
+      <p>Pick something you actually need done today. Use the four-line brief. Save it to your Outputs folder. Review what comes back.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">04</div>
+    <div class="step-body">
+      <h3>If output sounds generic<span class="dot">.</span></h3>
+      <p>Check that <code>/new-project</code> ran in this project folder. If it sounds almost right but not quite, run <code>/refine-voice</code> with a before/after example of what you would have written.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     CTA SECTION
+     ═══════════════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="cta-card">
+    <h3>What's your next move<span class="dot">.</span></h3>
+    <div class="cta-paths">
+      <div class="cta-path">
+        <h4>Ready to go?</h4>
+        <p>Tell me what your Tuesday looks like. I'll tell you what changes.</p>
+        <a href="https://www.nobo.works/#contact">book a call &rarr;</a>
+      </div>
+      <div class="cta-path">
+        <h4>Want to learn more first?</h4>
+        <p>A weekly dispatch from the field. What's working, what isn't, what I'm building next.</p>
+        <a href="https://www.nobo.works/field-notes/issue-01">friday field notes &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════
+     COLOPHON
+     ═══════════════════════════════════════════════════ -->
+<footer class="colophon">
+  <div class="colo colo-inner">
+    <div class="colo-brand">
+      <span class="wordmark">nobo<span class="dot">.</span></span>
+      <p>&mdash; your ai partner in boulder.</p>
+    </div>
+    <div>
+      <h6>This guide</h6>
+      <a href="#brief-format">One. The brief format</a>
+      <a href="#specialists">Two. The ten specialists</a>
+      <a href="#workflows">Three. Workflows</a>
+      <a href="#quality">Four. What done looks like</a>
+      <a href="#get-started">Five. Quick start</a>
+      <h6 style="margin-top:18px">More guides</h6>
+      <a href="nobo-foundation-plugin-guide.html">Guide &numero; 01: Setup &rarr;</a>
+      <a href="#">Guide &numero; 03: Foundation Plugin &rarr;</a>
+    </div>
+    <div>
+      <h6>Find me</h6>
+      <a href="https://www.nobo.works/guides">back to guides &rarr;</a>
+      <a href="https://www.nobo.works">nobo.works &rarr;</a>
+      <a href="https://www.nobo.works/field-notes/issue-01">friday field notes &rarr;</a>
+    </div>
+  </div>
+  <div class="colo colo-bottom">
+    <span>&copy; 2026 Nobo Works LLC &middot; Boulder, Colorado</span>
+    <span>Guide &numero; 02 &middot; Filed 19 April 2026</span>
+    <span>Set in Lora &amp; Plus Jakarta &middot; Printed on cream</span>
+  </div>
+</footer>
+
+<script>
+// Sticky-header progress bar
+const prog = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  prog.style.width = pct + '%';
+});
+</script>
+</body>
+</html>
