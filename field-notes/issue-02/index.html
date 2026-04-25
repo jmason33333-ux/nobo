@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Friday Field Notes · Issue 02 · Nobo</title>
+<meta name="description" content="Salesforce went headless. The orchestration tier above the platform just changed shape. Plus four things I shipped this week, and a daily-plan agent you can copy.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Nobo">
+<meta property="og:title" content="Friday Field Notes · Issue 02 · Salesforce went headless. Now what?">
+<meta property="og:description" content="Two platform giants this month, same architectural move. What I shipped this week. A daily-plan agent any operator can copy this weekend.">
+<meta property="og:url" content="https://nobo.works/field-notes/issue-02/">
+<meta property="og:image" content="https://nobo.works/field-notes/issue-02/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter / iMessage -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Friday Field Notes · Issue 02 · Salesforce went headless. Now what?">
+<meta name="twitter:description" content="Two platform giants this month, same architectural move. What I shipped this week. A daily-plan agent any operator can copy this weekend.">
+<meta name="twitter:image" content="https://nobo.works/field-notes/issue-02/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,300;1,9..144,400;1,9..144,500;1,9..144,600;1,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F2ECE0;
+  --cream-dark:#E6DECC;
+  --cream-deeper:#D4C9B0;
+  --paper:#FBF6EA;
+  --pine:#2E4430;
+  --pine-dark:#1E3524;
+  --pine-sage:#8D9967;
+  --rust:#A84A2A;
+  --gold:#C0883A;
+  --ink:#14110A;
+  --ink-soft:#4A4435;
+  --ink-faint:#7A7060;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth; scroll-padding-top:72px}
+body{
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  background:var(--cream); color:var(--ink);
+  font-size:17px; line-height:1.65; -webkit-font-smoothing:antialiased;
+  position:relative; overflow-x:hidden;
+}
+
+/* grain overlay — subtle paper texture */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:200;
+  opacity:.5; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.11 0 0 0 0 0.09 0 0 0 0 0.05 0 0 0 0.11 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+a{color:var(--rust); text-decoration:none; transition:color .2s, box-shadow .2s}
+a:not(.clean){box-shadow:inset 0 -1px 0 rgba(168,74,42,.35)}
+a:not(.clean):hover{color:#C9603E; box-shadow:inset 0 -1px 0 var(--rust)}
+em{font-style:italic; color:var(--ink-soft)}
+code{font-family:'JetBrains Mono',ui-monospace,monospace; font-size:.88em; background:var(--cream-dark); padding:2px 6px; border-radius:2px; color:var(--pine-dark)}
+
+.serif{font-family:'Fraunces',serif}
+.sans{font-family:'Plus Jakarta Sans',sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.caps{
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:700;
+  font-size:.72rem; text-transform:uppercase; letter-spacing:.18em;
+}
+.ornament{
+  display:inline-block; width:10px; height:10px;
+  background:var(--rust); border-radius:50%;
+  vertical-align:middle; margin:0 6px;
+}
+
+/* progress */
+.progress-track{position:fixed;top:0;left:0;right:0;height:3px;background:var(--cream-dark);z-index:150}
+.progress-fill{height:100%;width:0%;background:var(--rust);transition:width .08s linear}
+
+/* folio — print-magazine style top nav */
+.folio{
+  position:sticky; top:3px; z-index:90;
+  background:color-mix(in srgb, var(--cream) 92%, transparent);
+  backdrop-filter:saturate(1.1) blur(10px);
+  border-bottom:1px solid var(--cream-deeper);
+}
+.folio-inner{
+  max-width:1400px; margin:0 auto; padding:14px 48px;
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:24px;
+}
+.folio-left, .folio-right{
+  font-family:'JetBrains Mono',monospace; font-size:.7rem;
+  color:var(--ink-faint); letter-spacing:.14em; text-transform:uppercase;
+}
+.folio-right{text-align:right}
+.folio-center{
+  font-family:'Fraunces',serif; font-weight:500; font-style:italic;
+  font-size:1rem; color:var(--pine-dark); white-space:nowrap;
+}
+.folio-center .amp{color:var(--rust); font-weight:400}
+
+/* ============= COVER ============= */
+.cover{
+  max-width:1400px; margin:0 auto; padding:36px 48px 80px;
+  position:relative;
+}
+.cover-strip{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:14px 0 28px; border-bottom:1px solid var(--ink);
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--ink); letter-spacing:.12em; text-transform:uppercase;
+}
+.cover-strip .center{text-align:center; flex:1}
+.cover-strip .left, .cover-strip .right{flex:0 0 auto; min-width:160px}
+.cover-strip .right{text-align:right}
+
+.cover-grid{
+  display:grid; grid-template-columns:1fr 320px; gap:64px;
+  padding-top:56px; align-items:end;
+}
+
+.cover-title{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:clamp(4rem, 14vw, 13rem);
+  line-height:.86; letter-spacing:-0.04em;
+  color:var(--pine-dark); text-wrap:balance;
+  position:relative;
+}
+.cover-title .friday{display:block; font-weight:400; font-style:normal}
+.cover-title .field{display:block; font-style:italic; font-weight:300; color:var(--pine)}
+.cover-title .notes{display:block; font-weight:600}
+.cover-title .dot{color:var(--rust)}
+
+/* giant issue number bleed */
+.cover-number{
+  position:relative;
+  display:flex; flex-direction:column; align-items:flex-end;
+  justify-content:flex-end;
+}
+.cover-number .num{
+  font-family:'Fraunces',serif; font-weight:300;
+  font-size:clamp(8rem, 20vw, 18rem);
+  line-height:.8; color:var(--rust); letter-spacing:-0.05em;
+  font-variant-numeric:oldstyle-nums;
+  margin-bottom:-12px;
+}
+.cover-number .label{
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--ink-soft); letter-spacing:.2em; text-transform:uppercase;
+  margin-top:16px;
+}
+
+.cover-sub{
+  margin-top:48px;
+  display:grid; grid-template-columns:1fr auto; gap:40px; align-items:end;
+  border-top:1px solid var(--ink); padding-top:28px;
+}
+.cover-sub p{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+  font-size:clamp(1.4rem, 2.4vw, 2rem); line-height:1.25;
+  color:var(--ink); max-width:720px; text-wrap:balance;
+}
+.cover-sub .dateline{
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--ink-faint); letter-spacing:.12em; text-transform:uppercase;
+  white-space:nowrap; text-align:right;
+}
+
+/* ============= OPENER ============= */
+.opener{
+  max-width:1400px; margin:0 auto; padding:72px 48px 40px;
+  display:grid; grid-template-columns:280px 1fr; gap:64px;
+}
+.opener-aside{
+  position:relative;
+}
+.opener-aside .marker{
+  font-family:'Fraunces',serif; font-weight:300; font-style:italic;
+  font-size:3rem; color:var(--rust); line-height:.9; margin-bottom:12px;
+}
+.opener-aside .marker-label{
+  font-family:'JetBrains Mono',monospace; font-size:.68rem;
+  color:var(--ink-faint); letter-spacing:.16em; text-transform:uppercase;
+}
+.opener-body p{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:1.35rem; line-height:1.55; color:var(--ink);
+  margin-bottom:20px; max-width:680px;
+}
+.opener-body p:first-child{
+  font-family:'Fraunces',serif; font-weight:500; font-style:italic;
+  font-size:2.4rem; line-height:1.2; color:var(--pine-dark);
+  letter-spacing:-0.015em; margin-bottom:28px;
+}
+
+/* ============= IN THIS EDITION ============= */
+.edition{
+  max-width:1400px; margin:0 auto 96px; padding:48px 48px;
+  border-top:1px solid var(--cream-deeper);
+  border-bottom:1px solid var(--cream-deeper);
+  display:grid; grid-template-columns:280px 1fr; gap:64px;
+  align-items:start;
+}
+.edition-label{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:500;
+  font-size:1.4rem; color:var(--pine-dark);
+}
+.edition-label .sub{
+  display:block; font-family:'JetBrains Mono',monospace; font-size:.68rem;
+  color:var(--ink-faint); letter-spacing:.16em; text-transform:uppercase;
+  font-style:normal; margin-top:8px;
+}
+.edition-list{list-style:none; counter-reset:ed}
+.edition-list li{
+  counter-increment:ed; padding:18px 0;
+  border-bottom:1px solid var(--cream-deeper);
+  display:grid; grid-template-columns:48px 1fr 120px; gap:24px; align-items:baseline;
+}
+.edition-list li:last-child{border-bottom:0}
+.edition-list li::before{
+  content:counter(ed,decimal-leading-zero);
+  font-family:'JetBrains Mono',monospace; font-size:.75rem;
+  color:var(--rust); letter-spacing:.1em; padding-top:6px;
+}
+.edition-list li a{
+  font-family:'Fraunces',serif; font-weight:500; color:var(--ink);
+  font-size:1.15rem; line-height:1.35; box-shadow:none; text-wrap:pretty;
+}
+.edition-list li a:hover{color:var(--pine)}
+.edition-list li .pg{
+  font-family:'JetBrains Mono',monospace; font-size:.7rem;
+  color:var(--ink-faint); letter-spacing:.1em; text-align:right;
+}
+
+/* ============= SECTION / SPREAD ============= */
+.spread{
+  max-width:1400px; margin:0 auto 96px; padding:0 48px;
+  scroll-margin-top:84px; position:relative;
+}
+.spread-head{
+  display:grid; grid-template-columns:280px 1fr; gap:64px;
+  margin-bottom:48px; align-items:end;
+  padding-bottom:36px; border-bottom:1px solid var(--ink);
+}
+.spread-num-col{position:relative}
+.spread-num{
+  font-family:'Fraunces',serif; font-weight:300;
+  font-size:10rem; line-height:.8; color:var(--cream-deeper);
+  letter-spacing:-0.05em; margin-bottom:12px;
+}
+.spread-label{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:500;
+  font-size:1.4rem; color:var(--rust); line-height:1;
+}
+.spread-label-sub{
+  font-family:'JetBrains Mono',monospace; font-size:.68rem;
+  color:var(--ink-faint); letter-spacing:.16em; text-transform:uppercase;
+  margin-top:10px;
+}
+
+.spread-title{
+  font-family:'Fraunces',serif; font-weight:500;
+  font-size:clamp(2.2rem, 4.6vw, 4rem); line-height:1.02;
+  color:var(--pine-dark); letter-spacing:-0.025em;
+  text-wrap:balance;
+}
+.spread-title em{color:var(--pine); font-style:italic; font-weight:400}
+
+.spread-body{
+  display:grid; grid-template-columns:280px 1fr; gap:64px;
+  align-items:start;
+}
+.spread-aside{
+  position:sticky; top:90px;
+  font-family:'Fraunces',serif; font-weight:400; font-style:italic;
+  font-size:1rem; line-height:1.55; color:var(--ink-soft);
+  padding-right:12px;
+}
+.spread-aside .tag{
+  display:inline-block; font-family:'JetBrains Mono',monospace;
+  font-size:.66rem; color:var(--rust); letter-spacing:.14em;
+  text-transform:uppercase; font-style:normal; margin-bottom:14px;
+  padding:3px 9px; border:1px solid var(--rust); border-radius:20px;
+}
+.spread-aside .sep{
+  margin:20px 0; height:1px; background:var(--cream-deeper); width:40px;
+}
+
+.prose{max-width:720px}
+.prose h3{
+  font-family:'Fraunces',serif; font-weight:600; font-style:italic;
+  font-size:1.05rem; color:var(--pine-dark);
+  margin:36px 0 14px; position:relative; padding-left:24px;
+}
+.prose h3::before{
+  content:""; position:absolute; left:0; top:.72em;
+  width:14px; height:1px; background:var(--rust);
+}
+.prose h3:first-child{margin-top:0}
+.prose p{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:1.18rem; line-height:1.6; color:var(--ink); margin-bottom:20px;
+}
+.prose p em{color:var(--pine-dark); font-style:italic}
+
+/* first letter in first paragraph of first spread */
+.prose.dropcap p:first-of-type::first-letter{
+  font-family:'Fraunces',serif; font-weight:500; font-style:italic;
+  font-size:4.6rem; float:left; line-height:.9;
+  padding:6px 14px 0 0; color:var(--rust);
+}
+
+/* MASSIVE pull quote */
+.pullquote{
+  margin:56px -48px; padding:72px 10vw;
+  background:var(--pine-dark); color:var(--cream);
+  position:relative; overflow:hidden;
+}
+.pullquote::before{
+  content:"\201C"; /* opening quote */
+  position:absolute; left:4vw; top:-2vw;
+  font-family:'Fraunces',serif; font-weight:300;
+  font-size:24rem; line-height:1; color:var(--pine);
+  opacity:.6;
+}
+.pullquote-text{
+  position:relative; z-index:2;
+  font-family:'Fraunces',serif; font-weight:400; font-style:italic;
+  font-size:clamp(1.8rem, 4vw, 3.4rem); line-height:1.15;
+  letter-spacing:-0.02em; color:var(--cream);
+  max-width:1100px; text-wrap:balance;
+}
+.pullquote-attr{
+  position:relative; z-index:2; margin-top:32px;
+  font-family:'JetBrains Mono',monospace; font-size:.76rem;
+  color:var(--pine-sage); letter-spacing:.14em; text-transform:uppercase;
+}
+
+/* ============= BUILD WALKTHROUGH ============= */
+.walkthrough{
+  margin:40px 0 0; background:var(--paper);
+  border:1px solid var(--cream-deeper); border-radius:2px;
+  overflow:hidden; position:relative;
+}
+.walkthrough::before{
+  content:""; position:absolute; left:0; top:0; bottom:0;
+  width:4px; background:var(--rust);
+}
+.walkthrough-head{
+  padding:28px 32px 28px 36px; display:flex; justify-content:space-between;
+  align-items:center; gap:24px; cursor:pointer; width:100%;
+  background:transparent; border:none; text-align:left;
+  transition:background .2s;
+}
+.walkthrough-head:hover{background:var(--cream)}
+.walkthrough-head-title{
+  font-family:'Fraunces',serif; font-weight:500; font-style:italic;
+  font-size:1.3rem; color:var(--pine-dark);
+}
+.walkthrough-head-hook{
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:400;
+  color:var(--ink-soft); font-size:.92rem; margin-top:6px;
+}
+.walkthrough-head .arrow{
+  flex-shrink:0; width:44px; height:44px; border-radius:50%;
+  background:var(--pine-dark); color:var(--cream);
+  display:inline-flex; align-items:center; justify-content:center;
+  transition:transform .4s cubic-bezier(.2,.8,.2,1), background .2s;
+  font-family:'Fraunces',serif; font-size:1.1rem;
+}
+.walkthrough.open .walkthrough-head .arrow{transform:rotate(90deg); background:var(--rust)}
+.walkthrough-body{max-height:0; overflow:hidden; transition:max-height .5s ease; background:var(--paper)}
+.walkthrough.open .walkthrough-body{max-height:4800px}
+.walkthrough-steps{
+  padding:8px 36px 32px; list-style:none; counter-reset:step;
+  border-top:1px solid var(--cream-deeper); margin-top:0;
+}
+.walkthrough-steps li{
+  counter-increment:step; display:grid; grid-template-columns:80px 1fr;
+  gap:24px; padding:24px 0; align-items:flex-start;
+  border-bottom:1px solid var(--cream-deeper);
+}
+.walkthrough-steps li:last-child{border-bottom:0}
+.walkthrough-steps li::before{
+  content:"Step " counter(step,decimal-leading-zero);
+  font-family:'JetBrains Mono',monospace; font-size:.7rem;
+  color:var(--rust); letter-spacing:.14em; text-transform:uppercase;
+  padding-top:4px;
+}
+.walkthrough-steps li > div{font-family:'Fraunces',serif; font-size:1.08rem; line-height:1.55; color:var(--ink)}
+.walkthrough-steps li pre{
+  font-family:'JetBrains Mono',monospace; font-size:.84rem; line-height:1.55;
+  background:var(--cream-dark); color:var(--pine-dark);
+  padding:16px 18px; border-radius:2px; margin-top:12px;
+  overflow-x:auto; white-space:pre;
+}
+
+.build-offer{
+  margin:40px 0 0; padding:36px; background:var(--paper);
+  border:1px dashed var(--pine); border-radius:2px; position:relative;
+}
+.build-offer::before{
+  content:"OR"; position:absolute; top:-12px; left:32px;
+  background:var(--cream); padding:0 12px;
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--rust); letter-spacing:.2em; font-weight:500;
+}
+.build-offer p{font-family:'Fraunces',serif; font-size:1.15rem; line-height:1.55; margin:0; color:var(--ink)}
+.build-offer strong{font-style:italic; color:var(--pine-dark); font-weight:600}
+
+/* ============= ALSO THIS WEEK ============= */
+.also{
+  max-width:1400px; margin:0 auto 96px; padding:0 48px;
+  scroll-margin-top:84px;
+}
+.also-grid{
+  display:grid; grid-template-columns:repeat(12, 1fr);
+  gap:32px 48px; margin-top:40px;
+}
+.also-card{
+  grid-column:span 6; padding:28px 0 32px;
+  border-top:1px solid var(--ink);
+  position:relative;
+}
+.also-card.feat{grid-column:span 12}
+.also-card.small{grid-column:span 4}
+.also-card-num{
+  font-family:'JetBrains Mono',monospace; font-size:.7rem;
+  color:var(--rust); letter-spacing:.14em; margin-bottom:14px;
+  display:flex; justify-content:space-between; align-items:baseline;
+}
+.also-card-num .handle{color:var(--pine); font-weight:500}
+.also-card h4{
+  font-family:'Fraunces',serif; font-weight:500;
+  color:var(--pine-dark); line-height:1.15; letter-spacing:-0.015em;
+  margin-bottom:12px; text-wrap:pretty;
+}
+.also-card.feat h4{font-size:2.2rem; font-style:italic; font-weight:400}
+.also-card h4{font-size:1.5rem}
+.also-card.small h4{font-size:1.2rem}
+.also-card p{
+  font-family:'Fraunces',serif; font-weight:400;
+  color:var(--ink-soft); font-size:1rem; line-height:1.55; margin-bottom:16px;
+}
+.also-card.feat p{font-size:1.15rem}
+.also-card.small p{font-size:.96rem}
+.also-card .link{
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:600;
+  font-size:.8rem; color:var(--rust); box-shadow:none;
+  text-transform:uppercase; letter-spacing:.12em;
+}
+.also-card .link::after{content:" \2192"; transition:margin-left .2s}
+.also-card .link:hover::after{margin-left:4px}
+
+/* ============= ONE MORE THING ============= */
+.one-more{
+  background:var(--pine-dark); color:var(--cream); overflow:hidden;
+  padding:120px 0; margin-bottom:96px; position:relative;
+  scroll-margin-top:84px;
+}
+.one-more::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95 0 0 0 0 0.90 0 0 0 0 0.78 0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.one-more-inner{
+  max-width:1100px; margin:0 auto; padding:0 48px; position:relative; z-index:2;
+}
+.one-more .tag{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+  font-size:1.2rem; color:var(--pine-sage); margin-bottom:24px;
+  display:flex; align-items:center; gap:16px;
+}
+.one-more .tag::before, .one-more .tag::after{
+  content:""; flex:1; max-width:80px; height:1px; background:var(--pine-sage); opacity:.5;
+}
+.one-more h2{
+  font-family:'Fraunces',serif; font-weight:400; font-style:italic;
+  font-size:clamp(2.4rem, 5vw, 4rem); line-height:1.08;
+  color:var(--cream); letter-spacing:-0.02em; text-wrap:balance;
+  text-align:center; margin-bottom:48px;
+}
+.one-more-body{
+  max-width:720px; margin:0 auto;
+}
+.one-more-body p{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:1.2rem; line-height:1.6; color:var(--cream); opacity:.92;
+  margin-bottom:20px;
+}
+.one-more-body em{color:var(--pine-sage); font-style:italic}
+.one-more-body a{color:var(--pine-sage); box-shadow:inset 0 -1px 0 rgba(141,153,103,.4)}
+.one-more-body a:hover{color:var(--cream); box-shadow:inset 0 -1px 0 var(--cream)}
+.one-more-filed{
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--pine-sage); letter-spacing:.16em; text-transform:uppercase;
+  margin-top:36px; text-align:center;
+}
+
+/* ============= BEFORE YOU GO ============= */
+.bye{
+  max-width:1400px; margin:0 auto 72px; padding:0 48px;
+  scroll-margin-top:84px;
+}
+.bye-inner{
+  display:grid; grid-template-columns:280px 1fr; gap:64px; align-items:start;
+  padding-top:48px; border-top:1px solid var(--ink);
+}
+.bye-label{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:500;
+  font-size:1.4rem; color:var(--rust);
+}
+.bye-label .sub{
+  display:block; font-family:'JetBrains Mono',monospace; font-size:.68rem;
+  color:var(--ink-faint); letter-spacing:.16em; text-transform:uppercase;
+  font-style:normal; margin-top:8px;
+}
+.bye-body{max-width:720px}
+.bye-body h2{
+  font-family:'Fraunces',serif; font-weight:500;
+  font-size:clamp(2rem, 4vw, 3.2rem); line-height:1.08;
+  color:var(--pine-dark); letter-spacing:-0.02em; margin-bottom:24px; text-wrap:balance;
+}
+.bye-body h2 em{color:var(--rust); font-style:italic; font-weight:400}
+.bye-body p{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:1.2rem; line-height:1.55; color:var(--ink); margin-bottom:18px;
+}
+.cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:32px}
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:600;
+  font-size:.85rem; padding:14px 26px;
+  text-transform:uppercase; letter-spacing:.12em;
+  border:1px solid var(--pine-dark); cursor:pointer;
+  transition:all .2s; text-decoration:none; box-shadow:none;
+}
+.btn-primary{background:var(--pine-dark); color:var(--cream)}
+.btn-primary:hover{background:var(--rust); border-color:var(--rust); transform:translateY(-1px)}
+.btn-secondary{background:transparent; color:var(--pine-dark)}
+.btn-secondary:hover{background:var(--pine-dark); color:var(--cream)}
+
+/* ============= REACTIONS ============= */
+.subscribe{
+  max-width:1400px; margin:0 auto 64px; padding:48px 48px 0;
+  border-top:1px solid var(--cream-deeper); text-align:center;
+}
+.subscribe-label{
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--rust); letter-spacing:.18em; text-transform:uppercase;
+  margin-bottom:18px;
+}
+.subscribe h3{
+  font-family:'Fraunces',serif; font-weight:500; font-style:italic;
+  font-size:clamp(1.8rem, 3.2vw, 2.6rem); line-height:1.1;
+  color:var(--pine-dark); letter-spacing:-0.015em; margin-bottom:14px;
+  text-wrap:balance;
+}
+.subscribe p{
+  font-family:'Fraunces',serif; font-weight:400;
+  font-size:1.1rem; line-height:1.5; color:var(--ink);
+  max-width:560px; margin:0 auto 24px;
+}
+.subscribe-form{
+  display:flex; gap:0; justify-content:center; flex-wrap:wrap;
+  max-width:480px; margin:0 auto;
+}
+.subscribe-form input[type="email"]{
+  flex:1 1 260px; min-width:0;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:.95rem;
+  padding:14px 16px; border:1px solid var(--ink); background:var(--cream);
+  color:var(--ink); border-right:none; border-radius:0;
+  -webkit-appearance:none; appearance:none;
+}
+.subscribe-form input[type="email"]:focus{outline:none; border-color:var(--pine-dark); background:#fff}
+.subscribe-form button{
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:600;
+  font-size:.82rem; letter-spacing:.1em; text-transform:uppercase;
+  padding:14px 24px; border:1px solid var(--pine-dark);
+  background:var(--pine-dark); color:var(--cream); cursor:pointer;
+  transition:background .2s;
+}
+.subscribe-form button:hover{background:var(--rust); border-color:var(--rust)}
+.subscribe-note{
+  font-family:'JetBrains Mono',monospace; font-size:.7rem;
+  color:var(--ink-faint); letter-spacing:.1em; margin-top:14px;
+}
+@media (max-width:560px){
+  .subscribe-form{flex-direction:column; gap:0}
+  .subscribe-form input[type="email"]{
+    flex:0 0 auto; width:100%;
+    border:1px solid var(--ink); border-bottom:none;
+  }
+  .subscribe-form button{border-top:none}
+}
+
+/* ============= SIGN-OFF (above footer, on cream) ============= */
+.signoff{
+  max-width:1400px; margin:0 auto; padding:72px 48px 88px;
+  border-top:1px solid var(--ink);
+  display:grid; grid-template-columns:1fr auto; gap:48px; align-items:end;
+}
+.sign-off{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:500;
+  font-size:clamp(2.4rem, 4vw, 3.2rem); color:var(--pine-dark); line-height:1.05;
+  letter-spacing:-0.02em;
+}
+.sign-off-loc{
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:var(--ink-faint); letter-spacing:.14em; text-transform:uppercase;
+  margin-top:16px;
+}
+.signoff-meta{
+  font-family:'JetBrains Mono',monospace; font-size:.68rem;
+  color:var(--ink-faint); letter-spacing:.12em; text-transform:uppercase;
+  text-align:right; line-height:1.8;
+}
+.signoff-meta b{
+  display:block; color:var(--rust); font-weight:500;
+  font-size:.7rem; letter-spacing:.16em;
+}
+
+/* ============= SITE FOOTER (pine-dark, matches nobo.works) ============= */
+.site-footer{
+  background:var(--pine-dark); color:rgba(253,250,244,.7);
+  padding:52px 0 36px; border-top:none;
+}
+.site-footer::before{
+  content:""; display:block; position:absolute; left:0; right:0;
+  height:1px; background:rgba(253,250,244,.08);
+}
+.foot-inner{
+  max-width:1400px; margin:0 auto; padding:0 48px;
+  display:grid; grid-template-columns:1.2fr repeat(3,1fr); gap:40px; align-items:start;
+}
+.foot-brand{display:flex; flex-direction:column; gap:14px}
+.foot-brand .foot-wordmark{
+  font-family:'Fraunces',serif; font-weight:500;
+  font-size:1.35rem; color:#FDFAF4; letter-spacing:-.01em;
+}
+.foot-brand .foot-wordmark .dot{color:var(--pine-sage); font-weight:700}
+.foot-brand p{
+  font-family:'Fraunces',serif; font-style:italic; font-weight:400;
+  font-size:.92rem; line-height:1.5; max-width:30ch;
+  color:rgba(253,250,244,.7);
+}
+.foot-col h5{
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:700;
+  font-size:.7rem; letter-spacing:.14em; text-transform:uppercase;
+  color:rgba(253,250,244,.5); margin-bottom:14px;
+}
+.foot-col a{
+  display:block; font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.88rem; color:rgba(253,250,244,.8);
+  padding:4px 0; box-shadow:none; transition:color .15s;
+}
+.foot-col a:hover{color:var(--pine-sage)}
+.foot-col a.current{color:var(--pine-sage)}
+.foot-bottom{
+  max-width:1400px; margin:40px auto 0; padding:20px 48px 0;
+  border-top:1px solid rgba(253,250,244,.1);
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  font-family:'JetBrains Mono',monospace; font-size:.72rem;
+  color:rgba(253,250,244,.42); letter-spacing:.04em;
+}
+.foot-bottom .colophon-line{color:rgba(253,250,244,.55)}
+
+@media (max-width:760px){
+  .signoff{grid-template-columns:1fr; gap:24px}
+  .signoff-meta{text-align:left}
+  .foot-inner{grid-template-columns:1fr 1fr; gap:32px 24px; padding:0 24px}
+  .foot-brand{grid-column:1/-1}
+  .foot-bottom{padding:20px 24px 0; flex-direction:column; gap:10px}
+}
+
+/* ============= REVEAL ANIMATION ============= */
+.reveal{
+  opacity:0; transform:translateY(18px);
+  transition:opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1);
+}
+.reveal.in{opacity:1; transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1; transform:none}
+}
+
+/* ============= RESPONSIVE ============= */
+@media (max-width:1000px){
+  .cover-grid{grid-template-columns:1fr; gap:32px}
+  .cover-number{align-items:flex-start}
+  .cover-sub{grid-template-columns:1fr; gap:20px}
+  .cover-sub .dateline{text-align:left}
+  .opener, .edition, .spread-head, .spread-body, .bye-inner{grid-template-columns:1fr; gap:24px}
+  .spread-aside{position:static; margin-bottom:16px}
+  .opener-aside .marker{font-size:2.4rem}
+  .also-grid{grid-template-columns:repeat(6, 1fr); gap:28px}
+  .also-card, .also-card.feat, .also-card.small{grid-column:span 6}
+  .pullquote{margin:40px -24px; padding:56px 24px}
+  .pullquote::before{font-size:14rem}
+}
+@media (max-width:640px){
+  body{font-size:16px}
+  .folio-inner, .cover, .opener, .edition, .spread, .also, .bye, .subscribe, .signoff, .one-more-inner{
+    padding-left:24px; padding-right:24px;
+  }
+  .folio-inner{grid-template-columns:auto auto; gap:12px}
+  .folio-left{display:none}
+  .cover{padding-top:24px; padding-bottom:48px}
+  .cover-strip{flex-wrap:wrap; gap:8px; font-size:.62rem}
+  .cover-strip .left, .cover-strip .right{min-width:0; flex:1}
+  .cover-title{font-size:4.2rem; line-height:.9}
+  .cover-number .num{font-size:7rem}
+  .cover-sub p{font-size:1.2rem}
+  .opener-body p:first-child{font-size:1.6rem}
+  .spread-num{font-size:6rem}
+  .spread-title{font-size:2.2rem}
+  .prose p{font-size:1.1rem}
+  .prose.dropcap p:first-of-type::first-letter{font-size:3.4rem}
+  .pullquote{padding:48px 24px; margin:32px -24px}
+  .pullquote::before{font-size:10rem; top:-1rem}
+  .walkthrough-steps li{grid-template-columns:1fr; gap:8px}
+  .walkthrough-head, .walkthrough-steps{padding-left:24px; padding-right:24px}
+  .one-more{padding:72px 0}
+  .sign-off{font-size:1.8rem}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<nav class="folio">
+  <div class="folio-inner">
+    <div class="folio-left"><a href="https://nobo.works" class="clean" style="color:inherit">Nobo</a> · Field Notes</div>
+    <div class="folio-center">A weekly dispatch from the field</div>
+    <div class="folio-right">No. 02 · IV · MMXXVI</div>
+  </div>
+</nav>
+
+<!-- ============= COVER ============= -->
+<header class="cover">
+  <div class="cover-strip">
+    <div class="left">Volume I · No. 02</div>
+    <div class="center">By James Mason · Boulder, Colorado</div>
+    <div class="right">24 April 2026</div>
+  </div>
+
+  <div class="cover-grid">
+    <h1 class="cover-title reveal">
+      <span class="friday">Friday</span>
+      <span class="field">Field</span>
+      <span class="notes">Notes<span class="dot">.</span></span>
+    </h1>
+    <div class="cover-number reveal">
+      <div class="num">02</div>
+      <div class="label">Issue two</div>
+    </div>
+  </div>
+
+  <div class="cover-sub">
+    <p class="reveal">What's worth paying attention to in AI this week, <em>for people running their business.</em></p>
+    <div class="dateline reveal">12 min read<br>Ed. James</div>
+  </div>
+</header>
+
+<!-- ============= OPENER ============= -->
+<section class="opener">
+  <aside class="opener-aside reveal">
+    <div class="marker">Hey.</div>
+    <div class="marker-label">Editor's letter</div>
+  </aside>
+  <div class="opener-body reveal">
+    <p>Hey from Boulder.</p>
+    <p>Last Friday I wrote about Shopify wiring itself into the agent layer. This week Salesforce shipped Headless 360 and made the same architectural move. Two of the largest B2B platforms in the world, both re-architecting around agents instead of humans, inside the same month. That's a pattern, not a coincidence.</p>
+    <p><strong>The work above the platform is changing shape.</strong> It used to be production: build the page, configure the screen, ship the dashboard. It's becoming orchestration: run the system that decides which pages, screens, and dashboards happen, for which customer, at which moment. Different muscle. Same client. <em>The orchestration tier is the layer that survives.</em> The work below it is what gets absorbed. Operators above the platform have about twelve months to make that switch before the price compresses out from under them.</p>
+    <p>This issue: what Salesforce going headless really did, four things I shipped this week that say where I think this goes, and a daily-plan agent I built for a client that any operator can copy this weekend.</p>
+  </div>
+</section>
+
+<!-- ============= IN THIS EDITION ============= -->
+<section class="edition reveal">
+  <div class="edition-label">
+    In this edition
+    <span class="sub">Contents · IV.24.26</span>
+  </div>
+  <ol class="edition-list">
+    <li><a href="#top-of-mind">Salesforce went headless. The work above the platform just changed shape.</a><span class="pg">§ 01</span></li>
+    <li><a href="#the-shift">What I shipped this week, and why it matters for where this goes</a><span class="pg">§ 02</span></li>
+    <li><a href="#build">A daily-plan agent I built for a client. You can copy it this weekend.</a><span class="pg">§ 03</span></li>
+    <li><a href="#also">Three more things from the week</a><span class="pg">§ 04</span></li>
+    <li><a href="#one-more">The 90-day calendar test. Did your agent clear meetings, or add them?</a><span class="pg">§ 05</span></li>
+  </ol>
+</section>
+
+<!-- ============= § 01 TOP OF MIND ============= -->
+<article class="spread" id="top-of-mind">
+  <header class="spread-head">
+    <div class="spread-num-col reveal">
+      <div class="spread-num">01</div>
+      <div class="spread-label">Top of mind</div>
+      <div class="spread-label-sub">The work above the platform just changed shape</div>
+    </div>
+    <h2 class="spread-title reveal">Salesforce went <em>headless</em>. Now what?</h2>
+  </header>
+
+  <div class="spread-body">
+    <aside class="spread-aside reveal">
+      <span class="tag">Analysis</span>
+      The platforms are absorbing the click-through layer. Anyone selling on top has 12 months to stop being a producer and start being an orchestrator.
+    </aside>
+    <div class="prose dropcap reveal">
+      <h3>What happened</h3>
+      <p>This week Salesforce shipped Headless 360. The pitch reads like a feature drop. APIs first, the UI as a thin shell, agents treated as primary users. It isn't a feature drop. It's the second platform giant this month re-architecting around agents instead of humans. I covered Shopify making the same move in last Friday's issue. Different surface, same direction.</p>
+      <p>The architectural argument is the load-bearing one. <em>When agents use a platform 100x more than people do, designing the interface for human eyes is backwards.</em> The data, the endpoints, the action surface have to be machine-legible first. The chrome on top is decoration, and decoration is the first thing the platform stops paying for.</p>
+      <h3>Why this matters more than another platform launch</h3>
+      <p>Most weeks, a platform announcement is just news. Two giants making the same architectural choice in the same month, in public, with their pricing model attached, is a pattern. The rest of the week added more of it. OpenAI shipped workspace agents into ChatGPT. Anthropic put Managed Agents Memory into public beta. GPT-5.5 landed. Every announcement points the same direction: the platforms ship the pattern in days, and the layer above them, the agencies and operators and managers who sell into the platform, has not figured out what their job is yet.</p>
+      <p>The platform going headless doesn't just change the platform. It transforms the work that used to happen above it. If your job was to click through Salesforce, configure the screen, design the page, set up the dashboard, you are now competing with a free agent that does that work for pennies. The seat-priced layer above the platform is the layer most exposed.</p>
+    </div>
+  </div>
+
+  <aside class="pullquote reveal">
+    <div class="pullquote-text">When agents use a platform <em>100x</em> more than people do, designing the interface for human eyes is backwards.</div>
+  </aside>
+
+  <div class="spread-body" style="margin-top:56px">
+    <aside class="spread-aside"></aside>
+    <div class="prose reveal">
+      <h3>The shift</h3>
+      <p><strong>The job above the platform stops being production. It starts being orchestration.</strong> Less "I build the dashboard for this customer" and more "I run the system that decides which dashboard each customer sees, when, and what action it triggers." Same client. Different shape of business.</p>
+      <p>Two questions to run on any work your team owns right now. Who consumes the output? And what are they actually paying for? If the answer is "a person, sitting in front of a screen my team built, paying for time or seats," the price is on a clock. If the answer is "an outcome the agent fleet can't produce without my system above it," the price holds. The orchestration tier is the second answer.</p>
+      <h3>What to do this week</h3>
+      <p>Pick one recurring workflow your team runs that touches Salesforce, HubSpot, QuickBooks, Shopify, or Notion. The kind a person on your team does every Tuesday. Ask one question: did I design this so a person clicks through it, or so an agent reads the state, decides what to do, and acts on it? If the answer is "a person clicks through," that workflow is on a twelve-month clock. Build the orchestration tier above it.</p>
+      <p><em>Where in your team's week is there a recurring decision an agent could read, run, and report back on, while your people do the work only they can do?</em> That's the seam. That's where the next year of your business lives.</p>
+    </div>
+  </div>
+</article>
+
+<!-- ============= § 02 WHAT I SHIPPED ============= -->
+<article class="spread" id="the-shift">
+  <header class="spread-head">
+    <div class="spread-num-col reveal">
+      <div class="spread-num">02</div>
+      <div class="spread-label">What I shipped this week</div>
+      <div class="spread-label-sub">Four pieces of work that say where I think this goes</div>
+    </div>
+    <h2 class="spread-title reveal">If the work above the platform is changing, <em>I'd better be the one building it.</em></h2>
+  </header>
+
+  <div class="spread-body">
+    <aside class="spread-aside reveal">
+      <span class="tag">Build log</span>
+      I'm not interested in writing about the agent layer from a distance. Here's what I built this week that's directly downstream of the thesis above.
+    </aside>
+    <div class="prose reveal">
+      <h3>1. I rebuilt my own operating system. The enforcement layer is the load-bearing part.</h3>
+      <p>This week I refactored my entire personal Claude setup. Six layers (identity, operating, state, knowledge, capabilities, memory), thin routers at every directory boundary, single-home rule for every file, ownership tags in YAML frontmatter so duplication can't quietly creep back in. I retired two foundational documents I'd been working from for months. I archived 33 plugin skills, 38 agents, and 15 plans. The active namespace dropped to roughly half what it was.</p>
+      <p>The reason matters more than the result. Content isn't the hard part of building a personal or team OS. The hard part is the enforcement layer, the small set of mechanisms that keep the system organized as it grows. Without enforcement, an OS becomes a graveyard of well-meaning documents in eight months. With enforcement, it composes. Mine is five things: thin routers at every boundary, the single-home rule, `job:` frontmatter on specialized files, cadence separation, and a settled-decisions log so I stop relitigating things I already decided. None of these are clever. They're load-bearing because they're enforced, not because they're elegant.</p>
+      <p>I'm writing this up as a longer field piece next week. The argument: <em>enforcement isn't discipline. It's exposed seams.</em></p>
+
+      <h3>2. I built a service-as-software pipeline for a client. The numbers say something.</h3>
+      <p>I had a content migration job that, done by hand, would have been roughly 17 hours of cleanup, formatting, and validation across about 100 articles. I built a Claude-orchestrated pipeline instead. Skills for parsing source documents, normalizing headings, flagging missing metadata, and a 41-check validation rubric every article had to pass before it shipped. Total build time: 5 hours. Once it was running, a full corpus rebuild ran in under 60 seconds.</p>
+      <p>The number that matters isn't the speedup. It's that roughly 70 percent of what I built transfers directly to the next data transformation engagement. The skills, the rubric, the pipeline shape, all reusable across the next client of the same shape. Hourly billing is the wrong shape for this work. The right shape is outcome-based, and the only honest version of that is "you pay for the result, I keep the system." That's the bet on top of which the rest of Nobo gets built.</p>
+
+      <h3>3. I started building Ciarán, my chief-of-staff agent.</h3>
+      <p>Ciarán isn't a chatbot. It's a peer agent. Distinct voice, separable architecture, four mechanisms that force me past the comfortable-productive trap when I'm about to spend a sales day reorganizing my skills directory instead of selling. I locked the identity spec this week. Phase 2 starts next week: actual system prompt, actual Python, actual schedule. The first version that talks back is two weeks out.</p>
+      <p>This is the build-in-public bet. If I'm telling operators to build agent-grade systems for their work, I should be doing it for mine first. Ciarán is the system the system runs on.</p>
+
+      <h3>4. I sketched the Agentic-First Knowledge OS.</h3>
+      <p>I've been turning over the question of what knowledge work looks like when the agent is the primary reader. Not "ChatGPT with a sidebar over your Notion." Something different: a small operator-owned set of files, structured so an agent can read them, act on them, and write back. Vertical-specific operator packages on top. The horizontal piece is small enough I can ship a v0 in a weekend and use it for 30 days.</p>
+      <p>I'm writing about it on purpose, before I've decided whether it ships. If you've ever wished your knowledge system could think with you instead of just sit there, you're in the room I'm trying to build for.</p>
+    </div>
+  </div>
+</article>
+
+<!-- ============= § 03 BUILD ============= -->
+<article class="spread" id="build">
+  <header class="spread-head">
+    <div class="spread-num-col reveal">
+      <div class="spread-num">03</div>
+      <div class="spread-label">Build this week</div>
+      <div class="spread-label-sub">A two-hour build, then 30 seconds a day</div>
+    </div>
+    <h2 class="spread-title reveal"><em>A daily-plan agent</em> that actually plans your day.</h2>
+  </header>
+
+  <div class="spread-body">
+    <aside class="spread-aside reveal">
+      <span class="tag">Tactical</span>
+      For founders, operators, anyone whose day starts by guessing at the right thing to work on.
+    </aside>
+    <div class="prose reveal">
+      <h3>I built this for a client. It's running every morning.</h3>
+      <p>One of the operators I work with had the same broken 9am loop most teams run. Open the task tool, eyeball the calendar, mentally subtract meetings, pick something to work on. It cost him 20 to 40 minutes a morning, picked the wrong thing half the time, and three meetings later the priority he'd committed to was untouched. We replaced it with a daily-plan agent that runs the loop in 30 seconds and asks him better questions than he was asking himself.</p>
+      <p>It pulls today's tasks, checks his calendar, calculates real available time, surfaces the edge cases through quick chat prompts, then drops a tiered, time-blocked plan into the surface he already works in. Not an email he'll skim. The plan, in the chat where the rest of his day already lives.</p>
+      <p>First build took us two to three hours. Every morning after that takes 30 seconds of his attention, and the 20-minute decision is gone. Two weeks in, the capacity number was wrong (it always is), the modal questions surfaced two recurring categories of edge case he'd never named, and the plan started getting better than the one he was making by feel. <em>The system runs. He runs his day.</em></p>
+      <p>I'm sharing the full build below. You can stand it up this weekend.</p>
+
+      <div class="walkthrough" id="walkthrough">
+        <button class="walkthrough-head" onclick="toggleWalkthrough()">
+          <div>
+            <div class="walkthrough-head-title">How to build it yourself</div>
+            <div class="walkthrough-head-hook">Ten steps. ~2-3 hours the first time. Runs every weekday at 9am after that.</div>
+          </div>
+          <span class="arrow">›</span>
+        </button>
+        <div class="walkthrough-body">
+          <ol class="walkthrough-steps">
+            <li><div><strong style="font-style:italic;color:var(--pine-dark);font-weight:600">Why this exists.</strong> The morning planning loop most teams run badly: open task tool, eyeball calendar, mentally subtract meetings, pick what to do. Costs 20-40 minutes, picks the wrong thing half the time. The agent does it in 30 seconds and asks better questions than you would have.</div></li>
+            <li><div><strong style="font-style:italic;color:var(--pine-dark);font-weight:600">Prereqs.</strong> Claude Code or a Managed Agent. MCP connectors for your task system (ClickUp, Asana, Linear, or Notion) and Google Calendar. A capacity number. Default to 6.5 productive hours per workday and adjust after a week of data.</div></li>
+            <li><div><strong style="font-style:italic;color:var(--pine-dark);font-weight:600">Pull today's tasks.</strong> Filter for assignee = you, due ≤ today, status ≠ done. If your task system's API caps the filter response, do a two-phase fetch: first pull the filtered list with IDs and due dates, then fetch full details for the top 20 by priority. Caps the context so a 60-task backlog doesn't blow the agent up.</div></li>
+            <li><div><strong style="font-style:italic;color:var(--pine-dark);font-weight:600">Pull today's calendar.</strong> Today's events from Google Calendar. Sum the duration of meetings and any focus blocks already booked. Skip working-location events ("Home"). They aren't meetings.</div></li>
+            <li><div><strong style="font-style:italic;color:var(--pine-dark);font-weight:600">Capacity math.</strong>
+            <pre><code>available = daily_capacity − already_booked − buffer
+# default: 6.5 − sum(meetings) − 1.0</code></pre>
+            If <code>available</code> is zero or negative, it's a zero-capacity day. Don't skip the plan. Flag the top one or two non-negotiables as "if time permits" and move on.</div></li>
+            <li><div><strong style="font-style:italic;color:var(--pine-dark);font-weight:600">Edge-case modals.</strong> Three things the agent should never assume on. Personal blocks (gym, errand, school pickup): fully blocked, or available for light work? Tasks in review: quick five-minute reads, or real work that should fight for capacity? Tasks with no estimate or already over their estimate: what's the realistic remaining? Each one becomes a quick chat prompt: yes, no, skip. This is the part everyone leaves out. It's also the part that turns the plan from "the agent's best guess" into "what I actually said."</div></li>
+            <li><div><strong style="font-style:italic;color:var(--pine-dark);font-weight:600">Tier the work.</strong> Ordered, not just listed.
+            <pre><code>Tier 1: non-negotiable. Overdue or due today.
+Tier 2: high priority. Marked urgent or high.
+Tier 3: large focus blocks. 7+ hours, schedule in 3+ hour blocks.
+Tier 4: small batches. ≤1 hour each, group into one slot.
+Ad-hoc reviews. Grouped, no capacity allocated.</code></pre>
+            Walk the list, allocate <code>min(remaining_hours, available_hours)</code>, mark each task "complete today" or "log Xh today," subtract from capacity, stop when the bucket is empty.</div></li>
+            <li><div><strong style="font-style:italic;color:var(--pine-dark);font-weight:600">Present and log.</strong> Drop the plan into the conversation, time-blocked, rounded to 15 minutes, mapped around the meetings. Append a one-line CSV log of what was planned. A week from now you can open the log and see where you drift between planned and done. That's the data the agent gets better on.</div></li>
+            <li><div><strong style="font-style:italic;color:var(--pine-dark);font-weight:600">What to schedule it on.</strong> Daily, 9am local time, weekday only. Check the calendar for an all-day OOO event before doing anything else. Don't make a plan on a PTO day.</div></li>
+            <li><div><strong style="font-style:italic;color:var(--pine-dark);font-weight:600">What to expect after a week.</strong> The capacity number is wrong. Probably too high. Adjust. The real win is the modal step. By Friday you'll notice the agent asking the same two or three questions every morning. That means there are two or three categories of edge case in your week you've never named explicitly. Name them, and you're not making those decisions cold anymore.</div></li>
+          </ol>
+        </div>
+      </div>
+
+      <h3>Why it works</h3>
+      <p>The mechanical work, pulling tasks, summing meetings, doing the capacity math, runs in 30 seconds. The judgment calls, the ones only you can make about your week, get surfaced as quick yes/no/skip questions. By the time the plan is written, every assumption that mattered came from you. The agent just stopped you from making them cold.</p>
+
+      <h3>Why it compounds</h3>
+      <p>The CSV log is the whole point. Every morning a plan goes in, every evening reality lands somewhere different. A week of that data is a map of where your sense of your own week is wrong. The "two-hour" task that's always four. The Tuesday meetings that always run long. The in-review tasks that always come back the same day. Read the log on Friday, adjust the capacity number, add a tier rule. The plan next Monday is better than the plan today, because the data is yours.</p>
+
+      <div class="build-offer">
+        <p><strong>Want me to build it for you?</strong> Hit reply.</p>
+      </div>
+    </div>
+  </div>
+</article>
+
+<!-- ============= § 04 ALSO ============= -->
+<section class="also" id="also">
+  <header class="spread-head">
+    <div class="spread-num-col reveal">
+      <div class="spread-num">04</div>
+      <div class="spread-label">Also this week</div>
+      <div class="spread-label-sub">One thing to watch, one thing to read, one thing that's just beautiful</div>
+    </div>
+    <h2 class="spread-title reveal">Three more things worth <em>your minute.</em></h2>
+  </header>
+
+  <div class="also-grid">
+
+    <article class="also-card feat reveal">
+      <div class="also-card-num"><span>No. 01 · Beautiful · IV.24</span><span class="handle">@zan2434</span></div>
+      <h4>Flipbook. Every pixel streamed live from a model.</h4>
+      <p>This is the coolest thing I saw this week that has nothing to do with my business. Flipbook generates entirely live, frame by frame, from a model. No pre-rendered assets, no canned animations, just pixels coming out of inference in real time. Watch the demo. Notice the moment your brain registers that what you're looking at didn't exist a millisecond ago. That's the texture the next generation of interfaces is going to have. Static screens are going to feel old by the end of the year.</p>
+      <video controls preload="metadata" playsinline poster="assets/flipbook-poster.jpg" style="width:100%; max-width:100%; aspect-ratio:1280/802; margin-top:18px; border-radius:2px; background:var(--ink); display:block;">
+        <source src="assets/flipbook-demo.mp4" type="video/mp4">
+        Your browser doesn't support embedded video.
+      </video>
+      <a href="https://x.com/zan2434/status/2046982383430496444" class="link" target="_blank" rel="noopener" style="margin-top:14px; display:inline-block">See the original</a>
+    </article>
+
+    <article class="also-card reveal">
+      <div class="also-card-num"><span>No. 02 · Continuity · IV.24</span><span class="handle">From issue 01</span></div>
+      <h4>Last week I said it was an operating system, not a chatbot. This week the platforms agreed.</h4>
+      <p>Issue 01 made the argument that the AI thing your business needs is a system, not another tool. Seven days later, two of the largest B2B platforms in the world re-architected themselves around exactly that idea. The seat as the unit of value is over. The operating system above the platform is the thing worth building. I'll keep saying this until the people who sell on top of these platforms move first instead of last.</p>
+      <a href="issue-01.html" class="link">Re-read issue 01</a>
+    </article>
+
+    <article class="also-card reveal">
+      <div class="also-card-num"><span>No. 03 · Coming next week · IV.25</span><span class="handle">Field piece</span></div>
+      <h4>The enforcement layer most operating-system writeups skip.</h4>
+      <p>Working title: <em>The five things that keep an OS from becoming a graveyard.</em> Argument: most "Team OS" content is a content map. The interesting question is what stops the content from rotting. Five mechanisms make the difference: thin routers, single-home rule, ownership tags, cadence separation, settled-decisions log. None of them are clever. All of them are load-bearing. Drops next week.</p>
+      <a href="mailto:james@nobo.works?subject=Send%20me%20the%20enforcement%20piece" class="link">Send me a copy when it drops</a>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============= § 05 ONE MORE THING ============= -->
+<section class="one-more" id="one-more">
+  <div class="one-more-inner">
+    <div class="tag reveal">§ 05 · One more thing</div>
+    <h2 class="reveal">The 90-day calendar test.</h2>
+    <div class="one-more-body reveal">
+      <p>Most agent and "AI assistant" deployments fail one test. They get bolted on top of everything you already do. You add the agent, the agent gives you outputs, you schedule a meeting to review the outputs, and now your week has a new recurring 30-minute slot you didn't have before. The agent saved you nothing. The calendar got worse.</p>
+      <p>The bar for a real chief-of-staff agent, or any orchestration-tier system, is the inverse. It should <em>eat</em> the meetings whose only purpose was coordinating the work, not pile new ones on top.</p>
+      <p>Here's the test. Imagine 90 days from now your agent is fully running. Open your calendar. The status meeting that exists because nobody trusts the system to update itself, gone. The Tuesday "let's just sync on this," gone. The 30-minute briefing where someone reads you the dashboard, gone. The recurring review where you hand-walk the team through the same numbers, gone.</p>
+      <p>If those meetings are still on the calendar in 90 days, you didn't build a system. You bought a chatbot.</p>
+      <p>The orchestration tier is what makes the meetings disappear. The agent doesn't just produce the report. It produces the report, posts it, flags what needs attention, schedules the action, and writes back to the system of record. Coordination disappears because coordination was never the work. It was the friction of nobody trusting the system enough to let it run.</p>
+      <p>Look at your calendar in 90 days. If it isn't measurably clearer, you didn't build the orchestration tier. You bought another tool.</p>
+    </div>
+    <div class="one-more-filed">Filed under · Operating principles</div>
+  </div>
+</section>
+
+<!-- ============= § 06 BEFORE YOU GO ============= -->
+<section class="bye" id="bye">
+  <div class="bye-inner">
+    <aside class="bye-label reveal">
+      Before you go
+      <span class="sub">§ 06 · Reply · Show up</span>
+    </aside>
+    <div class="bye-body reveal">
+      <h2>Reply and tell me <em>what you're building.</em></h2>
+      <p>Or what's stuck. Or which of the platforms above you sell on top of and what it's doing to your week. I read every one.</p>
+      <p>Office hours are open Thursday, 10am to noon, at Rayback Collective. No agenda, no pitch, just show up.</p>
+      <div class="cta-row">
+        <a href="mailto:james@nobo.works?subject=Re%3A%20Field%20Notes%20No.%2002" class="btn btn-primary clean">Reply to this issue</a>
+        <button class="btn btn-secondary" onclick="addToCalendar()">Add office hours to calendar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= SUBSCRIBE ============= -->
+<section class="subscribe reveal">
+  <div class="subscribe-label">Next Friday · in your inbox</div>
+  <h3>Get the next dispatch.</h3>
+  <p>Weekly field notes every Friday. What's worth paying attention to in AI this week, for people running their business.</p>
+  <form class="subscribe-form" action="https://script.google.com/macros/s/AKfycbzNCP7NBA9vjdqTQZc7x5C9blNaVJPh--Xqub1exx_fJ2_ZK0pJgsmhit0NqfV4SEw1fQ/exec" method="POST" onsubmit="handleSubscribe(event)">
+    <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address">
+    <button type="submit">Subscribe</button>
+  </form>
+  <div class="subscribe-note" id="subscribeNote">One issue a week. Unsubscribe in one click.</div>
+</section>
+
+<!-- ============= SIGN-OFF ============= -->
+<section class="signoff reveal">
+  <div>
+    <div class="sign-off">James,<br><em>Boulder.</em></div>
+    <div class="sign-off-loc">See you next Friday</div>
+  </div>
+  <div class="signoff-meta">
+    <b>Filed</b>
+    24 April 2026<br>
+    from Boulder, Colorado
+  </div>
+</section>
+
+<!-- ============= SITE FOOTER ============= -->
+<footer class="site-footer">
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <span class="foot-wordmark">nobo<span class="dot">.</span></span>
+      <p>your ai partner in boulder.</p>
+    </div>
+    <div class="foot-col">
+      <h5>Site</h5>
+      <a href="https://nobo.works">What I build</a>
+      <a href="mailto:james@nobo.works">james@nobo.works</a>
+    </div>
+    <div class="foot-col">
+      <h5>Read</h5>
+      <a href="#" class="current">Friday Field Notes</a>
+    </div>
+    <div class="foot-col">
+      <h5>Find me</h5>
+      <a href="https://x.com/james_t_mason3" target="_blank" rel="noopener">Twitter / X</a>
+      <a href="https://www.linkedin.com/in/james-t-mason/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 nobo works llc · boulder, co</span>
+    <span class="colophon-line">set in fraunces &amp; plus jakarta · a dispatch of nobo, est. 2025</span>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js" defer></script><script>
+// progress
+const pf = document.getElementById('progressFill');
+function updateProgress(){
+  const h = document.documentElement;
+  const scrolled = h.scrollTop || document.body.scrollTop;
+  const height = h.scrollHeight - h.clientHeight;
+  pf.style.width = Math.min(100, (scrolled / height) * 100) + '%';
+}
+window.addEventListener('scroll', updateProgress, {passive:true});
+updateProgress();
+
+// reveal on scroll
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, {threshold:0.1, rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// walkthrough
+function toggleWalkthrough(){
+  document.getElementById('walkthrough').classList.toggle('open');
+}
+
+// subscribe — posts to an Apps Script webhook, shows inline confirmation
+function handleSubscribe(e){
+  e.preventDefault();
+  const form = e.target;
+  const endpoint = form.action;
+  const note = document.getElementById('subscribeNote');
+  const email = form.querySelector('input[name="email"]').value.trim();
+  if(!email) return;
+  // If the endpoint hasn't been wired yet, fall back to a mailto so nothing 404s.
+  if(endpoint.indexOf('PLACEHOLDER') !== -1){
+    window.location.href = `mailto:james@nobo.works?subject=Subscribe%20to%20Field%20Notes&body=${encodeURIComponent(email)}`;
+    return;
+  }
+  note.textContent = 'Sending…';
+  fetch(endpoint, {
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body: new URLSearchParams({email, source:'field-notes-02'}).toString()
+  }).then(()=>{
+    form.reset();
+    note.textContent = 'You’re in. See you Friday.';
+    note.style.color = 'var(--pine-dark)';
+  }).catch(()=>{
+    note.textContent = 'Something went sideways. Email james@nobo.works and I’ll add you.';
+    note.style.color = 'var(--rust)';
+  });
+}
+
+// calendar — next Thursday 10am–noon MT, weekly recurring
+function addToCalendar(){
+  const pad = n => String(n).padStart(2,'0');
+  const fmtUTC = d =>
+    `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
+  // Find next Thursday in Mountain Time. 10am MDT = 16:00 UTC, 10am MST = 17:00 UTC.
+  // Office hours run Mar–Nov during MDT primarily; use 16:00 UTC as the canonical time.
+  const now = new Date();
+  const dow = now.getUTCDay(); // 0=Sun..4=Thu
+  let daysUntilThu = (4 - dow + 7) % 7;
+  // If today is Thursday but past 10am MT, skip to next week
+  const hoursNowUTC = now.getUTCHours() + now.getUTCMinutes()/60;
+  if (daysUntilThu === 0 && hoursNowUTC >= 16) daysUntilThu = 7;
+  const start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + daysUntilThu, 16, 0, 0));
+  const end   = new Date(start.getTime() + 2*60*60*1000);
+  const uid   = `officehours-${fmtUTC(start).slice(0,8)}@nobo.works`;
+  const ics = [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Nobo//Field Notes//EN','CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    `UID:${uid}`,
+    `DTSTAMP:${fmtUTC(new Date())}`,
+    `DTSTART:${fmtUTC(start)}`,
+    `DTEND:${fmtUTC(end)}`,
+    'RRULE:FREQ=WEEKLY;BYDAY=TH',
+    'SUMMARY:Office hours with James (Nobo)',
+    'LOCATION:Rayback Collective, Boulder, CO',
+    'DESCRIPTION:No agenda, no pitch, just show up.',
+    'END:VEVENT','END:VCALENDAR'
+  ].join('\r\n');
+  const blob = new Blob([ics],{type:'text/calendar'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'nobo-office-hours.ics';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+</script>
+</body>
+</html>
