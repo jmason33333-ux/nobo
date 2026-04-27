@@ -3,18 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nobo · Guides</title>
+<title>Nobo · Friday Field Notes</title>
+<meta name="description" content="A weekly dispatch from the applied frontier of AI. What's working for people running their business, what isn't, and what I'm building next.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 /* ═══════════════════════════════════════════════════
-   NOBO · CRAFTSMAN REGISTER · GUIDE DIRECTORY
-   Index page for all published guides.
-   Same register as individual guides (Lora display,
-   Arabic chrome, single-column 880px) but no step
-   format, prereq card, or warning callout.
+   NOBO · CRAFTSMAN REGISTER · FIELD NOTES DIRECTORY
+   Archive index for the Friday Field Notes periodical.
+   Same shell as /guides/ — sticky mast, 880px column,
+   issue cards in reverse-chrono order. Adapted with a
+   periodical kicker and dateline.
    ═══════════════════════════════════════════════════ */
 
 :root{
@@ -99,6 +100,13 @@ body::before{
 .title-block{
   max-width:880px;margin:0 auto;padding:80px 32px 56px;
 }
+.title-block .vol{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--rust);margin-bottom:18px;display:flex;align-items:center;gap:10px;
+}
+.title-block .vol::before{
+  content:"";width:18px;height:1px;background:var(--rust);
+}
 .title-block h1{
   font-family:var(--serif);font-weight:600;
   font-size:clamp(2.4rem, 5.5vw, 3.8rem);line-height:1.05;letter-spacing:-.02em;
@@ -110,12 +118,12 @@ body::before{
   margin-bottom:28px;
 }
 
-/* ─── GUIDE CARDS ─── */
-.guides{
+/* ─── ISSUE CARDS ─── */
+.issues{
   max-width:880px;margin:0 auto;padding:0 32px 64px;
   display:grid;grid-template-columns:1fr;gap:20px;
 }
-.guide-card{
+.issue-card{
   background:var(--white);
   border:1px solid var(--cream-deeper);
   border-radius:10px;
@@ -123,35 +131,38 @@ body::before{
   display:block;
   transition:box-shadow .2s, transform .2s, border-color .2s;
 }
-.guide-card:hover{
+.issue-card:hover{
   box-shadow:0 12px 32px rgba(28,24,14,.12);
   transform:translateY(-2px);
   border-color:var(--pine-mid);
 }
-.guide-card .kicker{
+.issue-card .kicker{
   font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
   color:var(--rust);font-weight:500;margin-bottom:12px;
-  display:flex;align-items:center;gap:10px;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
 }
-.guide-card .kicker::before{
+.issue-card .kicker::before{
   content:"";width:18px;height:1px;background:var(--rust);
 }
-.guide-card h2{
+.issue-card .kicker .pipe{color:var(--cream-deeper)}
+.issue-card .kicker .date{color:var(--ink-soft)}
+.issue-card h2{
   font-family:var(--serif);font-weight:600;font-size:1.5rem;
-  color:var(--pine-dark);line-height:1.2;letter-spacing:-.015em;
-  margin-bottom:10px;text-wrap:balance;
+  color:var(--pine-dark);line-height:1.25;letter-spacing:-.015em;
+  margin-bottom:12px;text-wrap:balance;
 }
-.guide-card h2 .dot{color:var(--rust)}
-.guide-card .desc{
+.issue-card h2 em{font-style:italic;color:var(--pine)}
+.issue-card h2 .dot{color:var(--rust)}
+.issue-card .desc{
   font-family:var(--serif);font-size:1.05rem;line-height:1.6;
-  color:var(--ink-mid);max-width:58ch;margin-bottom:14px;
+  color:var(--ink-mid);max-width:62ch;margin-bottom:14px;
 }
-.guide-card .meta{
+.issue-card .meta{
   font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
   color:var(--ink-muted);
   display:flex;align-items:center;gap:8px;
 }
-.guide-card .meta::before{
+.issue-card .meta::before{
   content:"";width:14px;height:1px;background:var(--cream-deeper);
 }
 
@@ -230,7 +241,7 @@ body::before{
 @media (max-width:780px){
   .mast{grid-template-columns:1fr;text-align:center;gap:6px;padding:10px 20px}
   .mast-l,.mast-r{justify-self:center}
-  .title-block,.guides{padding-left:20px;padding-right:20px}
+  .title-block,.issues{padding-left:20px;padding-right:20px}
   .cta{padding:56px 20px}
   .cta-inner{grid-template-columns:1fr;gap:32px}
   .colo-inner{grid-template-columns:1fr;gap:28px}
@@ -239,7 +250,7 @@ body::before{
 
 @media (max-width:480px){
   .title-block{padding-top:56px;padding-bottom:40px}
-  .guide-card{padding:24px 24px}
+  .issue-card{padding:24px 24px}
 }
 </style>
 </head>
@@ -252,10 +263,10 @@ body::before{
   <div class="mast-l">
     <span class="mast-wordmark"><a href="https://www.nobo.works">nobo<span class="dot">.</span></a></span>
     <span class="mast-pipe">&middot;</span>
-    <span>Guides</span>
+    <span>Field Notes</span>
   </div>
-  <div class="mast-c">a practitioner's field manual library</div>
-  <div class="mast-r">3 guides</div>
+  <div class="mast-c">a weekly dispatch from the applied frontier</div>
+  <div class="mast-r">2 issues</div>
   <div class="mast-progress" id="progress"></div>
 </header>
 
@@ -263,34 +274,38 @@ body::before{
      TITLE BLOCK
      ═══════════════════════════════════════════════════ -->
 <section class="title-block">
-  <h1>Field Manuals<span class="dot">.</span></h1>
-  <p class="lede">Practical guides for getting the most out of Claude Cowork. Written by a practitioner, not a vendor.</p>
+  <div class="vol">Volume I &middot; 2026</div>
+  <h1>Friday Field Notes<span class="dot">.</span></h1>
+  <p class="lede">A weekly dispatch from the applied frontier of AI. What's working for people running their business, what isn't, and what I'm building next.</p>
 </section>
 
 <!-- ═══════════════════════════════════════════════════
-     GUIDE CARDS
+     ISSUE CARDS  (newest first)
      ═══════════════════════════════════════════════════ -->
-<section class="guides">
+<section class="issues">
 
-  <a href="/guides/how-to-set-up-claude-cowork" class="guide-card">
-    <div class="kicker">Guide &#8470; 01</div>
-    <h2>How to Set Up Claude Cowork<span class="dot">.</span></h2>
-    <p class="desc">The setup guide that turns a chatbot into a second employee. Five steps, twenty minutes, no code required.</p>
-    <div class="meta">~15 min read</div>
+  <a href="/field-notes/issue-02" class="issue-card">
+    <div class="kicker">
+      <span>Issue &#8470; 02</span>
+      <span class="pipe">&middot;</span>
+      <span class="date">24 April 2026</span>
+    </div>
+    <h2>Salesforce went <em>headless</em>. Now what<span class="dot">?</span></h2>
+    <p class="desc">What Salesforce going headless really did, four things I shipped this week that say where I think this goes, and a daily-plan agent I built for a client that any operator can copy this weekend.</p>
+    <div class="meta">12 min read</div>
   </a>
 
-  <a href="/guides/delegation-guide" class="guide-card">
-    <div class="kicker">Guide &#8470; 02</div>
-    <h2>How to Delegate to Claude<span class="dot">.</span></h2>
-    <p class="desc">The brief format, the specialist skills, and what &lsquo;done&rsquo; looks like. The daily reference for teams using Foundation.</p>
-    <div class="meta">~5 min read</div>
-  </a>
-
-  <a href="/guides/foundation-plugin" class="guide-card">
-    <div class="kicker">Guide &#8470; 03</div>
-    <h2>The Foundation Plugin<span class="dot">.</span></h2>
-    <p class="desc">17 skills built around how professional services teams actually work. Install once, use everywhere.</p>
-    <div class="meta">~15 min read</div>
+  <a href="/field-notes/issue-01" class="issue-card">
+    <div class="kicker">
+      <span>Issue &#8470; 01</span>
+      <span class="pipe">&middot;</span>
+      <span class="date">17 April 2026</span>
+      <span class="pipe">&middot;</span>
+      <span class="date">The inaugural issue</span>
+    </div>
+    <h2>Shopify just <em>wired itself</em> into the agent layer<span class="dot">.</span></h2>
+    <p class="desc">What's worth paying attention to in AI this week, for people running their business. Inside: the Shopify AI Toolkit, why Opus 4.7 made every system you already built better for free, and an onboarding agent that delivers your best onboarding every time.</p>
+    <div class="meta">11 min read</div>
   </a>
 
 </section>
@@ -301,14 +316,14 @@ body::before{
 <section class="cta">
   <div class="cta-inner">
     <div class="cta-block">
-      <h3>Ready to go<span class="dot">?</span></h3>
-      <p>Tell me what your Tuesday looks like. I'll tell you what changes.</p>
-      <a href="https://www.nobo.works/#coffee" class="cta-link">let's grab coffee &rarr;</a>
+      <h3>Get the next one in your inbox<span class="dot">.</span></h3>
+      <p>One issue a week. What's working in AI for the businesses I work with, what isn't, and what I'm building next.</p>
+      <a href="https://www.nobo.works/#coffee" class="cta-link">subscribe &rarr;</a>
     </div>
     <div class="cta-block">
-      <h3>Want to learn more first<span class="dot">?</span></h3>
-      <p>A weekly dispatch from the field. What's working, what isn't, what I'm building next.</p>
-      <a href="/field-notes" class="cta-link">friday field notes &rarr;</a>
+      <h3>Want to put it to work<span class="dot">?</span></h3>
+      <p>Tell me what your Tuesday looks like. I'll tell you what changes.</p>
+      <a href="https://www.nobo.works/#coffee" class="cta-link">let's grab coffee &rarr;</a>
     </div>
   </div>
 </section>
@@ -323,15 +338,14 @@ body::before{
       <p>ai that actually shows up to work.</p>
     </div>
     <div>
-      <h6>Guides</h6>
-      <a href="/guides/how-to-set-up-claude-cowork">&#8470; 01 &middot; How to Set Up Claude Cowork</a>
-      <a href="/guides/delegation-guide">&#8470; 02 &middot; How to Delegate to Claude</a>
-      <a href="/guides/foundation-plugin">&#8470; 03 &middot; The Foundation Plugin</a>
+      <h6>Field Notes</h6>
+      <a href="/field-notes/issue-02">&#8470; 02 &middot; Salesforce went headless</a>
+      <a href="/field-notes/issue-01">&#8470; 01 &middot; The inaugural issue</a>
     </div>
     <div>
       <h6>Find me</h6>
       <a href="https://www.nobo.works">back to nobo.works &rarr;</a>
-      <a href="/field-notes">friday field notes &rarr;</a>
+      <a href="/guides">field manuals &rarr;</a>
     </div>
   </div>
   <div class="colo colo-bottom">
