@@ -79,8 +79,42 @@ strong,b{font-weight:600}
 .nav-links{display:flex;gap:28px;justify-self:center}
 .nav-links a{font-family:var(--sans);font-weight:500;font-size:.9rem;color:var(--text-mid);transition:color .15s}
 .nav-links a:hover{color:var(--pine-dark)}
-.nav-right{display:flex;align-items:center;gap:16px}
+.nav-right{display:flex;align-items:center;gap:12px}
 .nav-meta{font-family:var(--mono);font-size:.7rem;color:var(--text-muted);letter-spacing:.06em}
+
+/* hamburger toggle (mobile only) */
+.nav-toggle{
+  display:none;background:transparent;border:none;cursor:pointer;
+  width:36px;height:36px;padding:0;
+  align-items:center;justify-content:center;flex-direction:column;gap:5px;
+  border-radius:6px;transition:background .15s;
+}
+.nav-toggle:hover{background:var(--cream)}
+.nav-toggle-bar{display:block;width:20px;height:1.6px;background:var(--pine-dark);border-radius:1px;transition:transform .2s,opacity .2s}
+.nav-toggle.open .nav-toggle-bar:nth-child(1){transform:translateY(3.3px) rotate(45deg)}
+.nav-toggle.open .nav-toggle-bar:nth-child(2){transform:translateY(-3.3px) rotate(-45deg)}
+
+/* slide-down mobile drawer */
+.nav-drawer{
+  display:none;
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+  padding:8px 22px 18px;
+  flex-direction:column;
+  gap:2px;
+}
+.nav-drawer[hidden]{display:none !important}
+.nav-drawer.open{display:flex}
+.nav-drawer a{
+  font-family:var(--sans);font-weight:500;font-size:1rem;color:var(--text-dark);
+  padding:14px 6px;border-bottom:1px solid var(--line);
+}
+.nav-drawer a:last-child{border-bottom:none}
+.nav-drawer .nav-drawer-cta{
+  margin-top:10px;background:var(--pine-dark);color:#FFFFFF;
+  text-align:center;border-radius:8px;padding:14px;border-bottom:none;
+  font-weight:600;
+}
 .btn{font-family:var(--sans);font-weight:700;font-size:.88rem;cursor:pointer;transition:all .15s;border:none;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .btn-primary{background:var(--pine-dark);color:var(--white);padding:11px 20px;border-radius:8px}
 .btn-primary:hover{background:var(--pine);transform:translateY(-1px);box-shadow:0 4px 14px rgba(38,62,49,.2)}
@@ -178,6 +212,12 @@ strong,b{font-weight:600}
 
 @media (max-width:780px){
   .demo-body{height:460px;max-height:460px;padding:24px 22px}
+  /* condense the chrome + foot on mobile so nothing wraps */
+  .demo-chrome{padding:10px 14px;gap:8px}
+  .demo-title{font-size:.66rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .demo-foot{padding:9px 14px;font-size:.62rem;gap:8px;flex-wrap:nowrap;white-space:nowrap;overflow:hidden}
+  .demo-foot .spec{flex-shrink:0}
+  .demo-foot .foot-extra{display:none}
 }
 
 /* ─── MESSAGES (Cowork-mirror) ─── */
@@ -310,8 +350,9 @@ strong,b{font-weight:600}
 
 /* pause/play control */
 .demo-ctrl{
+  display:none !important;
   position:absolute;top:12px;right:16px;z-index:2;
-  display:inline-flex;align-items:center;gap:6px;
+  align-items:center;gap:6px;
   font-family:var(--mono);font-size:.66rem;color:var(--text-muted);
   letter-spacing:.06em;text-transform:uppercase;
   background:transparent;border:none;cursor:pointer;padding:4px 8px;border-radius:4px;
@@ -552,6 +593,8 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   .nav-inner{padding:14px 22px;gap:16px;grid-template-columns:auto auto}
   .nav-links{display:none}
   .nav-meta{display:none}
+  .nav-cta{display:none}
+  .nav-toggle{display:inline-flex}
   .hero{padding:48px 0 64px}
   .hero-inner{padding:0 22px}
   .hero-grid{grid-template-columns:1fr;gap:48px}
@@ -653,15 +696,8 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   transition:transform .18s,box-shadow .18s;
 }
 .wf:hover{transform:translateY(-2px);box-shadow:var(--shadow-card)}
-.wf--cream{background:var(--cream)}
-.wf--pine{background:var(--pine-dark);color:#FFFFFF;border-color:transparent}
-.wf--pine h3{color:#FFFFFF}
-.wf--pine p{color:rgba(255,255,255,.92)}
-.wf--pine .wf-num{color:rgba(255,255,255,.72)}
-.wf--rust{background:var(--accent);color:#FFFFFF;border-color:transparent}
-.wf--rust h3{color:#FFFFFF}
-.wf--rust p{color:rgba(255,255,255,.95)}
-.wf--rust .wf-num{color:rgba(255,255,255,.78)}
+
+/* base card type — defaults for cream/light cards */
 .wf-num{
   font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;color:var(--text-soft);
   margin-bottom:14px;
@@ -671,11 +707,23 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   color:var(--pine-dark);margin:0 0 10px;text-wrap:balance;
 }
 .wf h3 .dot{color:var(--accent)}
-.wf--pine h3 .dot,.wf--rust h3 .dot{color:#FFFFFF}
 .wf p{
   font-family:var(--sans);font-size:.95rem;line-height:1.55;color:var(--text-mid);
   margin:0 0 18px;flex:1;
 }
+
+/* variants — specificity bumped (.wf.wf--X) so they actually override .wf p / .wf h3 */
+.wf--cream{background:var(--cream)}
+.wf.wf--pine{background:var(--pine-dark);color:#FFFFFF;border-color:transparent}
+.wf.wf--pine h3{color:#FFFFFF}
+.wf.wf--pine p{color:#FFFFFF}
+.wf.wf--pine .wf-num{color:rgba(255,255,255,.78)}
+.wf.wf--pine h3 .dot{color:#FFFFFF}
+.wf.wf--rust{background:var(--accent);color:#FFFFFF;border-color:transparent}
+.wf.wf--rust h3{color:#FFFFFF}
+.wf.wf--rust p{color:#FFFFFF}
+.wf.wf--rust .wf-num{color:rgba(255,255,255,.85)}
+.wf.wf--rust h3 .dot{color:#FFFFFF}
 .wf-tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto}
 .wf-tool{
   display:inline-flex;align-items:center;gap:6px;
@@ -699,47 +747,6 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 @media (max-width:640px){
   .wf{flex:0 0 86%}
   .wf-grid{padding:6px 20px 28px;margin:0 -20px}
-}
-
-/* ─── WHY NOBO, Program OS ─── */
-.why-grid{max-width:780px;margin:0 auto}
-.why-story{display:flex;flex-direction:column;gap:28px}
-.why-lede{
-  font-family:var(--serif);font-size:1.2rem;line-height:1.55;color:var(--cream);
-  margin:0;text-wrap:balance;
-}
-.why-lede em{font-style:italic;color:var(--pine-sage)}
-.why-shape{
-  display:flex;align-items:center;justify-content:center;gap:32px;
-  padding:32px 24px;border:1px dashed rgba(245,240,230,.28);border-radius:8px;
-  background:rgba(38,62,49,.32);
-}
-.why-shape-from,.why-shape-to{text-align:center;display:flex;flex-direction:column;gap:6px}
-.why-shape-num{
-  font-family:var(--serif);font-weight:700;font-size:clamp(2.4rem,5vw,3.8rem);
-  line-height:1;color:var(--cream);letter-spacing:-.02em;
-}
-.why-shape-to .why-shape-num{color:var(--pine-sage)}
-.why-shape-lbl{
-  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
-  color:rgba(245,240,230,.55);
-}
-.why-shape-arrow{
-  font-family:var(--serif);font-size:2rem;color:var(--accent);font-weight:300;
-}
-.why-bridge{
-  font-family:var(--serif);font-size:1.08rem;line-height:1.6;color:rgba(245,240,230,.85);
-  margin:0;text-wrap:balance;
-}
-.why-bridge em{font-style:italic;color:var(--cream)}
-.why-creds{
-  font-family:var(--sans);font-weight:500;font-size:1rem;line-height:1.55;
-  color:var(--cream);margin:0;letter-spacing:-.005em;
-}
-.why-creds strong{font-weight:600;color:var(--cream)}
-.why-boulder{
-  font-family:var(--mono);font-size:.85rem;color:rgba(245,240,230,.55);margin:0;
-  padding-top:20px;border-top:1px solid rgba(245,240,230,.1);
 }
 
 /* ─── PRICING + CTA UPDATES ─── */
@@ -768,6 +775,9 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 }
 .cta-form textarea{resize:vertical;min-height:80px;font-family:var(--sans);line-height:1.5}
 .cta-form .btn{align-self:flex-start;margin-top:6px}
+/* on dark CTA, primary button needs to invert: cream surface, pine ink */
+.cta .btn-primary{background:var(--cream);color:var(--pine-dark)}
+.cta .btn-primary:hover{background:#FFFFFF;color:var(--pine-dark);box-shadow:0 4px 18px rgba(0,0,0,.18)}
 @media (max-width:540px){
   .cta-form-row{grid-template-columns:1fr}
 }
@@ -788,8 +798,18 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
       <a href="/field-notes">Field Notes</a>
     </div>
     <div class="nav-right">
-      <a href="#coffee" class="btn btn-primary">Let's grab coffee</a>
+      <a href="#coffee" class="btn btn-primary nav-cta">Let's grab coffee</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
     </div>
+  </div>
+  <div class="nav-drawer" id="navDrawer" hidden>
+    <a href="#how">How it works</a>
+    <a href="/guides">Guides</a>
+    <a href="/field-notes">Field Notes</a>
+    <a href="#coffee" class="nav-drawer-cta">Let's grab coffee</a>
   </div>
 </nav>
 
@@ -1047,7 +1067,9 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
         <div class="demo-foot">
           <span class="spec">Nobo System</span>
           <span class="dot-sep"></span>
-          <span>runs in Claude Cowork · your data stays yours</span>
+          <span class="foot-cowork">runs in Claude Cowork</span>
+          <span class="dot-sep foot-extra"></span>
+          <span class="foot-extra">your data stays yours</span>
         </div>
       </div>
       </div>
@@ -1399,40 +1421,6 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   </div>
 </section>
 
-<!-- ─── WHY NOBO, Program OS story ─── -->
-<section class="section section-dark" id="why">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">Why Nobo</span>
-      <h2 class="sec-title">Program OS for the team <em>you've got<span class="dot">.</span></em></h2>
-    </div>
-
-    <div class="why-grid">
-      <div class="why-story">
-        <p class="why-lede"><em>At Stripe I led the program operating system work for Risk.</em> We took 50-page procedural workflows and turned them into 8-question guided processes. The team operated faster, with less error, with the same headcount. That's program OS work: build the system the team uses, so the team can stop building it ad-hoc every time.</p>
-
-        <div class="why-shape">
-          <div class="why-shape-from">
-            <div class="why-shape-num">50</div>
-            <div class="why-shape-lbl">page workflow</div>
-          </div>
-          <div class="why-shape-arrow">→</div>
-          <div class="why-shape-to">
-            <div class="why-shape-num">8</div>
-            <div class="why-shape-lbl">guided questions</div>
-          </div>
-        </div>
-
-        <p class="why-bridge">Same lens at Nobo. Most small businesses have AI tools but no operating system around them. The work isn't <em>"apply AI to your business."</em> It's <em>"build the system your team uses, so AI fits the way you actually work."</em> Different scale. Same instinct.</p>
-
-        <p class="why-creds"><strong>Ten years at Stripe and Lyft. Certified Claude AI systems architect. The partner you text when it matters.</strong></p>
-
-        <p class="why-boulder">I'm based in Boulder. I work with teams wherever they are.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ─── PRICING + CTA ─── -->
 <section class="cta" id="coffee">
   <div class="cta-inner">
@@ -1450,8 +1438,6 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
       <textarea name="tuesday" placeholder="What's eating your Tuesday?" rows="3" required></textarea>
       <button class="btn btn-primary big" type="submit">Let's grab coffee</button>
     </form>
-
-    <p class="cta-sig">Still here next month<span class="dot">.</span></p>
   </div>
 </section>
 
@@ -1469,7 +1455,6 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
       <a href="#how">How it works</a>
       <a href="#workflows">Workflow library</a>
       <a href="#vs">Out-of-the-box vs. Nobo</a>
-      <a href="#why">Why Nobo</a>
     </div>
     <div class="foot-col">
       <h5>Writing</h5>
@@ -1495,7 +1480,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 // playback + a hold, autoplay advances to the next pane. Manual tab click aborts + restarts there.
 
 const PANE_NAMES = ['prep','proposal','meeting','close','plan'];
-const SPEED = { type: 14, typeBlock: 11, typeShort: 20, fade: 260, running: 520, hold: 1800, gap: 220 };
+const SPEED = { type: 26, typeBlock: 22, typeShort: 34, fade: 320, running: 640, hold: 2400, gap: 320 };
 
 const tabs = Array.from(document.querySelectorAll('.demo-tab'));
 const panes = Array.from(document.querySelectorAll('.demo-pane'));
@@ -1766,6 +1751,27 @@ const io = new IntersectionObserver((entries) => {
   });
 }, {threshold: 0.25});
 io.observe(document.getElementById('demo'));
+
+// ─── MOBILE NAV TOGGLE ───
+const navToggle = document.getElementById('navToggle');
+const navDrawer = document.getElementById('navDrawer');
+if(navToggle && navDrawer){
+  navToggle.addEventListener('click', () => {
+    const open = !navDrawer.classList.contains('open');
+    navDrawer.classList.toggle('open', open);
+    navToggle.classList.toggle('open', open);
+    navToggle.setAttribute('aria-expanded', String(open));
+    if(open){ navDrawer.removeAttribute('hidden'); }
+    else { navDrawer.setAttribute('hidden',''); }
+  });
+  // close drawer when a link is tapped
+  navDrawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navDrawer.classList.remove('open');
+    navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-expanded','false');
+    navDrawer.setAttribute('hidden','');
+  }));
+}
 
 // ─── CTA FORM → MAILTO ───
 const ctaForm = document.getElementById('cta-form');
