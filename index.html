@@ -157,9 +157,28 @@ strong,b{font-weight:600}
 .demo-tab-dot{width:5px;height:5px;border-radius:50%;background:var(--text-muted)}
 .demo-tab.active .demo-tab-dot{background:var(--accent)}
 
-.demo-body{min-height:480px;padding:36px 44px;background:var(--surface);position:relative}
+.demo-body{
+  height:540px;max-height:540px;
+  padding:36px 44px;background:var(--surface);position:relative;
+  overflow-y:auto;scrollbar-width:none;
+  scroll-behavior:smooth;
+}
+.demo-body::-webkit-scrollbar{display:none}
 .demo-pane{display:none}
 .demo-pane.active{display:block}
+
+/* gate animations behind .demo-anim so msgs are hidden BEFORE JS animates them
+   (prevents the flash-of-full-content during init/reset) */
+.demo.demo-anim .demo-pane .msg{opacity:0;transform:translateY(4px);transition:opacity .32s ease,transform .32s ease}
+.demo.demo-anim .demo-pane .msg.show{opacity:1;transform:translateY(0)}
+.demo.demo-anim .demo-pane .tool-call{opacity:0;transform:translateY(3px);transition:opacity .28s ease,transform .28s ease}
+.demo.demo-anim .demo-pane .tool-call.show{opacity:1;transform:translateY(0)}
+.demo.demo-anim .demo-pane .msg-body > .msg-text{opacity:0;transition:opacity .3s ease}
+.demo.demo-anim .demo-pane .msg-body > .msg-text.show{opacity:1}
+
+@media (max-width:780px){
+  .demo-body{height:460px;max-height:460px;padding:24px 22px}
+}
 
 /* ─── MESSAGES (Cowork-mirror) ─── */
 /* hide avatars + name banner — just text flows like Cowork */
@@ -609,34 +628,50 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   .hear-grid{grid-template-columns:1fr}
 }
 
-/* ─── WORKFLOW LIBRARY ─── */
-.wf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;margin:0 auto}
+/* ─── WORKFLOW LIBRARY (carousel) ─── */
+.wf-carousel{
+  position:relative;max-width:1240px;margin:0 auto;padding:0 0 8px;
+}
+.wf-grid{
+  display:flex;gap:18px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  padding:6px 40px 28px;
+  margin:0 -40px;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent;
+}
+.wf-grid::-webkit-scrollbar{height:6px}
+.wf-grid::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:3px}
+.wf-grid::-webkit-scrollbar-track{background:transparent}
 .wf{
+  flex:0 0 340px;scroll-snap-align:start;
   border-radius:8px;padding:28px 26px;
-  border:1px solid var(--cream-deeper);
-  display:flex;flex-direction:column;min-height:240px;
+  border:1px solid var(--line);
+  display:flex;flex-direction:column;min-height:260px;
   transition:transform .18s,box-shadow .18s;
 }
 .wf:hover{transform:translateY(-2px);box-shadow:var(--shadow-card)}
 .wf--cream{background:var(--cream)}
-.wf--pine{background:var(--pine-dark);color:var(--cream)}
-.wf--pine h3{color:var(--cream)}
-.wf--pine p{color:rgba(245,240,230,.75)}
-.wf--pine .wf-num{color:var(--pine-sage)}
-.wf--rust{background:var(--accent);color:var(--white)}
-.wf--rust h3{color:var(--white)}
-.wf--rust p{color:rgba(253,250,244,.85)}
-.wf--rust .wf-num{color:rgba(253,250,244,.55)}
+.wf--pine{background:var(--pine-dark);color:#FFFFFF;border-color:transparent}
+.wf--pine h3{color:#FFFFFF}
+.wf--pine p{color:rgba(255,255,255,.92)}
+.wf--pine .wf-num{color:rgba(255,255,255,.72)}
+.wf--rust{background:var(--accent);color:#FFFFFF;border-color:transparent}
+.wf--rust h3{color:#FFFFFF}
+.wf--rust p{color:rgba(255,255,255,.95)}
+.wf--rust .wf-num{color:rgba(255,255,255,.78)}
 .wf-num{
   font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;color:var(--text-soft);
   margin-bottom:14px;
 }
 .wf h3{
-  font-family:var(--serif);font-weight:600;font-size:1.25rem;line-height:1.2;letter-spacing:-.015em;
+  font-family:var(--sans);font-weight:600;font-size:1.25rem;line-height:1.2;letter-spacing:-.02em;
   color:var(--pine-dark);margin:0 0 10px;text-wrap:balance;
 }
 .wf h3 .dot{color:var(--accent)}
-.wf--rust h3 .dot{color:var(--white)}
+.wf--pine h3 .dot,.wf--rust h3 .dot{color:#FFFFFF}
 .wf p{
   font-family:var(--sans);font-size:.95rem;line-height:1.55;color:var(--text-mid);
   margin:0 0 18px;flex:1;
@@ -644,21 +679,26 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 .wf-tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto}
 .wf-tool{
   display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;color:var(--text-soft);
-  background:rgba(255,255,255,.6);border-radius:6px;padding:4px 9px 4px 5px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.02em;color:var(--text-soft);
+  background:#FFFFFF;border:1px solid var(--line);border-radius:6px;padding:4px 9px 4px 5px;
 }
-.wf--pine .wf-tool{background:rgba(245,240,230,.1);color:rgba(245,240,230,.75)}
-.wf--rust .wf-tool{background:rgba(255,255,255,.18);color:rgba(253,250,244,.85)}
-.wf-tool .tool-icon{width:16px;height:16px;font-size:.55rem}
+.wf--cream .wf-tool{background:#FFFFFF;border-color:var(--line)}
+.wf--pine .wf-tool{background:rgba(255,255,255,.16);color:#FFFFFF;border-color:rgba(255,255,255,.18)}
+.wf--rust .wf-tool{background:rgba(255,255,255,.22);color:#FFFFFF;border-color:rgba(255,255,255,.28)}
+.wf-tool .tool-icon{width:16px;height:16px;font-size:0}
 .wf-note{
   text-align:center;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;
-  color:var(--text-soft);margin-top:34px;
+  color:var(--text-soft);margin-top:18px;
 }
-@media (max-width:980px){
-  .wf-grid{grid-template-columns:repeat(2,1fr)}
+.wf-hint{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text-muted);text-align:center;margin-top:10px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
 }
+.wf-hint::before,.wf-hint::after{content:"";display:inline-block;width:18px;height:1px;background:var(--line-strong)}
 @media (max-width:640px){
-  .wf-grid{grid-template-columns:1fr}
+  .wf{flex:0 0 86%}
+  .wf-grid{padding:6px 20px 28px;margin:0 -20px}
 }
 
 /* ─── WHY NOBO, Program OS ─── */
@@ -1133,7 +1173,8 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
       <p class="sec-sub">A starter shelf of routines. Each one runs on your context, with your specialists, on the connectors your team already uses.</p>
     </div>
 
-    <div class="wf-grid">
+    <div class="wf-carousel">
+    <div class="wf-grid" role="region" aria-label="Workflow library">
 
       <div class="wf wf--cream">
         <div class="wf-num">01</div>
@@ -1199,6 +1240,8 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
         </div>
       </div>
 
+    </div>
+    <div class="wf-hint">scroll or swipe for more</div>
     </div>
     <p class="wf-note">A starting set. Your library grows with the routines your team actually runs.</p>
   </div>
@@ -1461,9 +1504,44 @@ const progressEl = document.getElementById('demoProgress');
 const ctrl = document.getElementById('demoCtrl');
 const ctrlLabel = document.getElementById('demoCtrlLabel');
 
-// Cache original HTML for each pane so we can reset between plays
+// Gate animation immediately so msgs/tools are hidden BEFORE the first paint
+// (prevents the flash-of-full-content during init/reset).
+const demoEl = document.getElementById('demo');
+if(demoEl){ demoEl.classList.add('demo-anim'); }
+
+// Cache pre-hidden HTML for each pane so reset starts from a hidden state
+// (no visible flash before reveal).
 const snapshots = new Map();
-panes.forEach(p => snapshots.set(p, p.innerHTML));
+panes.forEach(p => {
+  // pre-hide so the pane initially renders invisible
+  p.querySelectorAll('.msg').forEach(m => m.classList.add('anim-msg'));
+  p.querySelectorAll('.tool-call').forEach(tc => tc.classList.add('anim-tool'));
+  p.querySelectorAll('.msg-body > .msg-text').forEach(t => {
+    t.classList.add('anim-hide');
+    if((t.getAttribute('style')||'').includes('border-left')) t.classList.add('anim-block');
+  });
+  snapshots.set(p, p.innerHTML);
+});
+
+// Keep the demo body scrolled so the latest revealed element is in view.
+// Hidden (opacity:0) future elements still occupy layout, so naive scroll-to-bottom
+// would scroll past the visible content. Instead, position the target element near
+// the bottom of the visible area, and never scroll backwards.
+function scrollDemoIntoView(target){
+  const body = document.querySelector('.demo-body');
+  if(!body) return;
+  if(!target){
+    body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
+    return;
+  }
+  const bodyRect = body.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const targetBottomRelative = (targetRect.bottom - bodyRect.top) + body.scrollTop;
+  const desired = Math.max(0, targetBottomRelative - body.clientHeight + 28);
+  if(desired > body.scrollTop + 4){
+    body.scrollTo({ top: desired, behavior: 'smooth' });
+  }
+}
 
 let currentAbort = null;
 let currentIdx = 0;
@@ -1480,17 +1558,13 @@ function wait(ms, signal){
 
 function resetPane(pane){
   pane.innerHTML = snapshots.get(pane);
+  // reset demo body scroll to top so each pane starts at its top
+  const body = document.querySelector('.demo-body');
+  if(body) body.scrollTop = 0;
 }
 
 function hideChildren(pane){
-  // Hide every .msg and every child of .msg-body (except .msg-name) so we can reveal them one-by-one
-  pane.querySelectorAll('.msg').forEach(m => m.classList.add('anim-msg'));
-  pane.querySelectorAll('.tool-call').forEach(tc => tc.classList.add('anim-tool'));
-  pane.querySelectorAll('.msg-body > .msg-text').forEach(t => t.classList.add('anim-hide'));
-  // the deliverable block is a .msg-text with inline border-left, mark it for fade-in
-  pane.querySelectorAll('.msg-body > .msg-text').forEach(t => {
-    if((t.getAttribute('style')||'').includes('border-left')) t.classList.add('anim-block');
-  });
+  // No-op: snapshots are already pre-hidden in the cache. Kept for API stability.
 }
 
 // Recursively type an HTML string into an element, preserving tags
@@ -1528,20 +1602,25 @@ async function appendAndType(parent, node, signal, speed){
 }
 
 async function animateToolCall(tc, signal){
-  // reveal the tool-call shell
+  // pre-capture and clear final content BEFORE making the shell visible,
+  // so there is no flash of the full body during the reveal.
+  const status = tc.querySelector('.tool-status');
+  const body = tc.querySelector('.tool-body');
+  const finalStatusHTML = status.innerHTML;
+  const finalBodyHTML = body.innerHTML;
+  status.innerHTML = 'running';
+  status.classList.add('state-running');
+  body.innerHTML = '';
+
+  // now reveal the tool-call shell (empty body + running status)
   tc.classList.remove('anim-tool');
   requestAnimationFrame(() => tc.classList.add('show'));
   await wait(SPEED.fade, signal);
+  scrollDemoIntoView(tc);
 
-  const status = tc.querySelector('.tool-status');
-  const finalStatusHTML = status.innerHTML;
-  status.innerHTML = 'running';
-  status.classList.add('state-running');
-
-  const body = tc.querySelector('.tool-body');
-  const finalBodyHTML = body.innerHTML;
   await wait(SPEED.running, signal);
   await typeHTML(body, finalBodyHTML, signal, SPEED.type);
+  scrollDemoIntoView(tc);
   await wait(180, signal);
 
   status.classList.remove('state-running');
@@ -1553,6 +1632,7 @@ async function revealMsg(msg, signal){
   msg.classList.remove('anim-msg');
   requestAnimationFrame(() => msg.classList.add('show'));
   await wait(SPEED.fade, signal);
+  scrollDemoIntoView(msg);
 
   const body = msg.querySelector('.msg-body');
   if(!body) return;
@@ -1568,17 +1648,20 @@ async function revealMsg(msg, signal){
 
     if(child.classList.contains('msg-text')){
       const isDeliverable = child.classList.contains('anim-block');
+      // capture BEFORE making visible, then clear so there is no flash of full text
+      const originalHTML = child.innerHTML;
+      child.innerHTML = '';
       child.classList.remove('anim-hide');
+      child.classList.add('show'); // required under .demo-anim gating
+
       if(isDeliverable){
-        // fade in the bordered container first, then type its interior
-        child.classList.add('show');
         await wait(SPEED.fade, signal);
-        const originalHTML = child.innerHTML;
+        scrollDemoIntoView(child);
         await typeHTML(child, originalHTML, signal, SPEED.typeBlock);
       } else {
-        const originalHTML = child.innerHTML;
         await typeHTML(child, originalHTML, signal, SPEED.typeShort);
       }
+      scrollDemoIntoView(child);
     }
   }
 }
