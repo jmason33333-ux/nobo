@@ -1,1275 +1,1648 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nobo — AI for Boulder Businesses</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --cream:        #F5F0E6;
-      --cream-dark:   #EBE4D6;
-      --cream-deeper: #DDD5C4;
-      --pine:         #334A36;
-      --pine-dark:    #263E31;
-      --pine-mid:     #4C5E46;
-      --pine-light:   #697A50;
-      --pine-sage:    #8D9967;
-      --pine-soft:    rgba(51,74,54,0.07);
-      --rust:         #A84A2A;
-      --text-dark:    #1C180E;
-      --text-mid:     #4A4435;
-      --text-soft:    #7A7060;
-      --text-muted:   #A89F8E;
-      --white:        #FDFAF4;
-      --font-serif:   'Lora', Georgia, serif;
-      --font-sans:    'Plus Jakarta Sans', system-ui, sans-serif;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nobo · AI that actually shows up to work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Lora:ital,wght@0,500;0,600;0,700;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F5F0E6; --cream-dark:#EBE4D6; --cream-deeper:#DDD5C4;
+  --pine:#334A36; --pine-dark:#263E31; --pine-mid:#4C5E46; --pine-light:#697A50; --pine-sage:#8D9967;
+  --pine-soft:rgba(51,74,54,0.08);
+  --rust:#A84A2A; --rust-soft:rgba(168,74,42,0.10);
+  --gold:#C0883A;
+  --text-dark:#1C180E; --text-mid:#4A4435; --text-soft:#7A7060; --text-muted:#A89F8E;
+  --white:#FDFAF4;
+  --serif:'Lora',Georgia,serif;
+  --sans:'Plus Jakarta Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',monospace;
+  --accent:var(--rust);
+  --shadow-card: 0 2px 4px rgba(28,24,14,.04), 0 8px 24px rgba(28,24,14,.06);
+  --shadow-lift: 0 4px 12px rgba(28,24,14,.08), 0 20px 50px rgba(28,24,14,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--cream);color:var(--text-dark);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img,svg{max-width:100%;display:block}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+/* the bold period, signature */
+.dot{color:var(--accent);font-weight:700}
 
-    body {
-      font-family: var(--font-sans);
-      background: var(--cream);
-      color: var(--text-dark);
-      font-size: 1rem;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
-    }
+/* hand-drawn underline */
+.u{position:relative;display:inline-block;white-space:nowrap}
+.u svg{position:absolute;left:-4%;right:-4%;bottom:-.12em;width:108%;height:.38em;pointer-events:none}
 
-    a { color: inherit; text-decoration: none; }
+.wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+.eyebrow{font-family:var(--sans);font-weight:700;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--pine-mid)}
+.eyebrow--rust{color:var(--accent)}
+.mono{font-family:var(--mono);font-size:.78rem;letter-spacing:.02em;color:var(--text-soft)}
 
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 22px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background 0.25s, border-color 0.25s;
-    }
-    nav.nav--scrolled {
-      background: rgba(245, 240, 230, 0.92);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--cream-deeper);
-    }
-    .wordmark {
-      font-family: var(--font-sans);
-      font-weight: 800;
-      font-size: 1.2rem;
-      color: var(--pine-dark);
-      letter-spacing: -0.03em;
-    }
-    .nav-link {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--pine);
-      border-bottom: 1.5px solid var(--pine);
-      padding-bottom: 1px;
-      transition: opacity 0.15s;
-    }
-    .nav-link:hover { opacity: 0.55; }
+/* ─── NAV ─── */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(245,240,230,.88);
+  backdrop-filter:saturate(1.1) blur(14px);
+  border-bottom:1px solid var(--cream-deeper);
+}
+.nav-inner{max-width:1280px;margin:0 auto;padding:16px 40px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:32px}
+.wordmark{font-family:var(--sans);font-weight:800;font-size:1.15rem;color:var(--pine-dark);letter-spacing:-.03em;display:inline-flex;align-items:baseline;gap:2px}
+.wordmark .dot{font-size:1.1em}
+.nav-links{display:flex;gap:28px;justify-self:center}
+.nav-links a{font-family:var(--sans);font-weight:500;font-size:.9rem;color:var(--text-mid);transition:color .15s}
+.nav-links a:hover{color:var(--pine-dark)}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-meta{font-family:var(--mono);font-size:.7rem;color:var(--text-muted);letter-spacing:.06em}
+.btn{font-family:var(--sans);font-weight:700;font-size:.88rem;cursor:pointer;transition:all .15s;border:none;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn-primary{background:var(--pine-dark);color:var(--white);padding:11px 20px;border-radius:8px}
+.btn-primary:hover{background:var(--pine);transform:translateY(-1px);box-shadow:0 4px 14px rgba(38,62,49,.2)}
+.btn-primary.big{padding:15px 28px;font-size:.95rem}
+.btn-ghost{background:transparent;color:var(--pine-dark);padding:11px 18px;border-radius:8px;border:1.5px solid var(--cream-deeper)}
+.btn-ghost:hover{border-color:var(--pine-mid);background:var(--pine-soft)}
+.btn-ghost.big{padding:14px 24px;font-size:.95rem}
+.btn svg{width:14px;height:14px}
 
-    /* ─── HERO ─── */
-    .hero {
-      min-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 48px 80px;
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-    .hero-eyebrow {
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      color: var(--rust);
-      margin-bottom: 20px;
-    }
-    .hero h1 {
-      font-family: var(--font-serif);
-      font-weight: 600;
-      font-size: clamp(3.2rem, 7.5vw, 6.5rem);
-      color: var(--pine-dark);
-      line-height: 1.06;
-      letter-spacing: -0.02em;
-      margin-bottom: 36px;
-      max-width: 24ch;
-    }
-    .hero h1 em {
-      font-style: italic;
-      color: var(--pine);
-    }
-    .hero-sub {
-      font-size: clamp(1rem, 1.5vw, 1.15rem);
-      color: var(--text-soft);
-      max-width: 48ch;
-      line-height: 1.65;
-      margin-bottom: 44px;
-    }
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      flex-wrap: wrap;
-    }
-    .btn {
-      font-family: var(--font-sans);
-      font-weight: 700;
-      font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .btn--fill {
-      background: var(--pine);
-      color: var(--white);
-      padding: 13px 28px;
-      border-radius: 6px;
-      border: none;
-    }
-    .btn--fill:hover { background: var(--pine-dark); transform: translateY(-1px); }
-    .btn--ghost {
-      color: var(--text-soft);
-      font-size: 0.875rem;
-      font-weight: 500;
-      border: none;
-      background: none;
-    }
-    .btn--ghost:hover { color: var(--text-dark); }
-    .btn--ghost svg { transition: transform 0.15s; }
-    .btn--ghost:hover svg { transform: translateY(2px); }
+/* ─── HERO ─── */
+.hero{
+  padding:64px 0 96px;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 75% 20%, rgba(141,153,103,.10), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 20% 100%, rgba(168,74,42,.06), transparent 60%);
+}
+.hero-inner{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 40px}
+.hero-top{margin-bottom:56px}
+.hero-top .hero-left{max-width:1200px;margin:0 auto}
+@media (max-width:900px){.hero-top{margin-bottom:32px}}
 
-    /* ─── DIVIDER ─── */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--cream-deeper);
-      margin: 0;
-    }
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;padding:7px 14px;border:1px solid var(--cream-deeper);border-radius:999px;background:var(--white);font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--pine-mid);margin-bottom:28px}
+.hero-eyebrow .pulse{width:6px;height:6px;border-radius:50%;background:var(--pine-sage);position:relative}
+.hero-eyebrow .pulse::after{content:"";position:absolute;inset:-4px;border-radius:50%;background:var(--pine-sage);opacity:.35;animation:pulse 2s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.6);opacity:.5}100%{transform:scale(1.8);opacity:0}}
 
-    /* ─── SECTION BASE ─── */
-    .section { padding: 100px 48px; max-width: 1280px; margin: 0 auto; }
-    .section--wide { max-width: none; padding-left: 48px; padding-right: 48px; }
-    .section--tight { padding-top: 72px; padding-bottom: 72px; }
+.hero-headline{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(2.8rem,6vw,5.6rem);line-height:.98;letter-spacing:-.03em;
+  color:var(--pine-dark);text-wrap:balance;margin:0;
+}
+.hero-headline em{font-style:italic;color:var(--pine)}
+.hero-headline .dot{color:var(--accent)}
+.hero-sub{
+  font-family:var(--sans);font-size:clamp(1.02rem,1.25vw,1.15rem);
+  color:var(--text-mid);line-height:1.55;max-width:44ch;margin:0 0 22px;
+}
+.hero-sub strong{font-weight:700;color:var(--pine-dark)}
+.hero-cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.hero-trust{display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:.7rem;color:var(--text-soft);letter-spacing:.04em;flex-wrap:wrap}
+.hero-trust .dot-sep{width:3px;height:3px;border-radius:50%;background:var(--text-muted)}
 
-    .label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      color: var(--pine-mid);
-      display: block;
-      margin-bottom: 40px;
-    }
+/* demo is now full-width below the fold lead */
+.hero-demo-wrap{max-width:1200px;margin:0 auto;position:relative}
+.hero-demo-wrap::before{content:"";position:absolute;inset:20px -12px -18px -12px;background:radial-gradient(ellipse 60% 50% at 50% 100%, rgba(38,62,49,.14), transparent 70%);filter:blur(18px);z-index:0}
+.hero-demo-wrap > .demo{position:relative;z-index:1}
 
-    /* ─── PROBLEM ─── */
-    .problem-section {
-      background: var(--pine-dark);
-      padding: 100px 48px;
-    }
-    .problem-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-    .problem-heading {
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: 12px;
-    }
-    .problem-intro {
-      font-size: 1rem;
-      color: rgba(253,250,244,0.55);
-      margin-bottom: 64px;
-    }
-    .problem-list { list-style: none; }
-    .problem-item {
-      padding: 32px 0;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    .problem-item:last-child { border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .problem-title {
-      font-family: var(--font-sans);
-      font-weight: 700;
-      font-size: clamp(1rem, 1.5vw, 1.2rem);
-      color: var(--white);
-      margin-bottom: 10px;
-      letter-spacing: -0.01em;
-    }
-    .problem-quote {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: clamp(1.2rem, 2.2vw, 1.6rem);
-      color: rgba(253,250,244,0.72);
-      line-height: 1.5;
-      max-width: 52ch;
-    }
+/* ─── LIVE UI DEMO (the hero panel) ─── */
+.demo{
+  position:relative;
+  background:var(--white);
+  border:1px solid var(--cream-deeper);
+  border-radius:16px;
+  box-shadow:var(--shadow-lift);
+  overflow:hidden;
+  transform:translateY(0);
+  transition:transform .3s;
+}
+.demo-chrome{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 16px;border-bottom:1px solid var(--cream-deeper);
+  background:var(--cream);
+}
+.demo-dot{width:10px;height:10px;border-radius:50%;background:var(--cream-deeper)}
+.demo-dot:nth-child(1){background:#E8A087}
+.demo-dot:nth-child(2){background:#D4BD7A}
+.demo-dot:nth-child(3){background:#8FAD7E}
+.demo-title{flex:1;text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--text-muted);letter-spacing:.04em}
+.demo-tabs{
+  display:flex;gap:0;padding:0 12px;border-bottom:1px solid var(--cream-deeper);
+  background:var(--cream);
+  overflow-x:auto;scrollbar-width:none;
+}
+.demo-tabs::-webkit-scrollbar{display:none}
+.demo-tab{
+  font-family:var(--sans);font-size:.78rem;font-weight:600;
+  padding:11px 14px;border:none;background:transparent;cursor:pointer;
+  color:var(--text-soft);border-bottom:2px solid transparent;
+  white-space:nowrap;transition:color .15s,border-color .15s;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.demo-tab:hover{color:var(--pine-dark)}
+.demo-tab.active{color:var(--pine-dark);border-bottom-color:var(--accent)}
+.demo-tab-dot{width:5px;height:5px;border-radius:50%;background:var(--pine-sage)}
+.demo-tab.active .demo-tab-dot{background:var(--accent)}
 
-    /* philosophy section removed */
+.demo-body{min-height:440px;padding:26px 32px;background:var(--white);position:relative}
+.demo-pane{display:none;animation:fadeIn .35s ease}
+.demo-pane.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 
-    /* ─── CONTACT FORM ─── */
-    .contact-section {
-      background: var(--cream);
-      padding: 100px 48px;
-    }
-    .contact-inner {
-      max-width: 720px;
-      margin: 0 auto;
-    }
-    .contact-heading {
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 600;
-      color: var(--pine-dark);
-      margin-bottom: 12px;
-    }
-    .contact-sub {
-      font-size: 1rem;
-      color: var(--text-soft);
-      margin-bottom: 48px;
-      max-width: 48ch;
-      line-height: 1.6;
-    }
-    .contact-form { display: flex; flex-direction: column; gap: 24px; }
-    .contact-form label {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-mid);
-    }
-    .contact-form input,
-    .contact-form select,
-    .contact-form textarea {
-      font-family: var(--font-sans);
-      font-size: 0.95rem;
-      padding: 12px 16px;
-      border: 1px solid var(--cream-deeper);
-      border-radius: 6px;
-      background: var(--white);
-      color: var(--text-dark);
-      transition: border-color 0.15s;
-    }
-    .contact-form input:focus,
-    .contact-form select:focus,
-    .contact-form textarea:focus {
-      outline: none;
-      border-color: var(--pine-mid);
-    }
-    .contact-form textarea { min-height: 100px; resize: vertical; }
-    .contact-form select { cursor: pointer; }
-    .contact-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    .contact-submit {
-      font-family: var(--font-sans);
-      font-weight: 700;
-      font-size: 0.95rem;
-      background: var(--pine);
-      color: var(--white);
-      padding: 14px 32px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.15s;
-      align-self: flex-start;
-    }
-    .contact-submit:hover { background: var(--pine-dark); transform: translateY(-1px); }
+.msg{display:flex;gap:12px;margin-bottom:18px;align-items:flex-start}
+.msg-av{width:28px;height:28px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:700;font-size:.72rem;letter-spacing:-.01em}
+.msg-av.user{background:var(--cream-dark);color:var(--pine-dark)}
+.msg-av.ai{background:var(--pine-dark);color:var(--cream)}
+.msg-av.ai .dot{color:var(--pine-sage)}
+.msg-body{flex:1;min-width:0}
+.msg-name{font-family:var(--sans);font-weight:700;font-size:.78rem;color:var(--pine-dark);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.msg-name .role{font-weight:500;color:var(--text-muted);font-size:.72rem}
+.msg-text{font-family:var(--sans);font-size:.88rem;color:var(--text-dark);line-height:1.55}
+.msg-text em{font-family:var(--serif);font-style:italic;color:var(--pine)}
+.msg-text code{font-family:var(--mono);font-size:.82rem;background:var(--cream-dark);padding:1px 6px;border-radius:3px;color:var(--pine-dark)}
 
-    /* ─── HOW IT WORKS ─── */
-    .steps-list { list-style: none; }
-    .step-item {
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 0;
-      padding: 52px 0;
-      border-top: 1px solid var(--cream-deeper);
-      align-items: start;
-    }
-    .step-item:last-child { border-bottom: 1px solid var(--cream-deeper); }
-    .step-num {
-      font-family: var(--font-serif);
-      font-size: 3.5rem;
-      font-weight: 600;
-      color: var(--cream-deeper);
-      line-height: 1;
-      padding-top: 4px;
-      letter-spacing: -0.03em;
-    }
-    .step-content { }
-    .step-name {
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--pine-dark);
-      margin-bottom: 10px;
-    }
-    .step-desc {
-      font-size: 0.925rem;
-      color: var(--text-soft);
-      max-width: 52ch;
-      line-height: 1.7;
-    }
+.tool-call{
+  margin-top:10px;border:1px solid var(--cream-deeper);border-radius:8px;
+  background:var(--cream);overflow:hidden;
+}
+.tool-head{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--cream-deeper);background:var(--white)}
+.tool-icon{width:18px;height:18px;border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:.62rem;font-weight:700}
+.tool-icon.gmail{background:#C5472D}
+.tool-icon.drive{background:#3A7D3F}
+.tool-icon.cal{background:#3A6A9E}
+.tool-icon.slack{background:#4A154B}
+.tool-icon.click{background:#7B68EE}
+.tool-icon.notion{background:#1C180E}
+.tool-icon.canva{background:#00C4CC}
+.tool-icon.sheets{background:#0F9D58}
+.tool-icon.skill{background:var(--pine)}
+.tool-name{font-family:var(--mono);font-size:.74rem;color:var(--pine-dark);font-weight:500;letter-spacing:.02em}
+.tool-status{margin-left:auto;font-family:var(--mono);font-size:.68rem;color:var(--pine-sage);letter-spacing:.04em;display:flex;align-items:center;gap:6px}
+.tool-status::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--pine-sage)}
+.tool-body{padding:10px 14px;font-family:var(--mono);font-size:.72rem;color:var(--text-mid);line-height:1.7}
+.tool-body .k{color:var(--text-muted)}
+.tool-body .v{color:var(--pine-dark)}
 
-    /* ─── DELIVERABLES ─── */
-    .deliverables-heading {
-      font-family: var(--font-serif);
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      font-weight: 600;
-      color: var(--pine-dark);
-      line-height: 1.28;
-      max-width: 28ch;
-      margin-bottom: 64px;
-    }
-    .deliverables-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--cream-deeper);
-      margin-bottom: 48px;
-    }
-    .deliverable-cell {
-      background: var(--cream);
-      padding: 32px 28px;
-    }
-    .deliverable-cell strong {
-      display: block;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 8px;
-    }
-    .deliverable-cell span {
-      font-size: 0.825rem;
-      color: var(--text-soft);
-      line-height: 1.5;
-    }
-    .deliverables-coda {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: 1.1rem;
-      color: var(--pine);
-      border-left: 2px solid var(--pine-sage);
-      padding-left: 20px;
-    }
+.schedule-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--pine-soft);color:var(--pine-dark);font-family:var(--mono);font-size:.68rem;font-weight:500;letter-spacing:.02em;margin-left:8px}
+.schedule-chip::before{content:"⏱";font-size:.8em}
 
-    /* ─── WHY NOBO ─── */
-    .why-section {
-      background: var(--pine-soft);
-      padding: 100px 48px;
-    }
-    .why-section-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-    .why-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .why-photo {
-      border-radius: 4px;
-      aspect-ratio: 3/4;
-      overflow: hidden;
-      position: sticky;
-      top: 100px;
-    }
-    .why-text .label { margin-bottom: 20px; }
-    .why-headline {
-      font-family: var(--font-serif);
-      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-      font-weight: 600;
-      color: var(--pine-dark);
-      line-height: 1.28;
-      margin-bottom: 36px;
-    }
-    .why-body p {
-      font-size: 0.95rem;
-      color: var(--text-mid);
-      line-height: 1.78;
-      margin-bottom: 18px;
-    }
-    .why-body p:last-child { margin-bottom: 0; }
-    .why-body strong { color: var(--text-dark); }
+.demo-foot{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;border-top:1px solid var(--cream-deeper);background:var(--cream);
+  font-family:var(--mono);font-size:.7rem;color:var(--text-soft);letter-spacing:.04em;
+}
+.demo-foot .spec{color:var(--pine-dark);font-weight:500}
+.demo-foot .dot-sep{width:3px;height:3px;border-radius:50%;background:var(--text-muted)}
 
-    /* ─── SOCIAL PROOF ─── */
-    .proof-box {
-      border: 1px solid var(--cream-deeper);
-      border-left: 2px solid var(--pine-sage);
-      padding: 36px 40px;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      font-style: italic;
-      line-height: 1.6;
-      background: var(--white);
-      border-radius: 4px;
-    }
+/* ─── LIVE PLAYBACK ANIMATION ─── */
+.anim-hide{opacity:0 !important}
+.anim-msg{opacity:0;transform:translateY(4px);transition:opacity .32s ease, transform .32s ease}
+.anim-msg.show{opacity:1;transform:translateY(0)}
+.anim-tool{opacity:0;transform:translateY(3px);transition:opacity .28s ease, transform .28s ease}
+.anim-tool.show{opacity:1;transform:translateY(0)}
+.anim-block{opacity:0;transition:opacity .3s ease}
+.anim-block.show{opacity:1}
 
-    /* ─── INVESTMENT ─── */
-    .pricing-header {
-      margin-bottom: 48px;
-    }
-    .pricing-header .pricing-note-header {
-      margin-top: 16px;
-      max-width: 58ch;
-    }
-    .pricing-heading {
-      font-family: var(--font-serif);
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      font-weight: 600;
-      color: var(--pine-dark);
-      line-height: 1.25;
-    }
-    .pricing-note-header {
-      font-size: 0.875rem;
-      color: var(--text-soft);
-      line-height: 1.6;
-      padding-bottom: 4px;
-    }
-    .pricing-table {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--cream-deeper);
-      border: 1px solid var(--cream-deeper);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .pricing-col {
-      background: var(--white);
-      padding: 36px 32px;
-      display: flex;
-      flex-direction: column;
-    }
-    .pricing-col--featured {
-      background: var(--pine);
-    }
-    .pricing-col-label {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-    .pricing-col--featured .pricing-col-label { color: rgba(253,250,244,0.45); }
-    .pricing-col-name {
-      font-family: var(--font-serif);
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: var(--pine-dark);
-      margin-bottom: 4px;
-      line-height: 1.1;
-    }
-    .pricing-col--featured .pricing-col-name { color: var(--white); }
-    .pricing-col-price {
-      font-size: 0.875rem;
-      color: var(--text-soft);
-      margin-bottom: 28px;
-      padding-bottom: 28px;
-      border-bottom: 1px solid var(--cream-deeper);
-    }
-    .pricing-col--featured .pricing-col-price { color: rgba(253,250,244,0.55); border-color: rgba(255,255,255,0.12); }
-    .pricing-col-desc {
-      font-size: 0.875rem;
-      color: var(--text-mid);
-      line-height: 1.65;
-      margin-bottom: 28px;
-      flex: 1;
-    }
-    .pricing-col--featured .pricing-col-desc { color: rgba(253,250,244,0.72); }
-    .pricing-items-list { list-style: none; margin-bottom: 32px; flex: 1; }
-    .pricing-li {
-      font-size: 0.825rem;
-      color: var(--text-soft);
-      padding: 7px 0;
-      border-bottom: 1px solid var(--cream-dark);
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      line-height: 1.4;
-    }
-    .pricing-li::before {
-      content: '';
-      width: 4px; height: 4px;
-      background: var(--pine-sage);
-      border-radius: 50%;
-      margin-top: 8px;
-      flex-shrink: 0;
-    }
-    .pricing-col--featured .pricing-li { color: rgba(253,250,244,0.65); border-color: rgba(255,255,255,0.1); }
-    .retainer-sub { margin-bottom: 32px; flex: 1; }
-    .retainer-row {
-      padding: 16px 0;
-      border-bottom: 1px solid var(--cream-deeper);
-    }
-    .retainer-row:first-child { border-top: 1px solid var(--cream-deeper); }
-    .retainer-row-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 4px;
-    }
-    .retainer-row-name { font-weight: 700; font-size: 0.875rem; color: var(--text-dark); }
-    .retainer-row-price { font-size: 0.825rem; color: var(--pine-mid); font-weight: 600; }
-    .retainer-row-desc { font-size: 0.8rem; color: var(--text-soft); line-height: 1.45; }
-    .pricing-cta {
-      background: var(--pine);
-      color: var(--white);
-      font-weight: 700;
-      font-size: 0.875rem;
-      padding: 12px 20px;
-      border-radius: 5px;
-      text-align: center;
-      display: block;
-      border: none;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-      margin-top: auto;
-    }
-    .pricing-cta:hover { background: var(--pine-dark); transform: translateY(-1px); }
-    .pricing-col--featured .pricing-cta { background: var(--white); color: var(--pine-dark); }
-    .pricing-col--featured .pricing-cta:hover { background: var(--cream); }
-    .pricing-cta--outline {
-      background: transparent;
-      color: var(--pine);
-      border: 1.5px solid var(--cream-deeper);
-    }
-    .pricing-cta--outline:hover { border-color: var(--pine-mid); background: var(--pine-soft); }
-    .pricing-footer-note {
-      margin-top: 20px;
-      font-size: 0.825rem;
-      color: var(--text-muted);
-      text-align: center;
-    }
+/* typing caret */
+.typing{position:relative}
+.typing::after{
+  content:"";display:inline-block;width:2px;height:1em;
+  background:currentColor;opacity:.65;margin-left:2px;
+  vertical-align:-.12em;animation:caretBlink 1s step-end infinite;
+}
+@keyframes caretBlink{50%{opacity:0}}
 
-    /* ─── NEWSLETTER ─── */
-    .newsletter-capture {
-      margin-top: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      align-items: center;
-    }
-    .newsletter-line {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      text-align: center;
-    }
-    .newsletter-form {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .newsletter-input {
-      font-family: var(--font-sans);
-      font-size: 0.875rem;
-      color: var(--text-dark);
-      background: var(--white);
-      border: 1px solid var(--cream-deeper);
-      border-radius: 6px;
-      padding: 10px 16px;
-      width: 260px;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-    .newsletter-input::placeholder { color: var(--text-muted); }
-    .newsletter-input:focus { border-color: var(--pine-mid); }
-    .newsletter-btn {
-      font-family: var(--font-sans);
-      font-weight: 700;
-      font-size: 0.875rem;
-      background: var(--pine);
-      color: var(--white);
-      border: none;
-      border-radius: 6px;
-      padding: 10px 20px;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-      white-space: nowrap;
-    }
-    .newsletter-btn:hover { background: var(--pine-dark); transform: translateY(-1px); }
+/* tool-status states during playback */
+.tool-status.state-running{color:var(--gold)}
+.tool-status.state-running::before{background:var(--gold);animation:statusPulse .95s ease-in-out infinite}
+@keyframes statusPulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.35;transform:scale(1.4)}
+}
+.tool-status.state-done{color:var(--pine-sage)}
+.tool-status.state-done::before{background:var(--pine-sage)}
 
-    /* ─── FAQ ─── */
-    .faq-grid {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 80px;
-    }
-    .faq-aside {
-      font-family: var(--font-serif);
-      font-size: clamp(1.4rem, 2.5vw, 2rem);
-      font-weight: 600;
-      color: var(--pine-dark);
-      line-height: 1.3;
-      position: sticky;
-      top: 100px;
-    }
-    .faq-items { }
-    .faq-item {
-      padding: 28px 0;
-      border-top: 1px solid var(--cream-deeper);
-    }
-    .faq-item:last-child { border-bottom: 1px solid var(--cream-deeper); }
-    .faq-q {
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--pine-dark);
-      margin-bottom: 10px;
-      line-height: 1.45;
-    }
-    .faq-a {
-      font-size: 0.9rem;
-      color: var(--text-mid);
-      line-height: 1.75;
-    }
+/* demo pane transition, softer to hand off to per-element reveal */
+.demo-pane{display:none}
+.demo-pane.active{display:block}
+.demo-pane{animation:none !important}
 
-    /* ─── CTA ─── */
-    .cta-section {
-      background: var(--pine-dark);
-      padding: 120px 48px;
-      text-align: left;
-    }
-    .cta-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: end;
-      gap: 80px;
-    }
-    .cta-headline {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: clamp(2.5rem, 5vw, 5rem);
-      font-weight: 400;
-      color: var(--white);
-      line-height: 1.1;
-      margin-bottom: 20px;
-      letter-spacing: -0.01em;
-    }
-    .cta-sub {
-      font-size: 1rem;
-      color: rgba(253,250,244,0.58);
-      max-width: 46ch;
-      line-height: 1.65;
-    }
-    .cta-action {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-    .btn--cta-main {
-      background: var(--white);
-      color: var(--pine-dark);
-      font-family: var(--font-sans);
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 15px 36px;
-      border-radius: 6px;
-      white-space: nowrap;
-      transition: background 0.15s, transform 0.1s;
-      display: inline-block;
-    }
-    .btn--cta-main:hover { background: var(--cream); transform: translateY(-1px); }
-    .cta-note {
-      font-size: 0.78rem;
-      color: rgba(253,250,244,0.35);
-      text-align: right;
-    }
+/* pause/play control */
+.demo-ctrl{
+  position:absolute;top:12px;right:16px;z-index:2;
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:.66rem;color:var(--text-muted);
+  letter-spacing:.06em;text-transform:uppercase;
+  background:transparent;border:none;cursor:pointer;padding:4px 8px;border-radius:4px;
+  transition:color .15s,background .15s;
+}
+.demo-ctrl:hover{color:var(--pine-dark);background:var(--cream-dark)}
+.demo-ctrl .icon{width:10px;height:10px;display:inline-block;position:relative}
+.demo-ctrl[data-state="playing"] .icon::before,
+.demo-ctrl[data-state="playing"] .icon::after{
+  content:"";position:absolute;top:0;bottom:0;width:3px;background:currentColor;
+}
+.demo-ctrl[data-state="playing"] .icon::before{left:1px}
+.demo-ctrl[data-state="playing"] .icon::after{right:1px}
+.demo-ctrl[data-state="paused"] .icon::before{
+  content:"";position:absolute;top:0;left:1px;
+  border-left:8px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent;
+}
 
-    /* ─── FLATIRONS ─── */
-    .flatirons-wrap {
-      padding: 0 48px;
-      margin: 80px 0;
-    }
-    .flatirons-inner {
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      will-change: border-radius;
-    }
-    .flatirons-img {
-      width: 100%;
-      height: 70vh;
-      min-height: 420px;
-      max-height: 680px;
-      object-fit: cover;
-      object-position: center 40%;
-      display: block;
-      /* placeholder styling — remove once real image added */
-      background: linear-gradient(160deg, #4C5E46 0%, #263E31 40%, #8D9967 100%);
-    }
-    .flatirons-caption {
-      position: absolute;
-      bottom: 20px;
-      right: 24px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(253,250,244,0.55);
-    }
-    /* placeholder label — remove once real image added */
-    .flatirons-inner::before {
-      content: 'Add Flatirons photo here — replace FLATIRONS_IMAGE_PLACEHOLDER.jpg';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 0.8rem;
-      color: rgba(253,250,244,0.5);
-      font-weight: 500;
-      text-align: center;
-      width: 80%;
-      pointer-events: none;
-    }
-    @media (max-width: 960px) {
-      .contact-section { padding: 72px 24px; }
-      .contact-row { grid-template-columns: 1fr; }
-    }
+/* progress rail on tabs row */
+.demo-progress{
+  position:absolute;bottom:-1px;left:0;height:2px;background:var(--accent);
+  width:0;transition:width .12s linear;pointer-events:none;
+}
+.demo-tabs-wrap{position:relative}
 
-    /* ─── FOOTER ─── */
-    footer {
-      background: var(--pine-dark);
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 36px 48px;
-    }
-    .footer-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .footer-wordmark { font-weight: 800; font-size: 1rem; color: var(--white); letter-spacing: -0.02em; }
-    .footer-links { display: flex; gap: 28px; }
-    .footer-links a { font-size: 0.82rem; color: rgba(253,250,244,0.42); transition: color 0.15s; }
-    .footer-links a:hover { color: rgba(253,250,244,0.8); }
-    .footer-copy { font-size: 0.78rem; color: rgba(253,250,244,0.28); }
+/* ─── TRUST BAR ─── */
+.trustbar{
+  padding:36px 0;border-top:1px solid var(--cream-deeper);border-bottom:1px solid var(--cream-deeper);
+  background:var(--cream-dark);
+}
+.trustbar-inner{max-width:1240px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.trust-label{font-family:var(--sans);font-weight:600;font-size:.82rem;color:var(--text-mid);letter-spacing:-.005em}
+.trust-label em{font-family:var(--serif);font-style:italic;color:var(--pine-dark)}
+.trust-items{display:flex;gap:36px;flex-wrap:wrap;align-items:center}
+.trust-item{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-weight:500;font-size:.82rem;color:var(--text-mid)}
+.trust-item svg{width:18px;height:18px;color:var(--pine-mid);flex-shrink:0}
+.trust-item b{color:var(--pine-dark);font-weight:700}
 
-    /* ─── WHAT'S POSSIBLE ─── */
-    .possible-section {
-      background: var(--cream);
-      padding: 100px 48px;
-    }
-    .possible-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-    }
-    .possible-eyebrow {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      color: var(--pine-mid);
-      margin-bottom: 24px;
-    }
-    .possible-stat {
-      font-family: var(--font-serif);
-      font-size: clamp(1.6rem, 3vw, 2rem);
-      font-weight: 600;
-      color: var(--pine-dark);
-      line-height: 1.35;
-      margin-bottom: 80px;
-      max-width: 52ch;
-    }
-    .possible-track {
-      margin-bottom: 72px;
-    }
-    .possible-track:last-child {
-      margin-bottom: 0;
-    }
-    .possible-track-heading {
-      font-family: var(--font-serif);
-      font-size: clamp(1.4rem, 2.5vw, 1.75rem);
-      font-weight: 600;
-      color: var(--pine-dark);
-      margin-bottom: 12px;
-    }
-    .possible-track-sub {
-      font-size: 0.95rem;
-      color: var(--text-soft);
-      line-height: 1.65;
-      max-width: 56ch;
-      margin-bottom: 36px;
-    }
+/* ─── SECTIONS ─── */
+.section{padding:120px 0;position:relative}
+.section-cream{background:var(--cream)}
+.section-dark{background:var(--pine-dark);color:var(--white)}
+.section-white{background:var(--white)}
 
-    /* From / To grid */
-    .ba-headers {
-      display: grid;
-      grid-template-columns: 1fr 32px 1fr;
-      gap: 0;
-      margin-bottom: 16px;
-    }
-    .ba-col-header {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-    .ba-col-header--from { color: var(--rust); }
-    .ba-col-header--to { color: var(--pine); }
-    .ba-rows {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .ba-row {
-      display: grid;
-      grid-template-columns: 1fr 32px 1fr;
-      align-items: stretch;
-      gap: 0;
-    }
-    .ba-from, .ba-to {
-      padding: 18px 20px;
-      font-size: 0.925rem;
-      line-height: 1.5;
-      font-weight: 500;
-    }
-    .ba-from {
-      background: var(--cream-dark);
-      border-left: 2px solid var(--rust);
-      color: var(--text-mid);
-    }
-    .ba-to {
-      background: var(--pine-soft);
-      border-left: 2px solid var(--pine);
-      color: var(--text-dark);
-    }
-    .ba-arrow {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--pine-light);
-    }
-    .ba-arrow svg { flex-shrink: 0; }
+.sec-head{text-align:center;max-width:760px;margin:0 auto 72px}
+.sec-head.left{text-align:left;margin-left:0}
+.sec-head .eyebrow{display:inline-block;margin-bottom:18px}
+.sec-title{font-family:var(--serif);font-weight:600;font-size:clamp(2.2rem,4vw,3.4rem);line-height:1.05;letter-spacing:-.02em;color:var(--pine-dark);margin-bottom:20px;text-wrap:balance}
+.sec-title em{font-style:italic;color:var(--pine)}
+.section-dark .sec-title{color:var(--cream)}
+.section-dark .sec-title em{color:var(--pine-sage)}
+.section-dark .eyebrow{color:var(--pine-sage)}
+.sec-sub{font-family:var(--sans);font-size:1.1rem;color:var(--text-mid);line-height:1.55;max-width:56ch;margin:0 auto;text-wrap:pretty}
+.sec-head.left .sec-sub{margin:0}
+.section-dark .sec-sub{color:rgba(253,250,244,.72)}
 
-    @media (max-width: 600px) {
-      .ba-headers, .ba-row {
-        grid-template-columns: 1fr 24px 1fr;
-      }
-      .ba-from, .ba-to {
-        padding: 14px 14px;
-        font-size: 0.84rem;
-      }
-      .ba-arrow svg { width: 16px; height: 16px; }
-      .ba-col-header { font-size: 0.62rem; }
-    }
+/* ─── HOW IT WORKS, 5 steps ─── */
+.steps{display:flex;flex-direction:column;gap:24px;max-width:1080px;margin:0 auto}
+.step{
+  display:grid;grid-template-columns:80px 1fr 1.2fr;gap:40px;
+  background:var(--white);border:1px solid var(--cream-deeper);border-radius:18px;
+  padding:36px 40px;align-items:center;
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+}
+.step:hover{border-color:var(--pine-mid);transform:translateY(-2px);box-shadow:var(--shadow-card)}
+.step-n{
+  font-family:var(--serif);font-weight:600;font-size:3.2rem;line-height:1;
+  color:var(--cream-deeper);letter-spacing:-.02em;
+}
+.step:hover .step-n{color:var(--accent)}
+.step-n{transition:color .25s}
+.step-copy h3{font-family:var(--serif);font-weight:600;font-size:1.5rem;color:var(--pine-dark);line-height:1.2;letter-spacing:-.01em;margin-bottom:10px}
+.step-copy h3 em{font-style:italic;color:var(--pine)}
+.step-copy p{font-family:var(--sans);font-size:.96rem;color:var(--text-mid);line-height:1.6;max-width:38ch}
+.step-visual{
+  background:var(--cream);border:1px solid var(--cream-deeper);border-radius:12px;
+  padding:16px;font-family:var(--mono);font-size:.74rem;color:var(--text-mid);line-height:1.7;
+  min-height:112px;display:flex;flex-direction:column;gap:4px;justify-content:center;
+}
+.step-visual .vline{display:flex;align-items:center;gap:8px}
+.step-visual .vline .k{color:var(--text-muted)}
+.step-visual .vline .v{color:var(--pine-dark)}
+.step-visual .vline .badge{font-size:.66rem;padding:2px 8px;border-radius:999px;background:var(--pine-soft);color:var(--pine-dark);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.step-visual .vline .badge.rust{background:var(--rust-soft);color:var(--accent)}
 
-    /* Time-back list */
-    .tb-list {
-      list-style: none;
-      margin-bottom: 36px;
-    }
-    .tb-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 18px 0;
-      border-bottom: 1px solid var(--cream-deeper);
-      font-size: 0.95rem;
-    }
-    .tb-item:first-child {
-      border-top: 1px solid var(--cream-deeper);
-    }
-    .tb-name {
-      color: var(--text-mid);
-    }
-    .tb-hours {
-      color: var(--pine);
-      font-weight: 700;
-      white-space: nowrap;
-      margin-left: 24px;
-    }
-    .possible-closer {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: 1.1rem;
-      color: var(--pine);
-      line-height: 1.5;
-      margin-bottom: 16px;
-    }
-    .possible-roadmap {
-      font-size: 0.9rem;
-      color: var(--text-soft);
-      line-height: 1.7;
-      max-width: 60ch;
-    }
+/* ─── WITH/WITHOUT, 6 tasks ─── */
+.vs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:1240px;margin:0 auto}
+@media (max-width:900px){.vs-grid{grid-template-columns:1fr}}
+.vs{
+  background:var(--white);border:1px solid var(--cream-deeper);border-radius:18px;
+  padding:28px 30px 24px;display:flex;flex-direction:column;gap:20px;
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+}
+.vs:hover{border-color:var(--pine-mid);transform:translateY(-2px);box-shadow:var(--shadow-card)}
+.vs-ask{display:flex;gap:12px;align-items:flex-start;padding-bottom:18px;border-bottom:1px solid var(--cream-deeper)}
+.vs-ask-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px}
+.vs-ask-text{font-family:var(--serif);font-weight:500;font-size:1.1rem;color:var(--pine-dark);line-height:1.35;font-style:italic;text-wrap:pretty}
+.vs-col{display:flex;flex-direction:column;gap:10px}
+.vs-head{display:flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:700;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
+.vs-head .label-a{color:var(--text-muted)}
+.vs-head .label-b{color:var(--pine)}
+.vs-head .badge{font-size:.62rem;padding:2px 8px;border-radius:3px;letter-spacing:.08em}
+.vs-head .badge-a{background:var(--cream-dark);color:var(--text-soft)}
+.vs-head .badge-b{background:var(--pine);color:var(--cream)}
+.vs-out{font-family:var(--sans);font-size:.9rem;color:var(--text-mid);line-height:1.55}
+.vs-out.generic{color:var(--text-soft);font-style:italic}
+.vs-out.generic::before{content:"“";font-family:var(--serif);font-size:1.3em;color:var(--text-muted);margin-right:2px;line-height:0}
+.vs-out.generic::after{content:"”";font-family:var(--serif);font-size:1.3em;color:var(--text-muted);line-height:0}
+.vs-tools{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.vs-tool{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-size:.85rem;color:var(--text-dark);padding:6px 10px;background:var(--cream);border-radius:6px;border:1px solid var(--cream-deeper)}
+.vs-tool .tool-icon{width:18px;height:18px;font-size:.6rem}
+.vs-done{
+  margin-top:8px;padding:12px 14px;background:var(--pine-soft);border-left:3px solid var(--pine);border-radius:6px;
+  font-family:var(--sans);font-size:.85rem;color:var(--pine-dark);line-height:1.5;
+}
+.vs-done b{font-weight:700}
 
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 960px) {
-      nav { padding: 18px 24px; }
-      .hero { padding: 0 24px 64px; }
-      .section { padding: 72px 24px; }
-      .problem-section { padding: 72px 24px; }
-      .cta-section { padding: 80px 24px; }
-      footer { padding: 32px 24px; }
-      .problem-item { padding: 24px 0; }
-      .why-section { padding: 72px 24px; }
-      .why-inner { grid-template-columns: 1fr; gap: 48px; }
-      .why-photo { position: static; aspect-ratio: 4/5; max-width: 400px; }
-      .pricing-table { grid-template-columns: 1fr; }
-      .pricing-header { grid-template-columns: 1fr; }
-      .faq-grid { grid-template-columns: 1fr; gap: 40px; }
-      .faq-aside { position: static; }
-      .cta-inner { grid-template-columns: 1fr; gap: 40px; }
-      .cta-action { align-items: flex-start; }
-      .cta-note { text-align: left; }
-      .deliverables-grid { grid-template-columns: repeat(2, 1fr); }
-      /* philosophy removed */
-      .step-item { grid-template-columns: 72px 1fr; }
-      .step-num { font-size: 2.5rem; }
-      .possible-section { padding: 72px 24px; }
-      .possible-stat { margin-bottom: 56px; }
-      .possible-track { margin-bottom: 56px; }
-    }
-    @media (max-width: 600px) {
-      .hero h1 { font-size: clamp(2.6rem, 8vw, 3.5rem); }
-      .hero-actions { flex-direction: column; align-items: flex-start; }
-      .deliverables-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+/* ─── INTEGRATIONS ─── */
+.int-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1080px;margin:0 auto}
+@media (max-width:900px){.int-grid{grid-template-columns:repeat(2,1fr)}}
+.int{
+  background:var(--white);border:1px solid var(--cream-deeper);border-radius:14px;
+  padding:28px 22px;display:flex;flex-direction:column;align-items:center;gap:12px;
+  text-align:center;transition:border-color .2s,transform .2s,box-shadow .2s;
+}
+.int:hover{border-color:var(--pine-mid);transform:translateY(-2px);box-shadow:var(--shadow-card)}
+.int-logo{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--white);font-family:var(--sans);font-weight:800;font-size:1rem;letter-spacing:-.02em;flex-shrink:0}
+.int-name{font-family:var(--sans);font-weight:600;font-size:.92rem;color:var(--pine-dark)}
+.int-cat{font-family:var(--mono);font-size:.66rem;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase}
+.int-note{text-align:center;margin-top:28px;font-family:var(--serif);font-style:italic;color:var(--text-soft);font-size:.96rem}
+.int-note b{font-family:var(--sans);font-style:normal;color:var(--pine-dark);font-weight:700}
+
+/* ─── DIFFERENT FROM RUNNER / OTHERS ─── */
+.diff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;margin:0 auto}
+@media (max-width:900px){.diff-grid{grid-template-columns:1fr}}
+.diff{
+  background:var(--cream);border:1px solid rgba(141,153,103,.24);border-radius:18px;
+  padding:32px 30px;display:flex;flex-direction:column;gap:16px;
+}
+.section-dark .diff{background:rgba(253,250,244,.04);border-color:rgba(253,250,244,.12)}
+.diff-mark{display:flex;align-items:center;gap:10px}
+.diff-n{font-family:var(--mono);font-size:.72rem;color:var(--pine-sage);letter-spacing:.1em}
+.diff-line{flex:1;height:1px;background:rgba(253,250,244,.16)}
+.diff-line-light{background:var(--cream-deeper)}
+.diff h3{font-family:var(--serif);font-weight:600;font-size:1.35rem;line-height:1.2;color:var(--cream);letter-spacing:-.005em}
+.section-cream .diff h3{color:var(--pine-dark)}
+.diff h3 em{font-style:italic;color:var(--pine-sage)}
+.section-cream .diff h3 em{color:var(--pine)}
+.diff p{font-family:var(--sans);font-size:.95rem;color:rgba(253,250,244,.72);line-height:1.6}
+.section-cream .diff p{color:var(--text-mid)}
+
+/* ─── FIELD NOTES, moat ─── */
+.fn{padding:120px 0;background:var(--cream-dark);border-top:1px solid var(--cream-deeper);border-bottom:1px solid var(--cream-deeper);position:relative;overflow:hidden}
+.fn::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 40% at 90% 0%, rgba(168,74,42,.07), transparent 60%);
+}
+.fn-inner{max-width:1240px;margin:0 auto;padding:0 40px;position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+@media (max-width:900px){.fn-inner{grid-template-columns:1fr;gap:48px}}
+.fn-copy .eyebrow{margin-bottom:18px}
+.fn-copy h2{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,3.4vw,2.8rem);line-height:1.1;letter-spacing:-.02em;color:var(--pine-dark);margin-bottom:20px;text-wrap:balance}
+.fn-copy h2 em{font-style:italic;color:var(--pine)}
+.fn-copy p{font-family:var(--sans);font-size:1.02rem;color:var(--text-mid);line-height:1.65;margin-bottom:14px;max-width:46ch}
+.fn-form{display:flex;gap:8px;margin-top:26px;flex-wrap:wrap}
+.fn-form input{font-family:var(--sans);font-size:.92rem;padding:14px 18px;border:1px solid var(--cream-deeper);border-radius:8px;background:var(--white);color:var(--text-dark);min-width:260px;outline:none;transition:border-color .15s;flex:1}
+.fn-form input:focus{border-color:var(--pine-mid)}
+.fn-note{font-family:var(--mono);font-size:.7rem;color:var(--text-muted);margin-top:12px;letter-spacing:.04em}
+
+.fn-issues{display:flex;flex-direction:column;gap:14px}
+.fn-issue{
+  background:var(--white);border:1px solid var(--cream-deeper);border-radius:14px;
+  padding:22px 26px;display:grid;grid-template-columns:52px 1fr auto;gap:20px;align-items:center;
+  transition:border-color .2s,transform .2s,box-shadow .2s;cursor:pointer;
+}
+.fn-issue:hover{border-color:var(--pine-mid);transform:translateY(-2px);box-shadow:var(--shadow-card)}
+.fn-issue-num{font-family:var(--serif);font-weight:600;font-size:1.4rem;color:var(--accent);line-height:1;letter-spacing:-.02em}
+.fn-issue-num small{display:block;font-family:var(--mono);font-size:.6rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;font-weight:400}
+.fn-issue-title{font-family:var(--serif);font-weight:600;font-size:1.1rem;color:var(--pine-dark);line-height:1.3;letter-spacing:-.005em;margin-bottom:4px}
+.fn-issue-title em{font-style:italic;color:var(--pine)}
+.fn-issue-date{font-family:var(--mono);font-size:.7rem;color:var(--text-soft);letter-spacing:.04em}
+.fn-issue-arrow{color:var(--pine-mid);transition:transform .2s}
+.fn-issue:hover .fn-issue-arrow{transform:translateX(3px);color:var(--accent)}
+
+/* ─── TESTIMONIALS ─── */
+.tm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1240px;margin:0 auto}
+@media (max-width:900px){.tm-grid{grid-template-columns:1fr}}
+.tm{
+  background:var(--white);border:1px solid var(--cream-deeper);border-radius:18px;
+  padding:32px 30px;display:flex;flex-direction:column;gap:20px;
+  transition:border-color .2s,transform .2s,box-shadow .2s;
+}
+.tm:hover{border-color:var(--pine-mid);transform:translateY(-2px);box-shadow:var(--shadow-card)}
+.tm-quote{font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.05rem;color:var(--pine-dark);line-height:1.5;text-wrap:pretty;flex:1}
+.tm-quote::before{content:"“";font-size:1.6em;color:var(--accent);margin-right:2px;line-height:0;vertical-align:-0.2em}
+.tm-person{display:flex;gap:14px;align-items:center;padding-top:18px;border-top:1px solid var(--cream-deeper)}
+.tm-avatar{
+  width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-weight:600;font-size:1.1rem;color:var(--cream);
+  flex-shrink:0;letter-spacing:-.02em;
+}
+.tm-name{font-family:var(--sans);font-weight:700;font-size:.92rem;color:var(--pine-dark);line-height:1.2}
+.tm-role{font-family:var(--sans);font-weight:500;font-size:.78rem;color:var(--text-soft);margin-top:2px}
+
+/* ─── FINAL CTA ─── */
+.cta{padding:140px 0 120px;background:var(--pine-dark);color:var(--white);position:relative;overflow:hidden}
+.cta::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 80% 0%,rgba(141,153,103,.18),transparent 55%),
+    radial-gradient(ellipse 50% 40% at 10% 100%,rgba(168,74,42,.14),transparent 60%);
+}
+.cta-inner{max-width:1100px;margin:0 auto;padding:0 40px;position:relative;z-index:1;text-align:center}
+.cta-eyebrow{display:inline-block;font-family:var(--mono);font-size:.72rem;color:var(--pine-sage);letter-spacing:.14em;text-transform:uppercase;margin-bottom:22px}
+.cta h2{font-family:var(--serif);font-weight:600;font-size:clamp(2.6rem,5.4vw,4.8rem);line-height:1;letter-spacing:-.025em;margin-bottom:24px;text-wrap:balance}
+.cta h2 em{font-style:italic;color:var(--pine-sage)}
+.cta h2 .dot{color:var(--pine-sage)}
+.cta-sub{font-family:var(--serif);font-style:italic;font-size:1.2rem;color:rgba(253,250,244,.75);line-height:1.5;max-width:52ch;margin:0 auto 40px;text-wrap:pretty}
+.cta-btn-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:36px}
+.cta-btn{background:var(--cream);color:var(--pine-dark);font-family:var(--sans);font-weight:700;font-size:1rem;padding:16px 32px;border-radius:8px;display:inline-flex;gap:10px;align-items:center;transition:background .15s,transform .15s}
+.cta-btn:hover{background:var(--white);transform:translateY(-1px)}
+.cta-btn-ghost{background:transparent;color:var(--cream);border:1.5px solid rgba(253,250,244,.2);padding:14px 28px}
+.cta-btn-ghost:hover{background:rgba(253,250,244,.06);border-color:rgba(253,250,244,.4);transform:none}
+.cta-sig{font-family:var(--serif);font-style:italic;font-size:1.02rem;color:var(--pine-sage);margin-top:30px;letter-spacing:.01em}
+
+/* ─── FOOTER ─── */
+footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36px;border-top:1px solid rgba(253,250,244,.08)}
+.foot-inner{max-width:1240px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:48px;align-items:start}
+.foot-brand{display:flex;flex-direction:column;gap:16px}
+.foot-brand .wordmark{color:var(--white);font-size:1.35rem}
+.foot-brand p{font-family:var(--serif);font-style:italic;font-size:.96rem;line-height:1.55;max-width:32ch;color:rgba(253,250,244,.8)}
+.foot-col h5{font-family:var(--sans);font-weight:700;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(253,250,244,.55);margin-bottom:14px}
+.foot-col a{display:block;font-size:.9rem;color:rgba(253,250,244,.8);padding:5px 0;transition:color .15s}
+.foot-col a:hover{color:var(--pine-sage)}
+.foot-bottom{max-width:1240px;margin:48px auto 0;padding:22px 40px 0;border-top:1px solid rgba(253,250,244,.1);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:.72rem;color:rgba(253,250,244,.42);letter-spacing:.04em}
+
+/* ─── responsive ─── */
+@media (max-width:960px){
+  .wrap{padding:0 22px}
+  .nav-inner{padding:14px 22px;gap:16px;grid-template-columns:auto auto}
+  .nav-links{display:none}
+  .nav-meta{display:none}
+  .hero{padding:48px 0 64px}
+  .hero-inner{padding:0 22px}
+  .hero-grid{grid-template-columns:1fr;gap:48px}
+  .section{padding:80px 0}
+  .sec-head{margin-bottom:48px}
+  .step{grid-template-columns:auto 1fr;padding:24px 22px;gap:20px}
+  .step-n{font-size:2.2rem}
+  .step-visual{grid-column:1/-1;margin-top:4px}
+  .vs-grid{grid-template-columns:1fr}
+  .int-grid{grid-template-columns:repeat(2,1fr)}
+  .diff-grid{grid-template-columns:1fr}
+  .tm-grid{grid-template-columns:1fr}
+  .fn-inner{padding:0 22px}
+  .cta{padding:96px 0 88px}
+  .foot-inner{grid-template-columns:1fr 1fr;gap:32px;padding:0 22px}
+  .foot-bottom{padding:22px 22px 0}
+  .trustbar-inner{padding:0 22px;gap:20px}
+}
+
+/* ═══════════════════════════════════════════════
+   v2-RELAUNCH ADDITIONS
+   ═══════════════════════════════════════════════ */
+
+/* ─── DEMO HEADER + SKETCH FRAME ─── */
+.demo-header{max-width:1100px;margin:0 auto 28px;text-align:left;padding:0 12px}
+.demo-eyebrow{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;margin-bottom:14px;display:inline-flex;align-items:center;gap:10px;
+}
+.demo-eyebrow::before{content:"";width:24px;height:1px;background:var(--accent)}
+.demo-title-h2{
+  font-family:var(--serif);font-weight:600;
+  font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.15;letter-spacing:-.02em;
+  color:var(--pine-dark);margin:0 0 10px;text-wrap:balance;max-width:30ch;
+}
+.demo-title-h2 em{font-style:italic;color:var(--pine)}
+.demo-sub{
+  font-family:var(--sans);font-size:1rem;color:var(--text-mid);max-width:54ch;line-height:1.55;
+}
+.demo-sketch{
+  position:relative;padding:18px;border:1.5px dashed rgba(38,62,49,.28);border-radius:18px;
+  background:rgba(245,240,230,.4);
+}
+.demo-sketch::before{
+  content:"";position:absolute;inset:6px;border:1px dashed rgba(38,62,49,.12);border-radius:14px;pointer-events:none;
+}
+
+/* ─── CONNECTOR + TRUST LINE ─── */
+.trustline{padding:34px 0;background:var(--cream-dark);border-top:1px solid var(--cream-deeper);border-bottom:1px solid var(--cream-deeper)}
+.trustline-inner{max-width:920px;margin:0 auto;padding:0 40px;text-align:center}
+.trustline p{
+  font-family:var(--serif);font-style:italic;font-size:1.08rem;line-height:1.55;color:var(--pine-dark);
+  text-wrap:balance;margin:0;
+}
+.trustline strong{font-style:normal;color:var(--pine-dark)}
+
+/* ─── WHAT I KEEP HEARING ─── */
+.hear-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:1100px;margin:0 auto}
+.hear{
+  background:var(--white);border:1px solid var(--cream-deeper);border-radius:12px;
+  padding:28px 30px;
+  border-left:3px solid var(--accent);
+}
+.hear-title{
+  font-family:var(--serif);font-weight:600;font-size:1.15rem;color:var(--pine-dark);
+  margin-bottom:12px;letter-spacing:-.01em;
+}
+.hear-title .dot{color:var(--accent)}
+.hear-quote{
+  font-family:var(--serif);font-style:italic;font-size:1rem;line-height:1.6;color:var(--text-mid);
+  margin:0;
+}
+@media (max-width:780px){
+  .hear-grid{grid-template-columns:1fr}
+}
+
+/* ─── WORKFLOW LIBRARY ─── */
+.wf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1200px;margin:0 auto}
+.wf{
+  border-radius:14px;padding:28px 26px;
+  border:1px solid var(--cream-deeper);
+  display:flex;flex-direction:column;min-height:240px;
+  transition:transform .18s,box-shadow .18s;
+}
+.wf:hover{transform:translateY(-2px);box-shadow:var(--shadow-card)}
+.wf--cream{background:var(--cream)}
+.wf--pine{background:var(--pine-dark);color:var(--cream)}
+.wf--pine h3{color:var(--cream)}
+.wf--pine p{color:rgba(245,240,230,.75)}
+.wf--pine .wf-num{color:var(--pine-sage)}
+.wf--rust{background:var(--accent);color:var(--white)}
+.wf--rust h3{color:var(--white)}
+.wf--rust p{color:rgba(253,250,244,.85)}
+.wf--rust .wf-num{color:rgba(253,250,244,.55)}
+.wf-num{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;color:var(--text-soft);
+  margin-bottom:14px;
+}
+.wf h3{
+  font-family:var(--serif);font-weight:600;font-size:1.25rem;line-height:1.2;letter-spacing:-.015em;
+  color:var(--pine-dark);margin:0 0 10px;text-wrap:balance;
+}
+.wf h3 .dot{color:var(--accent)}
+.wf--rust h3 .dot{color:var(--white)}
+.wf p{
+  font-family:var(--sans);font-size:.95rem;line-height:1.55;color:var(--text-mid);
+  margin:0 0 18px;flex:1;
+}
+.wf-tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto}
+.wf-tool{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;color:var(--text-soft);
+  background:rgba(255,255,255,.6);border-radius:6px;padding:4px 9px 4px 5px;
+}
+.wf--pine .wf-tool{background:rgba(245,240,230,.1);color:rgba(245,240,230,.75)}
+.wf--rust .wf-tool{background:rgba(255,255,255,.18);color:rgba(253,250,244,.85)}
+.wf-tool .tool-icon{width:16px;height:16px;font-size:.55rem}
+.wf-note{
+  text-align:center;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;
+  color:var(--text-soft);margin-top:34px;
+}
+@media (max-width:980px){
+  .wf-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:640px){
+  .wf-grid{grid-template-columns:1fr}
+}
+
+/* ─── WHY NOBO, Program OS ─── */
+.why-grid{max-width:780px;margin:0 auto}
+.why-story{display:flex;flex-direction:column;gap:28px}
+.why-lede{
+  font-family:var(--serif);font-size:1.2rem;line-height:1.55;color:var(--cream);
+  margin:0;text-wrap:balance;
+}
+.why-lede em{font-style:italic;color:var(--pine-sage)}
+.why-shape{
+  display:flex;align-items:center;justify-content:center;gap:32px;
+  padding:32px 24px;border:1px dashed rgba(245,240,230,.28);border-radius:14px;
+  background:rgba(38,62,49,.32);
+}
+.why-shape-from,.why-shape-to{text-align:center;display:flex;flex-direction:column;gap:6px}
+.why-shape-num{
+  font-family:var(--serif);font-weight:700;font-size:clamp(2.4rem,5vw,3.8rem);
+  line-height:1;color:var(--cream);letter-spacing:-.02em;
+}
+.why-shape-to .why-shape-num{color:var(--pine-sage)}
+.why-shape-lbl{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(245,240,230,.55);
+}
+.why-shape-arrow{
+  font-family:var(--serif);font-size:2rem;color:var(--accent);font-weight:300;
+}
+.why-bridge{
+  font-family:var(--serif);font-size:1.08rem;line-height:1.6;color:rgba(245,240,230,.85);
+  margin:0;text-wrap:balance;
+}
+.why-bridge em{font-style:italic;color:var(--cream)}
+.why-creds{
+  font-family:var(--sans);font-weight:500;font-size:1rem;line-height:1.55;
+  color:var(--cream);margin:0;letter-spacing:-.005em;
+}
+.why-creds strong{font-weight:600;color:var(--cream)}
+.why-boulder{
+  font-family:var(--mono);font-size:.85rem;color:rgba(245,240,230,.55);margin:0;
+  padding-top:20px;border-top:1px solid rgba(245,240,230,.1);
+}
+
+/* ─── PRICING + CTA UPDATES ─── */
+.cta-pricing{
+  font-family:var(--mono);font-size:.85rem;letter-spacing:.02em;color:rgba(245,240,230,.7);
+  margin:0 0 28px;
+}
+.cta-pricing strong{color:var(--cream);font-family:var(--sans);font-weight:700;font-size:1.05rem;letter-spacing:-.005em}
+
+.cta-form{
+  display:flex;flex-direction:column;gap:12px;max-width:520px;margin:30px auto 24px;
+}
+.cta-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cta-form input,
+.cta-form textarea{
+  font-family:var(--sans);font-size:1rem;color:var(--cream);
+  background:rgba(245,240,230,.06);border:1px solid rgba(245,240,230,.18);
+  border-radius:8px;padding:13px 16px;width:100%;
+  transition:border-color .15s,background .15s;
+}
+.cta-form input::placeholder,
+.cta-form textarea::placeholder{color:rgba(245,240,230,.42)}
+.cta-form input:focus,
+.cta-form textarea:focus{
+  outline:none;border-color:var(--pine-sage);background:rgba(245,240,230,.1);
+}
+.cta-form textarea{resize:vertical;min-height:80px;font-family:var(--sans);line-height:1.5}
+.cta-form .btn{align-self:flex-start;margin-top:6px}
+@media (max-width:540px){
+  .cta-form-row{grid-template-columns:1fr}
+}
+
+/* drop the v2 CTA eyebrow if present */
+.cta-eyebrow{display:none}
+</style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav id="nav">
-    <span class="wordmark">nobo</span>
-    <a href="#contact" class="nav-link">Let's grab coffee</a>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <p class="hero-eyebrow">Boulder's AI studio</p>
-    <h1>AI that actually <br><em>works for your team</em></h1>
-    <p class="hero-sub">I build the systems and automations that give your team its time back — configured to how your business actually runs.</p>
-    <div class="hero-actions">
-      <a href="#how-it-works" class="btn btn--ghost">
-        See how it works
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M7 1v12M1 7l6 6 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
+<!-- ─── NAV ─── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="wordmark">nobo<span class="dot">.</span></a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="/guides">Guides</a>
+      <a href="/field-notes">Field Notes</a>
     </div>
-  </section>
-
-
-  <!-- PROBLEM -->
-  <section class="problem-section">
-    <div class="problem-inner">
-      <h2 class="problem-heading">Does this sound familiar?</h2>
-      <p class="problem-intro">These are the things I keep hearing from the teams I work with.</p>
-      <ul class="problem-list">
-        <li class="problem-item">
-          <p class="problem-title">We've seen what AI can do. We're just not there yet.</p>
-          <p class="problem-quote">"I know we could be getting more out of AI. I just don't have time to figure it out while running the business."</p>
-        </li>
-        <li class="problem-item">
-          <p class="problem-title">Every session starts from scratch</p>
-          <p class="problem-quote">"Every time someone on my team opens Claude, they start from scratch. It doesn't know our clients, our processes, or how we work."</p>
-        </li>
-        <li class="problem-item">
-          <p class="problem-title">Feels like it's faster to just do it myself</p>
-          <p class="problem-quote">"We spend more time going back and forth with AI than it would take to just do the work ourselves."</p>
-        </li>
-        <li class="problem-item">
-          <p class="problem-title">Tedious tasks eat up too much time</p>
-          <p class="problem-quote">"Too much of our week goes to work that feels like it should be automated, we just don't know where to start."</p>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- WHAT'S POSSIBLE -->
-  <section class="possible-section">
-    <div class="possible-inner">
-      <p class="possible-eyebrow">Here's what's possible</p>
-      <p class="possible-stat">52% of businesses say their biggest challenge with AI is "I don't know where to start."</p>
-
-      <!-- Offering 1: Claude Cowork System Setup -->
-      <div class="possible-track">
-        <h2 class="possible-track-heading">Claude Cowork System Setup</h2>
-        <p class="possible-track-sub">Your team gets an AI system that actually knows your business — your context, your voice, your standards — so every session starts where the last one left off.</p>
-
-        <div class="ba-headers">
-          <span class="ba-col-header ba-col-header--from">From</span>
-          <span></span>
-          <span class="ba-col-header ba-col-header--to">To</span>
-        </div>
-        <div class="ba-rows">
-          <div class="ba-row">
-            <div class="ba-from">Every session starts from scratch</div>
-            <div class="ba-arrow"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <div class="ba-to">Claude already knows your business</div>
-          </div>
-          <div class="ba-row">
-            <div class="ba-from">Everyone uses AI differently</div>
-            <div class="ba-arrow"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <div class="ba-to">A system built for your team delivering consistent output every time</div>
-          </div>
-          <div class="ba-row">
-            <div class="ba-from">More time prompting than working</div>
-            <div class="ba-arrow"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-            <div class="ba-to">Delegate like to a coworker</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Offering 2: Workflow Automations -->
-      <div class="possible-track">
-        <h2 class="possible-track-heading">Workflow Automations</h2>
-        <p class="possible-track-sub">I build the automations to handle the work eating up your time.</p>
-
-        <ul class="tb-list">
-          <li class="tb-item">
-            <span class="tb-name">Client onboarding</span>
-            <span class="tb-hours">~3 hrs/week</span>
-          </li>
-          <li class="tb-item">
-            <span class="tb-name">Lead follow-up + outreach</span>
-            <span class="tb-hours">~3 hrs/week</span>
-          </li>
-          <li class="tb-item">
-            <span class="tb-name">Email triage + scheduling</span>
-            <span class="tb-hours">~3 hrs/week</span>
-          </li>
-          <li class="tb-item">
-            <span class="tb-name">Document processing</span>
-            <span class="tb-hours">~2 hrs/week</span>
-          </li>
-          <li class="tb-item">
-            <span class="tb-name">Internal reporting</span>
-            <span class="tb-hours">~2 hrs/week</span>
-          </li>
-          <li class="tb-item">
-            <span class="tb-name">Customer follow-up</span>
-            <span class="tb-hours">~2 hrs/week</span>
-          </li>
-        </ul>
-        <p class="possible-roadmap">Part of the process is building a prioritized roadmap together, mapped to what gives your team the most time back first. <a href="#contact" style="color:var(--pine); font-weight:600; border-bottom:1.5px solid var(--pine); padding-bottom:1px; transition:opacity 0.15s;" onmouseover="this.style.opacity='0.55'" onmouseout="this.style.opacity='1'">Let's figure our your list.</a></p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <div class="section" id="how-it-works">
-    <span class="label">How I get you there</span>
-    <ul class="steps-list">
-      <li class="step-item">
-        <span class="step-num">01</span>
-        <div class="step-content">
-          <p class="step-name">I figure out where AI should be working for you</p>
-          <p class="step-desc">I sit down with you and map where your team's time is going. What's repetitive, what requires judgment, what's falling through the cracks. You walk away knowing exactly what gets built and why.</p>
-        </div>
-      </li>
-      <li class="step-item">
-        <span class="step-num">02</span>
-        <div class="step-content">
-          <p class="step-name">I build the system and automations</p>
-          <p class="step-desc">An AI system built around your business so your team gets consistent results without re-explaining context every time. Custom automations for the repetitive work that still eats up real time. Usually both. Scoped, built, tested, and handed off with documentation your team can actually use.</p>
-        </div>
-      </li>
-      <li class="step-item">
-        <span class="step-num">03</span>
-        <div class="step-content">
-          <p class="step-name">I stay involved</p>
-          <p class="step-desc">New automations when you need them. Adjustments when something's off. In-person check-ins when it makes sense. This isn't a handoff. It's a working relationship with someone who's in Boulder and still here next month.</p>
-        </div>
-      </li>
-    </ul>
-  </div>
-
-  <!-- CONTACT FORM -->
-  <section class="contact-section" id="contact">
-    <div class="contact-inner">
-      <h2 class="contact-heading">Let's grab coffee.</h2>
-      <p class="contact-sub">Tell me a little about your business and I'll reach out to find a time. In person in Boulder, or video call if you're not local.</p>
-      <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
-        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY">
-        <input type="hidden" name="subject" value="New inquiry from nobo.works">
-        <input type="hidden" name="redirect" value="https://nobo.works/thanks">
-        <div class="contact-row">
-          <label>
-            Name
-            <input type="text" name="name" required placeholder="First and last">
-          </label>
-          <label>
-            Email
-            <input type="email" name="email" required placeholder="you@company.com">
-          </label>
-        </div>
-        <label>
-          Business name
-          <input type="text" name="business" required>
-        </label>
-        <div class="contact-row">
-          <label>
-            Team size
-            <select name="team_size" required>
-              <option value="" disabled selected>Select</option>
-              <option value="Just me">Just me</option>
-              <option value="2-5">2-5</option>
-              <option value="6-15">6-15</option>
-              <option value="16-50">16-50</option>
-            </select>
-          </label>
-          <label>
-            How is your team using AI today?
-            <select name="ai_usage" required>
-              <option value="" disabled selected>Select</option>
-              <option value="Not yet">Not yet</option>
-              <option value="Individual tools">Individual tools (ChatGPT, Claude, etc.)</option>
-              <option value="Some workflows">Some workflows but nothing systematic</option>
-              <option value="Have a system">We have a system but it's not working</option>
-            </select>
-          </label>
-        </div>
-        <label>
-          What's the biggest thing you'd want AI to handle?
-          <textarea name="biggest_need" placeholder="No wrong answer. Even 'I don't know yet' is fine."></textarea>
-        </label>
-        <label>
-          How did you hear about Nobo?
-          <select name="source">
-            <option value="" disabled selected>Select</option>
-            <option value="Referral">Referral</option>
-            <option value="Google">Google</option>
-            <option value="Social media">Social media</option>
-            <option value="Cold email">Cold email</option>
-            <option value="Event or meetup">Event or meetup</option>
-            <option value="Other">Other</option>
-          </select>
-        </label>
-        <button type="submit" class="contact-submit">Send it over</button>
-      </form>
-    </div>
-  </section>
-
-  <!-- WHY NOBO -->
-  <section class="why-section">
-   <div class="why-section-inner">
-    <div class="why-inner">
-      <div class="why-photo">
-        <!-- REPLACE: james.jpg with your actual headshot -->
-        <img src="../brand/james.jpg" alt="James Mason, founder of Nobo" style="width:100%;height:100%;object-fit:cover;object-position:center 15%;border-radius:4px;">
-      </div>
-      <div class="why-text">
-        <span class="label">Why Nobo</span>
-        <h2 class="why-headline">The person in Boulder you can actually sit down with and talk about AI.</h2>
-        <div class="why-body">
-          <p>I'm James Mason. I work with Boulder businesses that are using AI but know they should be getting more out of it.</p>
-            <p>I spent 10 years at Stripe and Lyft building the systems that keep large operations running. Most recently, I built a Claude system to help run a 15-project program I managed at Stripe. I'm a certified Claude AI systems architect. That experience is what I bring to <em>your team</em>.</p>
-          <p>Most AI services are remote and transactional. <strong>I'm in Boulder.</strong> I'll meet you at Rayback, learn your business, and tell you what will actually move the needle — even if it's simpler than you expected. That's the whole point. And I'll still be here next month.</p>
-        </div>
-      </div>
-    </div>
-   </div>
-  </section>
-
-  <!-- FAQ -->
-  <div class="section">
-    <div class="faq-grid">
-      <h2 class="faq-aside">Honest answers.</h2>
-      <div class="faq-items">
-        <div class="faq-item">
-          <p class="faq-q">Why does it feel like we're still stuck at square one?</p>
-          <p class="faq-a">Most teams plateau. More prompts, more back-and-forth, grinding through the same loop without ever landing on what good actually looks like for your business. That's not a Claude problem. That's a system problem. What I build defines the standard once — your voice, your context, your expectations — so every output starts from the right place.</p>
-        </div>
-        <div class="faq-item">
-          <p class="faq-q">Why does every session feel like Claude has never met us before?</p>
-          <p class="faq-a">Because it hasn't. Claude doesn't retain anything between sessions by default. It doesn't know your clients, your process, or how you like things done. Once we build that layer in, your team picks up where they left off instead of starting over every time.</p>
-        </div>
-        <div class="faq-item">
-          <p class="faq-q">Why does it take more work to explain what I need than to just do it myself?</p>
-          <p class="faq-a">You're doing the work twice. That's the sign of a system that isn't really a system yet. The goal isn't just getting Claude to follow instructions — it's getting you to the point where you trust it enough to actually delegate. That's what we build toward.</p>
-        </div>
-        <div class="faq-item">
-          <p class="faq-q">We've tried to automate things before. Why does it always end up breaking?</p>
-          <p class="faq-a">Usually because it was held together with too many pieces and no one really owned it. What I build has fewer moving parts, solid documentation, and I stay involved after handoff. This isn't a build-it-and-disappear situation.</p>
-        </div>
-        <div class="faq-item">
-          <p class="faq-q">Is this actually worth it for a team our size?</p>
-          <p class="faq-a">Small teams feel the cost of manual work more than anyone. Every hour spent on something that could run itself is an hour you're not spending on clients, strategy, or growth. If I don't think it'll move the needle for you, I'll tell you in the first conversation.</p>
-        </div>
-      </div>
+    <div class="nav-right">
+      <a href="#coffee" class="btn btn-primary">Let's grab coffee</a>
     </div>
   </div>
+</nav>
 
-  <!-- CLOSING LINE -->
-  <div style="padding:80px 48px; max-width:1280px; margin:0 auto; text-align:center;">
-    <p style="font-family:var(--font-serif); font-style:italic; font-size:clamp(1.3rem, 2.5vw, 1.8rem); color:var(--pine); line-height:1.4;">Your AI partner in Boulder.</p>
-  </div>
+<main>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <span class="footer-wordmark">nobo</span>
-      <div class="footer-links">
-        <!-- REPLACE: james@nobo.works with your email address -->
-        <a href="mailto:james@nobo.works">james@nobo.works</a>
-        <a href="#">LinkedIn</a>
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow"><span class="pulse"></span> A service, built like software.</div>
+        <h1 class="hero-headline">
+          AI that actually<br>shows up to <em>work</em><span class="dot">.</span>
+        </h1>
+        <p class="hero-sub">A working AI system, built around how your team actually runs. I sit with you, configure it, and hand over something that already works on day one.</p>
+        <div class="hero-cta-row">
+          <a href="#coffee" class="btn btn-primary big">Let's grab coffee</a>
+          <a href="#how" class="btn btn-ghost big">See how it works</a>
+        </div>
       </div>
-      <span class="footer-copy">© 2026 Nobo</span>
     </div>
-  </footer>
 
-  <script>
-    // Nav scroll
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('nav--scrolled', window.scrollY > 40);
-    }, { passive: true });
+    <!-- LIVE UI DEMO -->
+    <div class="hero-demo-wrap">
+      <div class="demo-header">
+        <span class="demo-eyebrow">Routines</span>
+        <h2 class="demo-title-h2">What your team's first month with the system looks like<span class="dot">.</span></h2>
+        <p class="demo-sub">Five routines, one team, one week. Configured around your business, not the other way around.</p>
+      </div>
+      <div class="demo-sketch">
+      <div class="demo" id="demo">
+        <div class="demo-chrome">
+          <span class="demo-dot"></span>
+          <span class="demo-dot"></span>
+          <span class="demo-dot"></span>
+          <span class="demo-title">claude cowork · nobo system · acme studio</span>
+          <button class="demo-ctrl" id="demoCtrl" data-state="playing" aria-label="Pause playback"><span class="icon"></span><span id="demoCtrlLabel">pause</span></button>
+        </div>
+        <div class="demo-tabs-wrap">
+        <div class="demo-tabs" id="demoTabs">
+          <button class="demo-tab active" data-tab="prep"><span class="demo-tab-dot"></span>Prep for a client call</button>
+          <button class="demo-tab" data-tab="proposal"><span class="demo-tab-dot"></span>Draft a proposal</button>
+          <button class="demo-tab" data-tab="meeting"><span class="demo-tab-dot"></span>Meeting → action items</button>
+          <button class="demo-tab" data-tab="close"><span class="demo-tab-dot"></span>Close the day</button>
+          <button class="demo-tab" data-tab="plan"><span class="demo-tab-dot"></span>Plan the week</button>
+        </div>
+        <div class="demo-progress" id="demoProgress"></div>
+        </div>
 
-    // Flatirons scroll expansion (Anthropic-style)
-    const flatironsWrap = document.querySelector('.flatirons-wrap');
-    const flatironsInner = document.querySelector('.flatirons-inner');
+        <div class="demo-body">
+          <!-- TAB 1, PREP FOR A CLIENT CALL -->
+          <div class="demo-pane active" data-pane="prep">
+            <div class="msg">
+              <div class="msg-av user">JM</div>
+              <div class="msg-body">
+                <div class="msg-name">James <span class="role">· 1:20 PM</span></div>
+                <div class="msg-text">prep me for my 2pm with Rivera</div>
+              </div>
+            </div>
+            <div class="msg">
+              <div class="msg-av ai">n<span class="dot">.</span></div>
+              <div class="msg-body">
+                <div class="msg-name">Account Lead · Specialist <span class="role">· knows Rivera end-to-end</span></div>
+                <div class="msg-text">Pulling the Rivera room together, <em>40 min out</em>.</div>
+                <div class="tool-call">
+                  <div class="tool-head">
+                    <div class="tool-icon gmail">G</div>
+                    <div class="tool-name">gmail.thread_history</div>
+                    <div class="tool-status">ok · Rivera · 3 open threads</div>
+                  </div>
+                  <div class="tool-body">
+                    <span class="k">last touch →</span> <span class="v">Mara, Tue, "let's regroup Thurs on scope + timing"</span><br>
+                    <span class="k">unresolved →</span> <span class="v">Phase-2 start date, additional seat count, April invoice</span>
+                  </div>
+                </div>
+                <div class="tool-call">
+                  <div class="tool-head">
+                    <div class="tool-icon drive">D</div>
+                    <div class="tool-name">drive.find</div>
+                    <div class="tool-status">ok · 4 docs</div>
+                  </div>
+                  <div class="tool-body">
+                    <span class="k">pulling →</span> <span class="v">Rivera SOW v3 · Q1 recap · last-call notes · current burn report</span>
+                  </div>
+                </div>
+                <div class="tool-call">
+                  <div class="tool-head">
+                    <div class="tool-icon click">L</div>
+                    <div class="tool-name">clickup.project_status</div>
+                    <div class="tool-status">ok · 7 tasks</div>
+                  </div>
+                  <div class="tool-body">
+                    <span class="k">this week →</span> <span class="v">2 shipped · 3 in flight · 2 blocked on Mara's sign-off</span>
+                  </div>
+                </div>
+                <div class="msg-text" style="margin-top:12px;padding:14px 16px;background:var(--cream);border-radius:6px;border-left:2px solid var(--pine)">
+                <b style="font-family:var(--serif);font-weight:600;font-size:.98rem">Rivera brief · 2pm</b><br><br>
+                <em>What she'll open with.</em> Phase-2 start date. She's trying to push it two weeks left, the April invoice question is really about that.<br>
+                <em>What to say.</em> Yes on Phase-2, yes to earlier start if the two blocked sign-offs come today. Here's your ask.<br>
+                <em>Don't forget.</em> Thank her team for the quick turn on the Q1 asset review, she mentioned it twice last month.
+                </div>
+              </div>
+            </div>
+          </div>
 
-    function updateFlatirons() {
-      if (!flatironsWrap) return;
-      const rect = flatironsWrap.getBoundingClientRect();
-      const windowH = window.innerHeight;
+          <!-- TAB 2, DRAFT A PROPOSAL -->
+          <div class="demo-pane" data-pane="proposal">
+            <div class="msg">
+              <div class="msg-av user">JM</div>
+              <div class="msg-body">
+                <div class="msg-name">James <span class="role">· 3:40 PM</span></div>
+                <div class="msg-text">@proposals, new proposal for Cordova. Brand + site, scope similar to Rivera Phase 1. Need a first pass by tomorrow morning.</div>
+              </div>
+            </div>
+            <div class="msg">
+              <div class="msg-av ai">n<span class="dot">.</span></div>
+              <div class="msg-body">
+                <div class="msg-name">Proposals · Specialist <span class="role">· trained on your last 12 wins</span></div>
+                <div class="msg-text">On it. Using Rivera Phase-1 as the spine, Cordova's a smaller team, so I'll trim discovery and tighten the pricing ladder.</div>
+                <div class="tool-call">
+                  <div class="tool-head">
+                    <div class="tool-icon drive">D</div>
+                    <div class="tool-name">drive.find</div>
+                    <div class="tool-status">ok · 3 comparable SOWs</div>
+                  </div>
+                  <div class="tool-body">
+                    <span class="k">referencing →</span> <span class="v">Rivera P1 · Hollis brand system · Drift site refresh</span><br>
+                    <span class="k">pricing band →</span> <span class="v">$48k / 6wk (Hollis) · $62k / 8wk (Rivera P1)</span>
+                  </div>
+                </div>
+                <div class="tool-call">
+                  <div class="tool-head">
+                    <div class="tool-icon skill">/</div>
+                    <div class="tool-name">skill: draft-proposal</div>
+                    <div class="tool-status">writing · 5 sections</div>
+                  </div>
+                  <div class="tool-body">
+                    <span class="k">structure →</span> <span class="v">context · approach · scope · pricing · timeline</span><br>
+                    <span class="k">voice →</span> <span class="v">matched to your last 12 wins, warm, specific, never bloated</span>
+                  </div>
+                </div>
+                <div class="msg-text" style="margin-top:10px;padding:14px 16px;background:var(--cream);border-radius:6px;border-left:2px solid var(--pine)">
+                <b style="font-family:var(--serif);font-weight:600;font-size:.98rem">Cordova, Brand + Site · draft v1</b><br>
+                <span style="font-family:var(--mono);font-size:.72rem;color:var(--text-soft)">12 pages · $54k · 7 weeks · saved to Drive</span><br><br>
+                <em>One call before you send.</em> Cordova hinted at a tighter Q2 budget. I priced at $54k with a $42k "starter" option on the last page, lets them pick their ambition without another round.
+                </div>
+              </div>
+            </div>
+          </div>
 
-      // progress: 0 = element top hits bottom of viewport, 1 = element centered
-      const progress = Math.max(0, Math.min(1,
-        (windowH - rect.top) / (windowH * 0.85)
-      ));
+          <!-- TAB 3, MEETING → ACTION ITEMS -->
+          <div class="demo-pane" data-pane="meeting">
+            <div class="msg">
+              <div class="msg-av user">JM</div>
+              <div class="msg-body">
+                <div class="msg-name">James <span class="role">· 11:58 AM · just ended Summit review</span></div>
+                <div class="msg-text">@ops, summit review just wrapped. tag action items + update clickup</div>
+              </div>
+            </div>
+            <div class="msg">
+              <div class="msg-av ai">n<span class="dot">.</span></div>
+              <div class="msg-body">
+                <div class="msg-name">Ops · Specialist <span class="role">· on the meeting, waiting for the cue</span></div>
+                <div class="msg-text">Transcript's already in. Pulling out commitments, owners, and dates, filing to the right projects.</div>
+                <div class="tool-call">
+                  <div class="tool-head">
+                    <div class="tool-icon cal">C</div>
+                    <div class="tool-name">meet.get_transcript</div>
+                    <div class="tool-status">ok · 52 min · 4 speakers</div>
+                  </div>
+                  <div class="tool-body">
+                    <span class="k">detected →</span> <span class="v">6 commitments · 3 decisions · 2 open questions</span>
+                  </div>
+                </div>
+                <div class="tool-call">
+                  <div class="tool-head">
+                    <div class="tool-icon click">L</div>
+                    <div class="tool-name">clickup.create_tasks</div>
+                    <div class="tool-status">ok · 6 created · linked to Summit</div>
+                  </div>
+                  <div class="tool-body">
+                    <span class="k">assigned →</span> <span class="v">James (3) · Priya (2) · Sam (1), all with due dates + meeting citation</span>
+                  </div>
+                </div>
+                <div class="msg-text" style="margin-top:10px;padding:14px 16px;background:var(--cream);border-radius:6px;border-left:2px solid var(--pine)">
+                <b style="font-family:var(--serif);font-weight:600;font-size:.98rem">Action items · Summit review</b><br><br>
+                <em>You.</em> Send revised scope by Mon · approve new logo direction · intro Priya to Mara.<br>
+                <em>Priya.</em> Second design pass on landing by Wed · confirm launch date with dev.<br>
+                <em>Sam.</em> Cut proposal reference list by 30% before Friday.<br><br>
+                <span style="font-family:var(--mono);font-size:.72rem;color:var(--text-soft)">2 open questions flagged for the next sync · draft recap sitting in your inbox.</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      const eased = progress < 0.5
-        ? 2 * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+          <!-- TAB 4, CLOSE THE DAY -->
+          <div class="demo-pane" data-pane="close">
+            <div class="msg">
+              <div class="msg-av ai">n<span class="dot">.</span></div>
+              <div class="msg-body">
+                <div class="msg-name">Daily Log · Skill <span class="role">· scheduled 5:30 PM daily</span> <span class="schedule-chip">auto</span></div>
+                <div class="msg-text">Closing the day. Reading today's threads, commits, docs, and meeting notes so tomorrow starts in motion.</div>
+                <div class="tool-call">
+                  <div class="tool-head">
+                    <div class="tool-icon skill">/</div>
+                    <div class="tool-name">skill: daily-log</div>
+                    <div class="tool-status">running · 12 sources</div>
+                  </div>
+                  <div class="tool-body">
+                    <span class="k">scanning →</span> <span class="v">gmail · cowork threads · clickup updates · drive edits · calendar notes</span><br>
+                    <span class="k">against →</span> <span class="v">your 3 active projects (Rivera, Summit, Cordova)</span>
+                  </div>
+                </div>
+                <div class="msg-text" style="margin-top:10px;padding:14px 16px;background:var(--cream);border-radius:6px;border-left:2px solid var(--pine)">
+                <b style="font-family:var(--serif);font-weight:600;font-size:.98rem">Today, Fri Apr 17</b><br><br>
+                <em>Shipped.</em> Rivera call (Phase-2 green-lit), Cordova proposal draft, Summit action items into ClickUp.<br>
+                <em>Decided.</em> Cordova gets the lighter 7-week scope, not 10.<br>
+                <em>Unresolved.</em> Summit logo files still MIA, need them before Monday.<br>
+                <em>Tomorrow.</em> One real block: send the Cordova proposal before 10am. After that, Prashant intro.
+                </div>
+              </div>
+            </div>
+          </div>
 
-      const maxInset = window.innerWidth > 960 ? 48 : 24;
-      const inset = maxInset * (1 - eased);
-      const radius = 16 * (1 - eased);
+          <!-- TAB 5, PLAN THE WEEK -->
+          <div class="demo-pane" data-pane="plan">
+            <div class="msg">
+              <div class="msg-av ai">n<span class="dot">.</span></div>
+              <div class="msg-body">
+                <div class="msg-name">Weekly Review · Skill <span class="role">· scheduled Fri 4pm</span> <span class="schedule-chip">auto</span></div>
+                <div class="msg-text">Five daily logs, four client threads, two skill tweaks. Here's the shape of next week, and what the system should learn from this one.</div>
+                <div class="tool-call">
+                  <div class="tool-head">
+                    <div class="tool-icon skill">/</div>
+                    <div class="tool-name">skill: weekly-review</div>
+                    <div class="tool-status">reading · 5 logs</div>
+                  </div>
+                  <div class="tool-body">
+                    <span class="k">pattern →</span> <span class="v">proposals keep stalling at revision three</span><br>
+                    <span class="k">suggest →</span> <span class="v">tighten the proposal skill: ask for budget before draft-2</span><br>
+                    <span class="k">queue →</span> <span class="v">3 skill updates · awaiting your thumbs up</span>
+                  </div>
+                </div>
+                <div class="msg-text" style="margin-top:10px;padding:14px 16px;background:var(--cream);border-radius:6px;border-left:2px solid var(--accent)">
+                <b style="font-family:var(--serif);font-weight:600;font-size:.98rem">Next week, shaped</b><br><br>
+                <em>The one thing.</em> Cordova kickoff Monday, everything else bends around it.<br>
+                <em>Watching.</em> Rivera Phase-2 billing kicks in; Summit launch slipping 3 days if logos don't land.<br>
+                <em>Quiet time booked.</em> Tue/Thu 9–11am held for deep work, your calendar already knows.<br><br>
+                The system got smarter this week. It caught that <em>proposals stall at revision three</em>, approve the skill update and next week's proposals arrive with a budget question baked in.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      flatironsWrap.style.paddingLeft  = `${inset}px`;
-      flatironsWrap.style.paddingRight = `${inset}px`;
-      flatironsInner.style.borderRadius = `${radius}px`;
+        <div class="demo-foot">
+          <span class="spec">Nobo System</span>
+          <span class="dot-sep"></span>
+          <span>runs in Claude Cowork · your data stays yours</span>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONNECTOR + TRUST LINE ─── -->
+<section class="trustline">
+  <div class="trustline-inner">
+    <p>Plugs into the tools your team already lives in. Runs on Claude Cowork. You own the repo. <strong>The system stays with you.</strong></p>
+  </div>
+</section>
+
+<!-- ─── WHAT I KEEP HEARING ─── -->
+<section class="section section-cream" id="hearing">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">What I keep hearing</span>
+      <h2 class="sec-title">Does this sound <em>familiar</em><span class="dot">?</span></h2>
+      <p class="sec-sub">These are the things I hear from the operators I work with.</p>
+    </div>
+
+    <div class="hear-grid">
+      <div class="hear">
+        <div class="hear-title">There's got to be more<span class="dot">.</span></div>
+        <p class="hear-quote">"I know we could be getting more out of AI. I just don't have time to figure it out while running the business."</p>
+      </div>
+      <div class="hear">
+        <div class="hear-title">It doesn't know our business<span class="dot">.</span></div>
+        <p class="hear-quote">"Every time someone on my team opens Claude, they start from scratch. It doesn't know our clients, our processes, or how we work."</p>
+      </div>
+      <div class="hear">
+        <div class="hear-title">Just do it myself<span class="dot">.</span></div>
+        <p class="hear-quote">"We spend more time going back and forth with AI than it would take to just do the work ourselves."</p>
+      </div>
+      <div class="hear">
+        <div class="hear-title">This should run itself<span class="dot">.</span></div>
+        <p class="hear-quote">"Too much of our week goes to work that feels like it should be automated, we just don't know where to start."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section class="section section-cream" id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">How it works</span>
+      <h2 class="sec-title">A system, <em>configured around your business<span class="dot">.</span></em></h2>
+      <p class="sec-sub">Five layers. Each one carries the context the next one needs. Together they make Claude sound like someone who's been here a while.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">01</div>
+        <div class="step-copy">
+          <h3>Context <em>that makes it yours</em></h3>
+          <p>I write down who your business is. Your clients, your promises, how you sound on a good day. The system reads it before it answers anything, so Claude stops sounding like a stranger and starts sounding like someone who's been here a while.</p>
+        </div>
+        <div class="step-visual">
+          <div class="vline"><span class="k">→</span> <span class="v">your voice · your clients · your promises</span></div>
+          <div class="vline"><span class="k">→</span> <span class="v">the docs, threads, and quirks that define the work</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">02</div>
+        <div class="step-copy">
+          <h3>Specialists <em>who own the work</em></h3>
+          <p>Each role on your team gets a named specialist that knows what they own. Account Lead. Chief of Staff. Marketing. Ops. Each one carries the context for that piece of the business and stays in their lane.</p>
+        </div>
+        <div class="step-visual">
+          <div class="vline"><span class="k">→</span> <span class="v">named roles, not generic chat</span></div>
+          <div class="vline"><span class="k">→</span> <span class="v">each one carries context for what they own</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">03</div>
+        <div class="step-copy">
+          <h3>Skills <em>that do the work</em></h3>
+          <p>Real jobs your business needs done, drafted to your standard, delivered with receipts. Some run on a cue, some run on a schedule. All of them leave the work in better shape than they found it.</p>
+        </div>
+        <div class="step-visual">
+          <div class="vline"><span class="k">→</span> <span class="v">prep a call · draft a proposal · close the day</span></div>
+          <div class="vline"><span class="k">→</span> <span class="v">ships a result, not a reply</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">04</div>
+        <div class="step-copy">
+          <h3>Connectors <em>to the tools you already use</em></h3>
+          <p>Gmail. Drive. Calendar. Slack. Notion. The system reaches into the surfaces your team already lives in. Nothing new to install, nothing new to learn, your data stays where it is.</p>
+        </div>
+        <div class="step-visual">
+          <div class="vline"><span class="k">→</span> <span class="v">Gmail · Drive · Calendar · Slack · Notion</span></div>
+          <div class="vline"><span class="k">→</span> <span class="v">every connector Cowork adds, your system grows with</span></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-n">05</div>
+        <div class="step-copy">
+          <h3>Outcomes <em>that compound</em></h3>
+          <p>Every Friday the system reads its own logs and proposes its own upgrades. You approve. It compounds. By month three, the system knows more about how your team works than your last hire did.</p>
+        </div>
+        <div class="step-visual">
+          <div class="vline"><span class="k">this week →</span> <span class="v">caught a pattern you'd been living with for months</span></div>
+          <div class="vline"><span class="k">next week →</span> <span class="v">sharper than last week</span> <span class="badge">always</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── WORKFLOW LIBRARY ─── -->
+<section class="section section-white" id="workflows">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow eyebrow--rust">Workflow library</span>
+      <h2 class="sec-title">What the system does, <em>configured around your business<span class="dot">.</span></em></h2>
+      <p class="sec-sub">A starter shelf of routines. Each one runs on your context, with your specialists, on the connectors your team already uses.</p>
+    </div>
+
+    <div class="wf-grid">
+
+      <div class="wf wf--cream">
+        <div class="wf-num">01</div>
+        <h3>Prep for a client call<span class="dot">.</span></h3>
+        <p>Inbox, calendar, and project history scanned. The brief, before the call.</p>
+        <div class="wf-tools">
+          <span class="wf-tool"><span class="tool-icon gmail">G</span>Gmail</span>
+          <span class="wf-tool"><span class="tool-icon cal">C</span>Calendar</span>
+          <span class="wf-tool"><span class="tool-icon drive">D</span>Drive</span>
+        </div>
+      </div>
+
+      <div class="wf wf--pine">
+        <div class="wf-num">02</div>
+        <h3>Draft a proposal<span class="dot">.</span></h3>
+        <p>Past proposals, brand voice, the new prospect's notes. First draft in your voice, ready for your edit.</p>
+        <div class="wf-tools">
+          <span class="wf-tool"><span class="tool-icon drive">D</span>Drive</span>
+          <span class="wf-tool"><span class="tool-icon notion">N</span>Notion</span>
+        </div>
+      </div>
+
+      <div class="wf wf--cream">
+        <div class="wf-num">03</div>
+        <h3>Turn a meeting into action items<span class="dot">.</span></h3>
+        <p>Transcript and project context. Actions assigned, follow-ups drafted, nothing dropped on the floor.</p>
+        <div class="wf-tools">
+          <span class="wf-tool"><span class="tool-icon cal">C</span>Calendar</span>
+          <span class="wf-tool"><span class="tool-icon slack">S</span>Slack</span>
+          <span class="wf-tool"><span class="tool-icon notion">N</span>Notion</span>
+        </div>
+      </div>
+
+      <div class="wf wf--rust">
+        <div class="wf-num">04</div>
+        <h3>Onboard a new client<span class="dot">.</span></h3>
+        <p>Intake form, context written, team brought up to speed, first deliverable scoped. By Friday of week one.</p>
+        <div class="wf-tools">
+          <span class="wf-tool"><span class="tool-icon gmail">G</span>Gmail</span>
+          <span class="wf-tool"><span class="tool-icon drive">D</span>Drive</span>
+          <span class="wf-tool"><span class="tool-icon cal">C</span>Calendar</span>
+        </div>
+      </div>
+
+      <div class="wf wf--pine">
+        <div class="wf-num">05</div>
+        <h3>Run the weekly review<span class="dot">.</span></h3>
+        <p>What shipped, what slipped, what's worth pulling forward. The team hears the same story.</p>
+        <div class="wf-tools">
+          <span class="wf-tool"><span class="tool-icon slack">S</span>Slack</span>
+          <span class="wf-tool"><span class="tool-icon notion">N</span>Notion</span>
+          <span class="wf-tool"><span class="tool-icon click">L</span>Project tools</span>
+        </div>
+      </div>
+
+      <div class="wf wf--cream">
+        <div class="wf-num">06</div>
+        <h3>Refine a draft into your voice<span class="dot">.</span></h3>
+        <p>Rough draft into your tone, your patterns, your phrasing. Anyone on your team can produce work that sounds like you.</p>
+        <div class="wf-tools">
+          <span class="wf-tool"><span class="tool-icon drive">D</span>Drive</span>
+          <span class="wf-tool"><span class="tool-icon notion">N</span>Notion</span>
+        </div>
+      </div>
+
+    </div>
+    <p class="wf-note">A starting set. Your library grows with the routines your team actually runs.</p>
+  </div>
+</section>
+
+<!-- ─── WITH / WITHOUT, 6 tasks ─── -->
+<section class="section section-white" id="vs">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow eyebrow--rust">Out-of-the-box vs. Nobo</span>
+      <h2 class="sec-title">Same Claude. <em>Wildly different</em> answer<span class="dot">.</span></h2>
+      <p class="sec-sub">Claude alone is generic. Claude running the Nobo system knows who your clients are, what you've promised them, and how you sound.</p>
+    </div>
+
+    <div class="vs-grid">
+
+      <!-- 1 -->
+      <div class="vs">
+        <div class="vs-ask">
+          <div>
+            <div class="vs-ask-label">When you ask</div>
+            <div class="vs-ask-text">"Reply to Rivera about the contract terms."</div>
+          </div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
+          <div class="vs-out generic">Sure, could you share the contract details and the terms they're asking about? I can draft a reply once I have those.</div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">@client-coms specialist</span></div>
+          <div class="vs-tools">
+            <div class="vs-tool"><div class="tool-icon gmail">G</div>Pulled Rivera thread · 14 messages</div>
+            <div class="vs-tool"><div class="tool-icon drive">D</div>Cited Phase 2 SOW v3 · § payment</div>
+          </div>
+          <div class="vs-done"><b>Done.</b> Drafted a reply that answers the real question (net-30, 50% up), holds the line, and offers a split if cash is tight. Matches your voice.</div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="vs">
+        <div class="vs-ask">
+          <div>
+            <div class="vs-ask-label">When you ask</div>
+            <div class="vs-ask-text">"Prep me for my 2pm with Summit."</div>
+          </div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
+          <div class="vs-out generic">Happy to help you prep. What's the meeting about, and who's attending?</div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">@chief-of-staff specialist</span></div>
+          <div class="vs-tools">
+            <div class="vs-tool"><div class="tool-icon cal">C</div>Read calendar · invitees + agenda</div>
+            <div class="vs-tool"><div class="tool-icon drive">D</div>Found last 3 Summit docs</div>
+            <div class="vs-tool"><div class="tool-icon gmail">G</div>Surfaced open scope-change thread</div>
+          </div>
+          <div class="vs-done"><b>Done.</b> One-page brief: who's in the room, what was promised in v2 SOW, the scope change they tried to slip in last week, and three questions to lead with.</div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="vs">
+        <div class="vs-ask">
+          <div>
+            <div class="vs-ask-label">When you ask</div>
+            <div class="vs-ask-text">"Write the April client newsletter."</div>
+          </div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
+          <div class="vs-out generic">Sure, what are the main updates you'd like to share, and what's your usual tone?</div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">@marketing specialist · trained on 14 past issues</span></div>
+          <div class="vs-tools">
+            <div class="vs-tool"><div class="tool-icon drive">D</div>Pulled last 6 newsletters · voice + rhythm</div>
+            <div class="vs-tool"><div class="tool-icon click">L</div>Checked ClickUp · what shipped this month</div>
+            <div class="vs-tool"><div class="tool-icon canva">c</div>Queued cover draft in Canva</div>
+          </div>
+          <div class="vs-done"><b>Done.</b> Full draft in your voice. Three shipped projects, one learning, one upcoming. Canva cover ready for you to approve.</div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="vs">
+        <div class="vs-ask">
+          <div>
+            <div class="vs-ask-label">When you ask</div>
+            <div class="vs-ask-text">"What happened today?"</div>
+          </div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
+          <div class="vs-out generic">I don't have access to what happened in your day. Could you tell me what you worked on?</div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">/daily-log · scheduled 5:30 PM</span></div>
+          <div class="vs-tools">
+            <div class="vs-tool"><div class="tool-icon gmail">G</div>Read today's threads · 12 touched</div>
+            <div class="vs-tool"><div class="tool-icon click">L</div>Pulled status changes across 3 projects</div>
+            <div class="vs-tool"><div class="tool-icon drive">D</div>Checked doc edits · 4 meaningful</div>
+          </div>
+          <div class="vs-done"><b>Done.</b> A log of what you shipped, what you decided, what's unresolved, and what tomorrow's one real blocker is. Your Monday already starts in motion.</div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="vs">
+        <div class="vs-ask">
+          <div>
+            <div class="vs-ask-label">When you ask</div>
+            <div class="vs-ask-text">"Send the Cordova proposal."</div>
+          </div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
+          <div class="vs-out generic">I'd need the proposal content first. Can you share what you'd like included?</div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">/proposal-draft · specialist + skill</span></div>
+          <div class="vs-tools">
+            <div class="vs-tool"><div class="tool-icon drive">D</div>Loaded Cordova discovery notes</div>
+            <div class="vs-tool"><div class="tool-icon drive">D</div>Cloned your proposal template</div>
+            <div class="vs-tool"><div class="tool-icon gmail">G</div>Drafted send-email with PDF attached</div>
+          </div>
+          <div class="vs-done"><b>Done.</b> Proposal in your template, priced from your rate card, with the lighter 1-week onboarding you decided yesterday. Send email queued for your approval.</div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="vs">
+        <div class="vs-ask">
+          <div>
+            <div class="vs-ask-label">When you ask</div>
+            <div class="vs-ask-text">"How's the business this week?"</div>
+          </div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
+          <div class="vs-out generic">I can't see your business data. What metrics do you want to review?</div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">/weekly-review · reads five days of logs</span></div>
+          <div class="vs-tools">
+            <div class="vs-tool"><div class="tool-icon skill">/</div>Re-read this week's five daily logs</div>
+            <div class="vs-tool"><div class="tool-icon sheets">S</div>Checked cash-in · cash-out</div>
+            <div class="vs-tool"><div class="tool-icon skill">/</div>Proposed 3 system updates for approval</div>
+          </div>
+          <div class="vs-done"><b>Done.</b> Patterns you were too close to see. Where the week leaked time, what's repeating, and three skill updates that would stop it from happening next week.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHY NOBO, Program OS story ─── -->
+<section class="section section-dark" id="why">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Why Nobo</span>
+      <h2 class="sec-title">Program OS for the team <em>you've got<span class="dot">.</span></em></h2>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-story">
+        <p class="why-lede"><em>At Stripe I led the program operating system work for Risk.</em> We took 50-page procedural workflows and turned them into 8-question guided processes. The team operated faster, with less error, with the same headcount. That's program OS work: build the system the team uses, so the team can stop building it ad-hoc every time.</p>
+
+        <div class="why-shape">
+          <div class="why-shape-from">
+            <div class="why-shape-num">50</div>
+            <div class="why-shape-lbl">page workflow</div>
+          </div>
+          <div class="why-shape-arrow">→</div>
+          <div class="why-shape-to">
+            <div class="why-shape-num">8</div>
+            <div class="why-shape-lbl">guided questions</div>
+          </div>
+        </div>
+
+        <p class="why-bridge">Same lens at Nobo. Most small businesses have AI tools but no operating system around them. The work isn't <em>"apply AI to your business."</em> It's <em>"build the system your team uses, so AI fits the way you actually work."</em> Different scale. Same instinct.</p>
+
+        <p class="why-creds"><strong>Ten years at Stripe and Lyft. Certified Claude AI systems architect. The partner you text when it matters.</strong></p>
+
+        <p class="why-boulder">I'm based in Boulder. I work with teams wherever they are.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PRICING + CTA ─── -->
+<section class="cta" id="coffee">
+  <div class="cta-inner">
+    <p class="cta-pricing">Foundation engagement starts at <strong>$2,500</strong>. We figure out the right shape together over coffee.</p>
+
+    <h2>Your team <em>already</em><br>has the tool<span class="dot">.</span></h2>
+    <p class="cta-sub">Let's build the system around it. Grab coffee, 30 minutes, no deck, no pitch. I'll map where the hours are going and tell you honestly if Nobo can help.</p>
+
+    <form class="cta-form" id="cta-form">
+      <div class="cta-form-row">
+        <input type="text" name="name" placeholder="Your name" required>
+        <input type="email" name="email" placeholder="you@yourteam.com" required>
+      </div>
+      <input type="text" name="company" placeholder="Company">
+      <textarea name="tuesday" placeholder="What's eating your Tuesday?" rows="3" required></textarea>
+      <button class="btn btn-primary big" type="submit">Let's grab coffee</button>
+    </form>
+
+    <p class="cta-sig">Still here next month<span class="dot">.</span></p>
+  </div>
+</section>
+
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-brand">
+      <span class="wordmark">nobo<span class="dot">.</span></span>
+      <p>AI that actually shows up to work. A system that runs your business, configured around how your business actually runs.</p>
+    </div>
+    <div class="foot-col">
+      <h5>The system</h5>
+      <a href="#how">How it works</a>
+      <a href="#workflows">Workflow library</a>
+      <a href="#vs">Out-of-the-box vs. Nobo</a>
+      <a href="#why">Why Nobo</a>
+    </div>
+    <div class="foot-col">
+      <h5>Writing</h5>
+      <a href="/field-notes">Friday Field Notes</a>
+      <a href="/guides">Field manuals</a>
+    </div>
+    <div class="foot-col">
+      <h5>Nobo</h5>
+      <a href="mailto:james@nobo.works">james@nobo.works</a>
+      <a href="#coffee">Let's grab coffee</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 Nobo Works LLC &middot; Boulder, Colorado</span>
+    <span>a practitioner's field log &middot; still here next month.</span>
+  </div>
+</footer>
+
+<script>
+// ─── LIVE PLAYBACK DEMO ───
+// Each pane plays as: user msg → specialist intro → tool calls (running → ok) → deliverable block.
+// Text types in. Tool calls start "running" (pulsing gold) and flip to "ok" (sage). After full
+// playback + a hold, autoplay advances to the next pane. Manual tab click aborts + restarts there.
+
+const PANE_NAMES = ['prep','proposal','meeting','close','plan'];
+const SPEED = { type: 14, typeBlock: 11, typeShort: 20, fade: 260, running: 520, hold: 1800, gap: 220 };
+
+const tabs = Array.from(document.querySelectorAll('.demo-tab'));
+const panes = Array.from(document.querySelectorAll('.demo-pane'));
+const paneMap = Object.fromEntries(panes.map(p => [p.dataset.pane, p]));
+const progressEl = document.getElementById('demoProgress');
+const ctrl = document.getElementById('demoCtrl');
+const ctrlLabel = document.getElementById('demoCtrlLabel');
+
+// Cache original HTML for each pane so we can reset between plays
+const snapshots = new Map();
+panes.forEach(p => snapshots.set(p, p.innerHTML));
+
+let currentAbort = null;
+let currentIdx = 0;
+let userPaused = false;
+let started = false;
+
+function wait(ms, signal){
+  return new Promise((resolve, reject) => {
+    if(signal && signal.aborted) return reject(new DOMException('Aborted','AbortError'));
+    const t = setTimeout(resolve, ms);
+    if(signal) signal.addEventListener('abort', () => { clearTimeout(t); reject(new DOMException('Aborted','AbortError')); }, {once:true});
+  });
+}
+
+function resetPane(pane){
+  pane.innerHTML = snapshots.get(pane);
+}
+
+function hideChildren(pane){
+  // Hide every .msg and every child of .msg-body (except .msg-name) so we can reveal them one-by-one
+  pane.querySelectorAll('.msg').forEach(m => m.classList.add('anim-msg'));
+  pane.querySelectorAll('.tool-call').forEach(tc => tc.classList.add('anim-tool'));
+  pane.querySelectorAll('.msg-body > .msg-text').forEach(t => t.classList.add('anim-hide'));
+  // the deliverable block is a .msg-text with inline border-left, mark it for fade-in
+  pane.querySelectorAll('.msg-body > .msg-text').forEach(t => {
+    if((t.getAttribute('style')||'').includes('border-left')) t.classList.add('anim-block');
+  });
+}
+
+// Recursively type an HTML string into an element, preserving tags
+async function typeHTML(el, html, signal, speed){
+  el.innerHTML = '';
+  el.classList.add('typing');
+  const tpl = document.createElement('template');
+  tpl.innerHTML = html;
+  for(const node of Array.from(tpl.content.childNodes)){
+    await appendAndType(el, node, signal, speed);
+  }
+  el.classList.remove('typing');
+}
+
+async function appendAndType(parent, node, signal, speed){
+  if(node.nodeType === Node.TEXT_NODE){
+    const full = node.textContent;
+    const tn = document.createTextNode('');
+    parent.appendChild(tn);
+    for(const ch of full){
+      tn.textContent += ch;
+      // slight speed variance, faster on whitespace, brief pause on punctuation
+      let d = speed;
+      if(/\s/.test(ch)) d = Math.max(6, speed - 5);
+      else if(/[,.;:,]/.test(ch)) d = speed + 55;
+      await wait(d, signal);
+    }
+  } else {
+    const clone = node.cloneNode(false);
+    parent.appendChild(clone);
+    for(const kid of Array.from(node.childNodes)){
+      await appendAndType(clone, kid, signal, speed);
+    }
+  }
+}
+
+async function animateToolCall(tc, signal){
+  // reveal the tool-call shell
+  tc.classList.remove('anim-tool');
+  requestAnimationFrame(() => tc.classList.add('show'));
+  await wait(SPEED.fade, signal);
+
+  const status = tc.querySelector('.tool-status');
+  const finalStatusHTML = status.innerHTML;
+  status.innerHTML = 'running';
+  status.classList.add('state-running');
+
+  const body = tc.querySelector('.tool-body');
+  const finalBodyHTML = body.innerHTML;
+  await wait(SPEED.running, signal);
+  await typeHTML(body, finalBodyHTML, signal, SPEED.type);
+  await wait(180, signal);
+
+  status.classList.remove('state-running');
+  status.classList.add('state-done');
+  status.innerHTML = finalStatusHTML;
+}
+
+async function revealMsg(msg, signal){
+  msg.classList.remove('anim-msg');
+  requestAnimationFrame(() => msg.classList.add('show'));
+  await wait(SPEED.fade, signal);
+
+  const body = msg.querySelector('.msg-body');
+  if(!body) return;
+  const children = Array.from(body.children).filter(c => !c.classList.contains('msg-name'));
+
+  for(const child of children){
+    await wait(SPEED.gap, signal);
+
+    if(child.classList.contains('tool-call')){
+      await animateToolCall(child, signal);
+      continue;
     }
 
-    window.addEventListener('scroll', updateFlatirons, { passive: true });
-    updateFlatirons();
-  </script>
+    if(child.classList.contains('msg-text')){
+      const isDeliverable = child.classList.contains('anim-block');
+      child.classList.remove('anim-hide');
+      if(isDeliverable){
+        // fade in the bordered container first, then type its interior
+        child.classList.add('show');
+        await wait(SPEED.fade, signal);
+        const originalHTML = child.innerHTML;
+        await typeHTML(child, originalHTML, signal, SPEED.typeBlock);
+      } else {
+        const originalHTML = child.innerHTML;
+        await typeHTML(child, originalHTML, signal, SPEED.typeShort);
+      }
+    }
+  }
+}
+
+async function playPane(pane, signal){
+  resetPane(pane);
+  hideChildren(pane);
+  // small settle wait, pane has already been marked .active by activate()
+  await wait(200, signal);
+
+  const msgs = Array.from(pane.querySelectorAll('.msg'));
+  for(let i = 0; i < msgs.length; i++){
+    if(i > 0) await wait(SPEED.gap + 120, signal);
+    await revealMsg(msgs[i], signal);
+  }
+}
+
+// progress rail animation (approximate, runs alongside playback)
+let progressRAF = null;
+function startProgress(durMs, signal){
+  const start = performance.now();
+  progressEl.style.width = '0%';
+  const tick = (now) => {
+    if(signal.aborted) return;
+    const pct = Math.min(100, ((now - start) / durMs) * 100);
+    progressEl.style.width = pct + '%';
+    if(pct < 100) progressRAF = requestAnimationFrame(tick);
+  };
+  progressRAF = requestAnimationFrame(tick);
+}
+function stopProgress(){
+  if(progressRAF) cancelAnimationFrame(progressRAF);
+  progressEl.style.width = '0%';
+}
+
+// Rough duration estimate per pane so the progress bar feels honest
+function estimateDuration(pane){
+  const msgs = pane.querySelectorAll('.msg').length;
+  const tools = pane.querySelectorAll('.tool-call').length;
+  const blocks = pane.querySelectorAll('.msg-body > .msg-text[style*="border-left"]').length;
+  // rough: 800ms per msg reveal + 1800ms per tool + 3000ms per deliverable
+  return msgs * 800 + tools * 1800 + blocks * 3000 + 1200;
+}
+
+async function activate(name, fromUser=false){
+  if(currentAbort) currentAbort.abort();
+  currentAbort = new AbortController();
+  const signal = currentAbort.signal;
+  stopProgress();
+
+  currentIdx = PANE_NAMES.indexOf(name);
+  tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  panes.forEach(p => p.classList.toggle('active', p.dataset.pane === name));
+  const pane = paneMap[name];
+
+  if(fromUser){ userPaused = false; setCtrlState('playing'); }
+
+  try {
+    const dur = estimateDuration(pane);
+    if(!userPaused) startProgress(dur, signal);
+    await playPane(pane, signal);
+    // hold, then advance
+    stopProgress();
+    progressEl.style.width = '100%';
+    if(!userPaused){
+      await wait(SPEED.hold, signal);
+      activate(PANE_NAMES[(currentIdx + 1) % PANE_NAMES.length]);
+    }
+  } catch(e){
+    if(e.name !== 'AbortError') throw e;
+  }
+}
+
+function setCtrlState(state){
+  ctrl.dataset.state = state;
+  ctrlLabel.textContent = state === 'playing' ? 'pause' : 'play';
+  ctrl.setAttribute('aria-label', state === 'playing' ? 'Pause playback' : 'Resume playback');
+}
+
+ctrl.addEventListener('click', () => {
+  if(ctrl.dataset.state === 'playing'){
+    userPaused = true;
+    setCtrlState('paused');
+    if(currentAbort) currentAbort.abort();
+    stopProgress();
+  } else {
+    userPaused = false;
+    setCtrlState('playing');
+    activate(PANE_NAMES[currentIdx], false);
+  }
+});
+
+tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.tab, true)));
+
+// Lazy start when demo is visible
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting && !started){
+      started = true;
+      activate(PANE_NAMES[0]);
+    }
+  });
+}, {threshold: 0.25});
+io.observe(document.getElementById('demo'));
+
+// ─── CTA FORM → MAILTO ───
+const ctaForm = document.getElementById('cta-form');
+if(ctaForm){
+  ctaForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const fd = new FormData(ctaForm);
+    const name = (fd.get('name') || '').trim();
+    const email = (fd.get('email') || '').trim();
+    const company = (fd.get('company') || '').trim();
+    const tuesday = (fd.get('tuesday') || '').trim();
+    const subject = `Coffee with James, ${name}${company ? ' (' + company + ')' : ''}`;
+    const body = `From: ${name} <${email}>\nCompany: ${company || ','}\n\nWhat's eating my Tuesday:\n${tuesday}`;
+    window.location.href = `mailto:james@nobo.works?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+}
+</script>
 
 </body>
 </html>
