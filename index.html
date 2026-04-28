@@ -125,26 +125,87 @@ strong,b{font-weight:600}
 .btn svg{width:14px;height:14px}
 
 /* ─── HERO ─── */
-/* ─── HERO (compact, calm) ─── */
+/* ─── HERO (compact, calm, breadcrumb + byline) ─── */
 .hero{
-  padding:80px 0 64px;
+  padding:96px 0 32px;
   position:relative;
 }
 .hero-inner{max-width:1240px;margin:0 auto;padding:0 40px}
 .hero-left{max-width:1100px}
+.hero-breadcrumb{
+  display:flex;align-items:center;gap:12px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-soft);margin-bottom:48px;
+}
+.hero-breadcrumb-rule{display:inline-block;width:24px;height:1px;background:var(--line-strong)}
 .hero-headline{
   font-family:var(--sans);font-weight:600;
-  font-size:clamp(2.6rem,5.4vw,4.4rem);line-height:1.02;letter-spacing:-.035em;
-  color:var(--pine-dark);text-wrap:balance;margin:0 0 28px;
+  font-size:clamp(2.6rem,6vw,5rem);line-height:1.02;letter-spacing:-.035em;
+  color:var(--pine-dark);text-wrap:balance;margin:0 0 40px;
 }
 .hero-headline em{font-style:italic;color:var(--pine)}
 .hero-headline .dot{color:var(--accent)}
-.hero-cta-row{display:flex;gap:10px;flex-wrap:wrap}
+.hero-cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:56px}
+.hero-byline{
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;
+  color:var(--text-soft);
+}
 
 /* legacy hero-eyebrow / hero-sub no longer used; keep declarations dormant */
 .hero-eyebrow,.hero-sub,.hero-trust{display:none}
 
-/* ─── DEMO SECTION (own section, Cowork-mirror) ─── */
+/* ─── SYSTEM DIAGRAM SECTION ─── */
+.diagram-section{padding:32px 0 96px;position:relative}
+.diagram-section .wrap{max-width:1240px;margin:0 auto;padding:0 40px}
+.diagram{width:100%;aspect-ratio:1200/640}
+.diagram svg{display:block;width:100%;height:auto}
+
+/* diagram tokens (prefixed dg- to avoid colliding with anything else) */
+.dg-lbl{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;fill:var(--text-soft)}
+.dg-lbl-strong{fill:var(--text-dark)}
+.dg-lbl-tiny{font-size:8px;letter-spacing:.18em;fill:var(--text-muted)}
+
+.dg-stroke-pine{stroke:var(--pine-dark);stroke-width:1.25;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.dg-stroke-line{stroke:var(--line-strong);stroke-width:1;fill:none;stroke-linecap:round}
+
+.dg-node{fill:var(--bg);stroke:var(--pine-dark);stroke-width:1.25;transition:stroke-width .25s ease,stroke .25s ease}
+.dg-node.active{stroke-width:1.75}
+
+.dg-sub{fill:var(--bg);stroke:var(--line-strong);stroke-width:1;transition:stroke .25s ease,stroke-width .25s ease,fill .25s ease}
+.dg-sub.active{stroke:var(--pine-dark);stroke-width:1.5}
+
+.dg-stem{stroke:var(--line-strong);stroke-width:1;transition:stroke .25s ease}
+.dg-stem.active{stroke:var(--pine-dark)}
+
+.dg-port{fill:var(--bg);stroke:var(--line-strong);stroke-width:1;transition:stroke .25s ease,fill .25s ease,stroke-width .25s ease}
+.dg-port.active{fill:var(--pine-dark);stroke:var(--pine-dark);stroke-width:1.25}
+
+.dg-conn-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;fill:var(--text-soft);transition:fill .25s ease;text-anchor:middle}
+.dg-conn-label.active{fill:var(--pine-dark)}
+
+.dg-ctx-label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;fill:var(--text-soft);transition:fill .25s ease;text-anchor:middle}
+.dg-ctx-label.active{fill:var(--pine-dark)}
+
+.dg-box-content{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;letter-spacing:.02em;line-height:1.5;
+  color:var(--text-dark);text-align:center;padding:0 4px;
+  word-break:break-word;hyphens:auto;
+}
+.dg-box-content--outcome{color:var(--pine-dark);font-weight:500}
+
+.dg-dot{fill:var(--rust);transition:opacity .3s ease}
+
+@media (prefers-reduced-motion: reduce){
+  .dg-dot,.dg-sub,.dg-port,.dg-stem,.dg-node,.dg-ctx-label,.dg-conn-label{transition:none}
+}
+@media (max-width:780px){
+  .diagram-section{padding:16px 0 64px}
+  .diagram{aspect-ratio:5/4}
+}
+
+/* ─── (legacy demo CSS retained as orphan for now; safe to delete in cleanup) ─── */
 .demo-section{padding:24px 0 88px;position:relative}
 .demo-section .wrap{max-width:1180px}
 
@@ -819,262 +880,130 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-left">
+      <div class="hero-breadcrumb">
+        <span class="hero-breadcrumb-rule"></span>
+        <span>NOBO · for professional services teams</span>
+      </div>
       <h1 class="hero-headline">
         The AI System<br>that gets work done<span class="dot">.</span>
       </h1>
       <div class="hero-cta-row">
         <a href="#coffee" class="btn btn-primary big">Let's grab coffee</a>
-        <a href="#how" class="btn btn-ghost big">See how it works</a>
+        <a href="#diagram-section" class="btn btn-ghost big">See how it works</a>
+      </div>
+      <div class="hero-byline">
+        james mason &middot; boulder, co &middot; apr 28 &middot; 2026
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── DEMO SECTION ─── -->
-<section class="demo-section" id="demo-section">
+<!-- ─── SYSTEM DIAGRAM ─── -->
+<section class="diagram-section" id="diagram-section">
   <div class="wrap">
-    <div class="demo-header">
-      <span class="demo-eyebrow">Routines</span>
-      <h2 class="demo-title-h2">What your team's first month with the system looks like<span class="dot">.</span></h2>
-      <p class="demo-sub">Five routines, one team, one week. Configured around your business, not the other way around.</p>
+    <div class="diagram">
+      <svg viewBox="0 0 1200 640" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+
+        <text x="600" y="40" class="dg-lbl dg-lbl-strong" text-anchor="middle">THE NOBO SYSTEM</text>
+
+        <g class="dg-stroke-line">
+          <line x1="120" y1="60" x2="1080" y2="60"/>
+          <line x1="120" y1="56" x2="120" y2="64"/>
+          <line x1="1080" y1="56" x2="1080" y2="64"/>
+          <line x1="80" y1="160" x2="80" y2="480"/>
+          <line x1="76" y1="160" x2="84" y2="160"/>
+          <line x1="76" y1="480" x2="84" y2="480"/>
+          <line x1="160" y1="595" x2="1040" y2="595"/>
+          <line x1="160" y1="591" x2="160" y2="599"/>
+          <line x1="270" y1="591" x2="270" y2="599"/>
+          <line x1="380" y1="591" x2="380" y2="599"/>
+          <line x1="490" y1="591" x2="490" y2="599"/>
+          <line x1="600" y1="591" x2="600" y2="599"/>
+          <line x1="710" y1="591" x2="710" y2="599"/>
+          <line x1="820" y1="591" x2="820" y2="599"/>
+          <line x1="930" y1="591" x2="930" y2="599"/>
+          <line x1="1040" y1="591" x2="1040" y2="599"/>
+        </g>
+
+        <text x="1080" y="610" class="dg-lbl dg-lbl-tiny" text-anchor="end">FIG. 02</text>
+        <text x="1080" y="624" class="dg-lbl dg-lbl-tiny" text-anchor="end">REV. 01 &#183; 2026</text>
+
+        <line x1="120" y1="618" x2="148" y2="618" class="dg-stroke-line"/>
+        <text id="dg-flowCaption" x="160" y="622" class="dg-lbl">FLOW &#183; MEETING PREP</text>
+
+        <rect id="dg-node-prompt" class="dg-node" x="140" y="240" width="200" height="160" rx="6"/>
+        <text x="156" y="262" class="dg-lbl">PROMPT</text>
+        <foreignObject x="156" y="280" width="168" height="108">
+          <div xmlns="http://www.w3.org/1999/xhtml" id="dg-prompt-text" class="dg-box-content">prep me for my 2pm with rivera</div>
+        </foreignObject>
+
+        <line x1="340" y1="320" x2="414" y2="320" class="dg-stroke-pine"/>
+        <path d="M 408 316 L 414 320 L 408 324" class="dg-stroke-pine"/>
+
+        <rect id="dg-node-enrich" class="dg-node" x="420" y="160" width="380" height="320" rx="6"/>
+        <text x="436" y="182" class="dg-lbl">CONTEXT + CONNECTORS</text>
+
+        <line x1="436" y1="312" x2="784" y2="312" class="dg-stroke-line" stroke-dasharray="2 4"/>
+
+        <text x="436" y="208" class="dg-lbl dg-lbl-tiny">CONTEXT</text>
+
+        <rect id="dg-ctx-voice" class="dg-sub" x="450" y="222" width="96" height="76" rx="4"/>
+        <text x="498" y="266" class="dg-ctx-label" id="dg-ctx-voice-label">VOICE</text>
+
+        <rect id="dg-ctx-clients" class="dg-sub" x="562" y="222" width="96" height="76" rx="4"/>
+        <text x="610" y="266" class="dg-ctx-label" id="dg-ctx-clients-label">CLIENTS</text>
+
+        <rect id="dg-ctx-promises" class="dg-sub" x="674" y="222" width="96" height="76" rx="4"/>
+        <text x="722" y="266" class="dg-ctx-label" id="dg-ctx-promises-label">PROMISES</text>
+
+        <text x="436" y="338" class="dg-lbl dg-lbl-tiny">CONNECTORS</text>
+
+        <g data-conn="gmail">
+          <rect class="dg-sub dg-conn-box" x="442" y="354" width="56" height="40" rx="4"/>
+          <line class="dg-stem" x1="470" y1="394" x2="470" y2="412"/>
+          <circle class="dg-port" cx="470" cy="416" r="3.5"/>
+          <text x="470" y="438" class="dg-conn-label">GMAIL</text>
+        </g>
+        <g data-conn="drive">
+          <rect class="dg-sub dg-conn-box" x="512" y="354" width="56" height="40" rx="4"/>
+          <line class="dg-stem" x1="540" y1="394" x2="540" y2="412"/>
+          <circle class="dg-port" cx="540" cy="416" r="3.5"/>
+          <text x="540" y="438" class="dg-conn-label">DRIVE</text>
+        </g>
+        <g data-conn="cal">
+          <rect class="dg-sub dg-conn-box" x="582" y="354" width="56" height="40" rx="4"/>
+          <line class="dg-stem" x1="610" y1="394" x2="610" y2="412"/>
+          <circle class="dg-port" cx="610" cy="416" r="3.5"/>
+          <text x="610" y="438" class="dg-conn-label">CAL</text>
+        </g>
+        <g data-conn="slack">
+          <rect class="dg-sub dg-conn-box" x="652" y="354" width="56" height="40" rx="4"/>
+          <line class="dg-stem" x1="680" y1="394" x2="680" y2="412"/>
+          <circle class="dg-port" cx="680" cy="416" r="3.5"/>
+          <text x="680" y="438" class="dg-conn-label">SLACK</text>
+        </g>
+        <g data-conn="notion">
+          <rect class="dg-sub dg-conn-box" x="722" y="354" width="56" height="40" rx="4"/>
+          <line class="dg-stem" x1="750" y1="394" x2="750" y2="412"/>
+          <circle class="dg-port" cx="750" cy="416" r="3.5"/>
+          <text x="750" y="438" class="dg-conn-label">NOTION</text>
+        </g>
+
+        <line x1="800" y1="320" x2="854" y2="320" class="dg-stroke-pine"/>
+        <path d="M 848 316 L 854 320 L 848 324" class="dg-stroke-pine"/>
+
+        <rect id="dg-node-outcome" class="dg-node" x="860" y="240" width="200" height="160" rx="6"/>
+        <text x="876" y="262" class="dg-lbl">OUTCOME</text>
+        <foreignObject x="876" y="280" width="168" height="108">
+          <div xmlns="http://www.w3.org/1999/xhtml" id="dg-outcome-text" class="dg-box-content dg-box-content--outcome">Brief &#183; Rivera 2pm</div>
+        </foreignObject>
+
+        <circle id="dg-dot" class="dg-dot" cx="340" cy="320" r="6" opacity="0"/>
+
+      </svg>
     </div>
-    <div class="demo-sketch">
-      <div class="demo" id="demo">
-        <div class="demo-chrome">
-          <span class="demo-dot"></span>
-          <span class="demo-dot"></span>
-          <span class="demo-dot"></span>
-          <span class="demo-title">claude cowork · nobo system · acme studio</span>
-          <button class="demo-ctrl" id="demoCtrl" data-state="playing" aria-label="Pause playback"><span class="icon"></span><span id="demoCtrlLabel">pause</span></button>
-        </div>
-        <div class="demo-tabs-wrap">
-        <div class="demo-tabs" id="demoTabs">
-          <button class="demo-tab active" data-tab="prep"><span class="demo-tab-dot"></span>Prep for a client call</button>
-          <button class="demo-tab" data-tab="proposal"><span class="demo-tab-dot"></span>Draft a proposal</button>
-          <button class="demo-tab" data-tab="meeting"><span class="demo-tab-dot"></span>Meeting → action items</button>
-          <button class="demo-tab" data-tab="close"><span class="demo-tab-dot"></span>Close the day</button>
-          <button class="demo-tab" data-tab="plan"><span class="demo-tab-dot"></span>Plan the week</button>
-        </div>
-        <div class="demo-progress" id="demoProgress"></div>
-        </div>
-
-        <div class="demo-body">
-          <!-- TAB 1, PREP FOR A CLIENT CALL -->
-          <div class="demo-pane active" data-pane="prep">
-            <div class="msg">
-              <div class="msg-av user">JM</div>
-              <div class="msg-body">
-                <div class="msg-name">James <span class="role">· 1:20 PM</span></div>
-                <div class="msg-text">prep me for my 2pm with Rivera</div>
-              </div>
-            </div>
-            <div class="msg">
-              <div class="msg-av ai">n<span class="dot">.</span></div>
-              <div class="msg-body">
-                <div class="msg-name">Account Lead · Specialist <span class="role">· knows Rivera end-to-end</span></div>
-                <div class="msg-text">Pulling the Rivera room together, <em>40 min out</em>.</div>
-                <div class="tool-call">
-                  <div class="tool-head">
-                    <div class="tool-icon gmail">G</div>
-                    <div class="tool-name">gmail.thread_history</div>
-                    <div class="tool-status">ok · Rivera · 3 open threads</div>
-                  </div>
-                  <div class="tool-body">
-                    <span class="k">last touch →</span> <span class="v">Mara, Tue, "let's regroup Thurs on scope + timing"</span><br>
-                    <span class="k">unresolved →</span> <span class="v">Phase-2 start date, additional seat count, April invoice</span>
-                  </div>
-                </div>
-                <div class="tool-call">
-                  <div class="tool-head">
-                    <div class="tool-icon drive">D</div>
-                    <div class="tool-name">drive.find</div>
-                    <div class="tool-status">ok · 4 docs</div>
-                  </div>
-                  <div class="tool-body">
-                    <span class="k">pulling →</span> <span class="v">Rivera SOW v3 · Q1 recap · last-call notes · current burn report</span>
-                  </div>
-                </div>
-                <div class="tool-call">
-                  <div class="tool-head">
-                    <div class="tool-icon click">L</div>
-                    <div class="tool-name">clickup.project_status</div>
-                    <div class="tool-status">ok · 7 tasks</div>
-                  </div>
-                  <div class="tool-body">
-                    <span class="k">this week →</span> <span class="v">2 shipped · 3 in flight · 2 blocked on Mara's sign-off</span>
-                  </div>
-                </div>
-                <div class="msg-text" style="margin-top:12px;padding:14px 16px;background:var(--cream);border-radius:6px;border-left:2px solid var(--pine)">
-                <b style="font-family:var(--serif);font-weight:600;font-size:.98rem">Rivera brief · 2pm</b><br><br>
-                <em>What she'll open with.</em> Phase-2 start date. She's trying to push it two weeks left, the April invoice question is really about that.<br>
-                <em>What to say.</em> Yes on Phase-2, yes to earlier start if the two blocked sign-offs come today. Here's your ask.<br>
-                <em>Don't forget.</em> Thank her team for the quick turn on the Q1 asset review, she mentioned it twice last month.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TAB 2, DRAFT A PROPOSAL -->
-          <div class="demo-pane" data-pane="proposal">
-            <div class="msg">
-              <div class="msg-av user">JM</div>
-              <div class="msg-body">
-                <div class="msg-name">James <span class="role">· 3:40 PM</span></div>
-                <div class="msg-text">@proposals, new proposal for Cordova. Brand + site, scope similar to Rivera Phase 1. Need a first pass by tomorrow morning.</div>
-              </div>
-            </div>
-            <div class="msg">
-              <div class="msg-av ai">n<span class="dot">.</span></div>
-              <div class="msg-body">
-                <div class="msg-name">Proposals · Specialist <span class="role">· trained on your last 12 wins</span></div>
-                <div class="msg-text">On it. Using Rivera Phase-1 as the spine, Cordova's a smaller team, so I'll trim discovery and tighten the pricing ladder.</div>
-                <div class="tool-call">
-                  <div class="tool-head">
-                    <div class="tool-icon drive">D</div>
-                    <div class="tool-name">drive.find</div>
-                    <div class="tool-status">ok · 3 comparable SOWs</div>
-                  </div>
-                  <div class="tool-body">
-                    <span class="k">referencing →</span> <span class="v">Rivera P1 · Hollis brand system · Drift site refresh</span><br>
-                    <span class="k">pricing band →</span> <span class="v">$48k / 6wk (Hollis) · $62k / 8wk (Rivera P1)</span>
-                  </div>
-                </div>
-                <div class="tool-call">
-                  <div class="tool-head">
-                    <div class="tool-icon skill">/</div>
-                    <div class="tool-name">skill: draft-proposal</div>
-                    <div class="tool-status">writing · 5 sections</div>
-                  </div>
-                  <div class="tool-body">
-                    <span class="k">structure →</span> <span class="v">context · approach · scope · pricing · timeline</span><br>
-                    <span class="k">voice →</span> <span class="v">matched to your last 12 wins, warm, specific, never bloated</span>
-                  </div>
-                </div>
-                <div class="msg-text" style="margin-top:10px;padding:14px 16px;background:var(--cream);border-radius:6px;border-left:2px solid var(--pine)">
-                <b style="font-family:var(--serif);font-weight:600;font-size:.98rem">Cordova, Brand + Site · draft v1</b><br>
-                <span style="font-family:var(--mono);font-size:.72rem;color:var(--text-soft)">12 pages · $54k · 7 weeks · saved to Drive</span><br><br>
-                <em>One call before you send.</em> Cordova hinted at a tighter Q2 budget. I priced at $54k with a $42k "starter" option on the last page, lets them pick their ambition without another round.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TAB 3, MEETING → ACTION ITEMS -->
-          <div class="demo-pane" data-pane="meeting">
-            <div class="msg">
-              <div class="msg-av user">JM</div>
-              <div class="msg-body">
-                <div class="msg-name">James <span class="role">· 11:58 AM · just ended Summit review</span></div>
-                <div class="msg-text">@ops, summit review just wrapped. tag action items + update clickup</div>
-              </div>
-            </div>
-            <div class="msg">
-              <div class="msg-av ai">n<span class="dot">.</span></div>
-              <div class="msg-body">
-                <div class="msg-name">Ops · Specialist <span class="role">· on the meeting, waiting for the cue</span></div>
-                <div class="msg-text">Transcript's already in. Pulling out commitments, owners, and dates, filing to the right projects.</div>
-                <div class="tool-call">
-                  <div class="tool-head">
-                    <div class="tool-icon cal">C</div>
-                    <div class="tool-name">meet.get_transcript</div>
-                    <div class="tool-status">ok · 52 min · 4 speakers</div>
-                  </div>
-                  <div class="tool-body">
-                    <span class="k">detected →</span> <span class="v">6 commitments · 3 decisions · 2 open questions</span>
-                  </div>
-                </div>
-                <div class="tool-call">
-                  <div class="tool-head">
-                    <div class="tool-icon click">L</div>
-                    <div class="tool-name">clickup.create_tasks</div>
-                    <div class="tool-status">ok · 6 created · linked to Summit</div>
-                  </div>
-                  <div class="tool-body">
-                    <span class="k">assigned →</span> <span class="v">James (3) · Priya (2) · Sam (1), all with due dates + meeting citation</span>
-                  </div>
-                </div>
-                <div class="msg-text" style="margin-top:10px;padding:14px 16px;background:var(--cream);border-radius:6px;border-left:2px solid var(--pine)">
-                <b style="font-family:var(--serif);font-weight:600;font-size:.98rem">Action items · Summit review</b><br><br>
-                <em>You.</em> Send revised scope by Mon · approve new logo direction · intro Priya to Mara.<br>
-                <em>Priya.</em> Second design pass on landing by Wed · confirm launch date with dev.<br>
-                <em>Sam.</em> Cut proposal reference list by 30% before Friday.<br><br>
-                <span style="font-family:var(--mono);font-size:.72rem;color:var(--text-soft)">2 open questions flagged for the next sync · draft recap sitting in your inbox.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TAB 4, CLOSE THE DAY -->
-          <div class="demo-pane" data-pane="close">
-            <div class="msg">
-              <div class="msg-av ai">n<span class="dot">.</span></div>
-              <div class="msg-body">
-                <div class="msg-name">Daily Log · Skill <span class="role">· scheduled 5:30 PM daily</span> <span class="schedule-chip">auto</span></div>
-                <div class="msg-text">Closing the day. Reading today's threads, commits, docs, and meeting notes so tomorrow starts in motion.</div>
-                <div class="tool-call">
-                  <div class="tool-head">
-                    <div class="tool-icon skill">/</div>
-                    <div class="tool-name">skill: daily-log</div>
-                    <div class="tool-status">running · 12 sources</div>
-                  </div>
-                  <div class="tool-body">
-                    <span class="k">scanning →</span> <span class="v">gmail · cowork threads · clickup updates · drive edits · calendar notes</span><br>
-                    <span class="k">against →</span> <span class="v">your 3 active projects (Rivera, Summit, Cordova)</span>
-                  </div>
-                </div>
-                <div class="msg-text" style="margin-top:10px;padding:14px 16px;background:var(--cream);border-radius:6px;border-left:2px solid var(--pine)">
-                <b style="font-family:var(--serif);font-weight:600;font-size:.98rem">Today, Fri Apr 17</b><br><br>
-                <em>Shipped.</em> Rivera call (Phase-2 green-lit), Cordova proposal draft, Summit action items into ClickUp.<br>
-                <em>Decided.</em> Cordova gets the lighter 7-week scope, not 10.<br>
-                <em>Unresolved.</em> Summit logo files still MIA, need them before Monday.<br>
-                <em>Tomorrow.</em> One real block: send the Cordova proposal before 10am. After that, Prashant intro.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TAB 5, PLAN THE WEEK -->
-          <div class="demo-pane" data-pane="plan">
-            <div class="msg">
-              <div class="msg-av ai">n<span class="dot">.</span></div>
-              <div class="msg-body">
-                <div class="msg-name">Weekly Review · Skill <span class="role">· scheduled Fri 4pm</span> <span class="schedule-chip">auto</span></div>
-                <div class="msg-text">Five daily logs, four client threads, two skill tweaks. Here's the shape of next week, and what the system should learn from this one.</div>
-                <div class="tool-call">
-                  <div class="tool-head">
-                    <div class="tool-icon skill">/</div>
-                    <div class="tool-name">skill: weekly-review</div>
-                    <div class="tool-status">reading · 5 logs</div>
-                  </div>
-                  <div class="tool-body">
-                    <span class="k">pattern →</span> <span class="v">proposals keep stalling at revision three</span><br>
-                    <span class="k">suggest →</span> <span class="v">tighten the proposal skill: ask for budget before draft-2</span><br>
-                    <span class="k">queue →</span> <span class="v">3 skill updates · awaiting your thumbs up</span>
-                  </div>
-                </div>
-                <div class="msg-text" style="margin-top:10px;padding:14px 16px;background:var(--cream);border-radius:6px;border-left:2px solid var(--accent)">
-                <b style="font-family:var(--serif);font-weight:600;font-size:.98rem">Next week, shaped</b><br><br>
-                <em>The one thing.</em> Cordova kickoff Monday, everything else bends around it.<br>
-                <em>Watching.</em> Rivera Phase-2 billing kicks in; Summit launch slipping 3 days if logos don't land.<br>
-                <em>Quiet time booked.</em> Tue/Thu 9–11am held for deep work, your calendar already knows.<br><br>
-                The system got smarter this week. It caught that <em>proposals stall at revision three</em>, approve the skill update and next week's proposals arrive with a budget question baked in.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="demo-foot">
-          <span class="spec">Nobo System</span>
-          <span class="dot-sep"></span>
-          <span class="foot-cowork">runs in Claude Cowork</span>
-          <span class="dot-sep foot-extra"></span>
-          <span class="foot-extra">your data stays yours</span>
-        </div>
-      </div>
-      </div>
-    </div>
-  </section>
+  </div>
+</section>
 
 <!-- ─── CONNECTOR + TRUST LINE ─── -->
 <section class="trustline">
@@ -1474,283 +1403,191 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 </footer>
 
 <script>
-// ─── LIVE PLAYBACK DEMO ───
-// Each pane plays as: user msg → specialist intro → tool calls (running → ok) → deliverable block.
-// Text types in. Tool calls start "running" (pulsing gold) and flip to "ok" (sage). After full
-// playback + a hold, autoplay advances to the next pane. Manual tab click aborts + restarts there.
+// ─── SYSTEM DIAGRAM (animated flow) ───
+(function(){
+  const dot = document.getElementById('dg-dot');
+  if(!dot) return;
+  const promptText = document.getElementById('dg-prompt-text');
+  const outcomeText = document.getElementById('dg-outcome-text');
+  const flowCaption = document.getElementById('dg-flowCaption');
+  const nodePrompt = document.getElementById('dg-node-prompt');
+  const nodeEnrich = document.getElementById('dg-node-enrich');
+  const nodeOutcome = document.getElementById('dg-node-outcome');
 
-const PANE_NAMES = ['prep','proposal','meeting','close','plan'];
-const SPEED = { type: 26, typeBlock: 22, typeShort: 34, fade: 320, running: 640, hold: 2400, gap: 320 };
+  const FLOWS = [
+    { name:'MEETING PREP', prompt:'prep me for my 2pm with rivera',
+      outcome:'Brief · Rivera 2pm',
+      context:['dg-ctx-voice','dg-ctx-clients'],
+      connectors:['gmail','drive','cal'] },
+    { name:'ACTION ITEMS', prompt:'@ops, summit wrapped. tag actions',
+      outcome:'Action items · Summit',
+      context:['dg-ctx-clients'],
+      connectors:['cal','notion'] },
+    { name:'DRAFT PROPOSAL', prompt:'draft the cordova proposal',
+      outcome:'Proposal · Cordova draft v1',
+      context:['dg-ctx-voice','dg-ctx-clients','dg-ctx-promises'],
+      connectors:['drive','notion'] },
+    { name:'WEEKLY REVIEW', prompt:'what happened this week',
+      outcome:'Review · week of apr 28',
+      context:['dg-ctx-voice','dg-ctx-clients','dg-ctx-promises'],
+      connectors:['gmail','drive','slack'] },
+  ];
 
-const tabs = Array.from(document.querySelectorAll('.demo-tab'));
-const panes = Array.from(document.querySelectorAll('.demo-pane'));
-const paneMap = Object.fromEntries(panes.map(p => [p.dataset.pane, p]));
-const progressEl = document.getElementById('demoProgress');
-const ctrl = document.getElementById('demoCtrl');
-const ctrlLabel = document.getElementById('demoCtrlLabel');
-
-// Gate animation immediately so msgs/tools are hidden BEFORE the first paint
-// (prevents the flash-of-full-content during init/reset).
-const demoEl = document.getElementById('demo');
-if(demoEl){ demoEl.classList.add('demo-anim'); }
-
-// Cache pre-hidden HTML for each pane so reset starts from a hidden state
-// (no visible flash before reveal).
-const snapshots = new Map();
-panes.forEach(p => {
-  // pre-hide so the pane initially renders invisible
-  p.querySelectorAll('.msg').forEach(m => m.classList.add('anim-msg'));
-  p.querySelectorAll('.tool-call').forEach(tc => tc.classList.add('anim-tool'));
-  p.querySelectorAll('.msg-body > .msg-text').forEach(t => {
-    t.classList.add('anim-hide');
-    if((t.getAttribute('style')||'').includes('border-left')) t.classList.add('anim-block');
-  });
-  snapshots.set(p, p.innerHTML);
-});
-
-// Keep the demo body scrolled so the latest revealed element is in view.
-// Hidden (opacity:0) future elements still occupy layout, so naive scroll-to-bottom
-// would scroll past the visible content. Instead, position the target element near
-// the bottom of the visible area, and never scroll backwards.
-function scrollDemoIntoView(target){
-  const body = document.querySelector('.demo-body');
-  if(!body) return;
-  if(!target){
-    body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
-    return;
-  }
-  const bodyRect = body.getBoundingClientRect();
-  const targetRect = target.getBoundingClientRect();
-  const targetBottomRelative = (targetRect.bottom - bodyRect.top) + body.scrollTop;
-  const desired = Math.max(0, targetBottomRelative - body.clientHeight + 28);
-  if(desired > body.scrollTop + 4){
-    body.scrollTo({ top: desired, behavior: 'smooth' });
-  }
-}
-
-let currentAbort = null;
-let currentIdx = 0;
-let userPaused = false;
-let started = false;
-
-function wait(ms, signal){
-  return new Promise((resolve, reject) => {
-    if(signal && signal.aborted) return reject(new DOMException('Aborted','AbortError'));
-    const t = setTimeout(resolve, ms);
-    if(signal) signal.addEventListener('abort', () => { clearTimeout(t); reject(new DOMException('Aborted','AbortError')); }, {once:true});
-  });
-}
-
-function resetPane(pane){
-  pane.innerHTML = snapshots.get(pane);
-  // reset demo body scroll to top so each pane starts at its top
-  const body = document.querySelector('.demo-body');
-  if(body) body.scrollTop = 0;
-}
-
-function hideChildren(pane){
-  // No-op: snapshots are already pre-hidden in the cache. Kept for API stability.
-}
-
-// Recursively type an HTML string into an element, preserving tags
-async function typeHTML(el, html, signal, speed){
-  el.innerHTML = '';
-  el.classList.add('typing');
-  const tpl = document.createElement('template');
-  tpl.innerHTML = html;
-  for(const node of Array.from(tpl.content.childNodes)){
-    await appendAndType(el, node, signal, speed);
-  }
-  el.classList.remove('typing');
-}
-
-async function appendAndType(parent, node, signal, speed){
-  if(node.nodeType === Node.TEXT_NODE){
-    const full = node.textContent;
-    const tn = document.createTextNode('');
-    parent.appendChild(tn);
-    for(const ch of full){
-      tn.textContent += ch;
-      // slight speed variance, faster on whitespace, brief pause on punctuation
-      let d = speed;
-      if(/\s/.test(ch)) d = Math.max(6, speed - 5);
-      else if(/[,.;:,]/.test(ch)) d = speed + 55;
-      await wait(d, signal);
-    }
-  } else {
-    const clone = node.cloneNode(false);
-    parent.appendChild(clone);
-    for(const kid of Array.from(node.childNodes)){
-      await appendAndType(clone, kid, signal, speed);
-    }
-  }
-}
-
-async function animateToolCall(tc, signal){
-  // pre-capture and clear final content BEFORE making the shell visible,
-  // so there is no flash of the full body during the reveal.
-  const status = tc.querySelector('.tool-status');
-  const body = tc.querySelector('.tool-body');
-  const finalStatusHTML = status.innerHTML;
-  const finalBodyHTML = body.innerHTML;
-  status.innerHTML = 'running';
-  status.classList.add('state-running');
-  body.innerHTML = '';
-
-  // now reveal the tool-call shell (empty body + running status)
-  tc.classList.remove('anim-tool');
-  requestAnimationFrame(() => tc.classList.add('show'));
-  await wait(SPEED.fade, signal);
-  scrollDemoIntoView(tc);
-
-  await wait(SPEED.running, signal);
-  await typeHTML(body, finalBodyHTML, signal, SPEED.type);
-  scrollDemoIntoView(tc);
-  await wait(180, signal);
-
-  status.classList.remove('state-running');
-  status.classList.add('state-done');
-  status.innerHTML = finalStatusHTML;
-}
-
-async function revealMsg(msg, signal){
-  msg.classList.remove('anim-msg');
-  requestAnimationFrame(() => msg.classList.add('show'));
-  await wait(SPEED.fade, signal);
-  scrollDemoIntoView(msg);
-
-  const body = msg.querySelector('.msg-body');
-  if(!body) return;
-  const children = Array.from(body.children).filter(c => !c.classList.contains('msg-name'));
-
-  for(const child of children){
-    await wait(SPEED.gap, signal);
-
-    if(child.classList.contains('tool-call')){
-      await animateToolCall(child, signal);
-      continue;
-    }
-
-    if(child.classList.contains('msg-text')){
-      const isDeliverable = child.classList.contains('anim-block');
-      // capture BEFORE making visible, then clear so there is no flash of full text
-      const originalHTML = child.innerHTML;
-      child.innerHTML = '';
-      child.classList.remove('anim-hide');
-      child.classList.add('show'); // required under .demo-anim gating
-
-      if(isDeliverable){
-        await wait(SPEED.fade, signal);
-        scrollDemoIntoView(child);
-        await typeHTML(child, originalHTML, signal, SPEED.typeBlock);
-      } else {
-        await typeHTML(child, originalHTML, signal, SPEED.typeShort);
-      }
-      scrollDemoIntoView(child);
-    }
-  }
-}
-
-async function playPane(pane, signal){
-  resetPane(pane);
-  hideChildren(pane);
-  // small settle wait, pane has already been marked .active by activate()
-  await wait(200, signal);
-
-  const msgs = Array.from(pane.querySelectorAll('.msg'));
-  for(let i = 0; i < msgs.length; i++){
-    if(i > 0) await wait(SPEED.gap + 120, signal);
-    await revealMsg(msgs[i], signal);
-  }
-}
-
-// progress rail animation (approximate, runs alongside playback)
-let progressRAF = null;
-function startProgress(durMs, signal){
-  const start = performance.now();
-  progressEl.style.width = '0%';
-  const tick = (now) => {
-    if(signal.aborted) return;
-    const pct = Math.min(100, ((now - start) / durMs) * 100);
-    progressEl.style.width = pct + '%';
-    if(pct < 100) progressRAF = requestAnimationFrame(tick);
+  const WP = {
+    promptOut:{x:340,y:320}, enrichIn:{x:420,y:320},
+    enrichOut:{x:800,y:320}, outcomeIn:{x:860,y:320}, outcomeCenter:{x:960,y:320},
+    ctxX:{'dg-ctx-voice':498,'dg-ctx-clients':610,'dg-ctx-promises':722},
+    ctxRowY:260,
+    connX:{gmail:470,drive:540,cal:610,slack:680,notion:750},
+    portRowY:416, midRowY:320,
   };
-  progressRAF = requestAnimationFrame(tick);
-}
-function stopProgress(){
-  if(progressRAF) cancelAnimationFrame(progressRAF);
-  progressEl.style.width = '0%';
-}
+  const PX_PER_SEC = 220;
 
-// Rough duration estimate per pane so the progress bar feels honest
-function estimateDuration(pane){
-  const msgs = pane.querySelectorAll('.msg').length;
-  const tools = pane.querySelectorAll('.tool-call').length;
-  const blocks = pane.querySelectorAll('.msg-body > .msg-text[style*="border-left"]').length;
-  // rough: 800ms per msg reveal + 1800ms per tool + 3000ms per deliverable
-  return msgs * 800 + tools * 1800 + blocks * 3000 + 1200;
-}
+  const setDot = (x,y) => { dot.setAttribute('cx',x); dot.setAttribute('cy',y); };
+  const showDot = () => dot.setAttribute('opacity',1);
+  const hideDot = () => dot.setAttribute('opacity',0);
+  const wait = ms => new Promise(r => setTimeout(r,ms));
 
-async function activate(name, fromUser=false){
-  if(currentAbort) currentAbort.abort();
-  currentAbort = new AbortController();
-  const signal = currentAbort.signal;
-  stopProgress();
-
-  currentIdx = PANE_NAMES.indexOf(name);
-  tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
-  panes.forEach(p => p.classList.toggle('active', p.dataset.pane === name));
-  const pane = paneMap[name];
-
-  if(fromUser){ userPaused = false; setCtrlState('playing'); }
-
-  try {
-    const dur = estimateDuration(pane);
-    if(!userPaused) startProgress(dur, signal);
-    await playPane(pane, signal);
-    // hold, then advance
-    stopProgress();
-    progressEl.style.width = '100%';
-    if(!userPaused){
-      await wait(SPEED.hold, signal);
-      activate(PANE_NAMES[(currentIdx + 1) % PANE_NAMES.length]);
-    }
-  } catch(e){
-    if(e.name !== 'AbortError') throw e;
+  function moveDot(from,to,ms){
+    return new Promise(resolve => {
+      const start = performance.now();
+      setDot(from.x,from.y);
+      const step = now => {
+        const t = Math.min(1,(now-start)/ms);
+        setDot(from.x+(to.x-from.x)*t, from.y+(to.y-from.y)*t);
+        if(t<1) requestAnimationFrame(step); else resolve();
+      };
+      requestAnimationFrame(step);
+    });
   }
-}
-
-function setCtrlState(state){
-  ctrl.dataset.state = state;
-  ctrlLabel.textContent = state === 'playing' ? 'pause' : 'play';
-  ctrl.setAttribute('aria-label', state === 'playing' ? 'Pause playback' : 'Resume playback');
-}
-
-ctrl.addEventListener('click', () => {
-  if(ctrl.dataset.state === 'playing'){
-    userPaused = true;
-    setCtrlState('paused');
-    if(currentAbort) currentAbort.abort();
-    stopProgress();
-  } else {
-    userPaused = false;
-    setCtrlState('playing');
-    activate(PANE_NAMES[currentIdx], false);
+  function durFor(from,to){
+    const d = Math.hypot(to.x-from.x,to.y-from.y);
+    return Math.max(160,(d/PX_PER_SEC)*1000);
   }
-});
+  async function typeText(el,text,totalMs){
+    el.textContent = '';
+    if(!text) return;
+    const per = totalMs/text.length;
+    for(const ch of text){ el.textContent += ch; await wait(per); }
+  }
 
-tabs.forEach(t => t.addEventListener('click', () => activate(t.dataset.tab, true)));
+  function activateCtx(id,on){
+    const r = document.getElementById(id);
+    const l = document.getElementById(id+'-label');
+    if(r) r.classList.toggle('active',on);
+    if(l) l.classList.toggle('active',on);
+  }
+  function activateConn(id,on){
+    const g = document.querySelector(`g[data-conn="${id}"]`);
+    if(!g) return;
+    g.querySelector('.dg-conn-box').classList.toggle('active',on);
+    g.querySelector('.dg-stem').classList.toggle('active',on);
+    g.querySelector('.dg-port').classList.toggle('active',on);
+    g.querySelector('.dg-conn-label').classList.toggle('active',on);
+  }
+  const setNode = (n,on) => n.classList.toggle('active',on);
 
-// Lazy start when demo is visible
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if(e.isIntersecting && !started){
-      started = true;
-      activate(PANE_NAMES[0]);
+  function resetAll(){
+    ['dg-ctx-voice','dg-ctx-clients','dg-ctx-promises'].forEach(id=>activateCtx(id,false));
+    ['gmail','drive','cal','slack','notion'].forEach(id=>activateConn(id,false));
+    setNode(nodePrompt,false); setNode(nodeEnrich,false); setNode(nodeOutcome,false);
+  }
+
+  async function playFlow(flow){
+    resetAll();
+    hideDot();
+    promptText.textContent = '';
+    outcomeText.textContent = '';
+    flowCaption.textContent = `FLOW · ${flow.name}`;
+
+    setNode(nodePrompt,true);
+    await typeText(promptText, flow.prompt, 550);
+    await wait(250);
+
+    setDot(WP.promptOut.x, WP.promptOut.y);
+    showDot();
+    await moveDot(WP.promptOut, WP.enrichIn, durFor(WP.promptOut, WP.enrichIn));
+    setNode(nodePrompt,false);
+    setNode(nodeEnrich,true);
+
+    let from = WP.enrichIn;
+    const upTarget = { x: WP.enrichIn.x, y: WP.ctxRowY };
+    await moveDot(from, upTarget, durFor(from, upTarget));
+    from = upTarget;
+
+    for(const ctxId of flow.context){
+      const target = { x: WP.ctxX[ctxId], y: WP.ctxRowY };
+      await moveDot(from, target, durFor(from, target));
+      activateCtx(ctxId, true);
+      await wait(300);
+      from = target;
     }
-  });
-}, {threshold: 0.25});
-io.observe(document.getElementById('demo'));
+
+    const firstConn = flow.connectors[0];
+    const midA = { x: from.x, y: WP.midRowY };
+    await moveDot(from, midA, durFor(from, midA));
+    const midB = { x: WP.connX[firstConn], y: WP.midRowY };
+    await moveDot(midA, midB, durFor(midA, midB));
+    const portTarget = { x: WP.connX[firstConn], y: WP.portRowY };
+    await moveDot(midB, portTarget, durFor(midB, portTarget));
+    activateConn(firstConn, true);
+    await wait(300);
+    from = portTarget;
+
+    for(let i=1; i<flow.connectors.length; i++){
+      const id = flow.connectors[i];
+      const target = { x: WP.connX[id], y: WP.portRowY };
+      await moveDot(from, target, durFor(from, target));
+      activateConn(id, true);
+      await wait(300);
+      from = target;
+    }
+
+    const upExit = { x: from.x, y: WP.midRowY };
+    await moveDot(from, upExit, durFor(from, upExit));
+    await moveDot(upExit, WP.enrichOut, durFor(upExit, WP.enrichOut));
+    setNode(nodeEnrich,false);
+
+    const enrichToInDur = durFor(WP.enrichOut, WP.outcomeIn);
+    const inToCenterDur = durFor(WP.outcomeIn, WP.outcomeCenter);
+    const totalArrival = enrichToInDur + inToCenterDur;
+    typeText(outcomeText, flow.outcome, totalArrival * 0.92);
+    await moveDot(WP.enrichOut, WP.outcomeIn, enrichToInDur);
+    setNode(nodeOutcome,true);
+    await moveDot(WP.outcomeIn, WP.outcomeCenter, inToCenterDur);
+
+    await wait(900);
+    hideDot();
+    await wait(300);
+    setNode(nodeOutcome,false);
+    await wait(700);
+  }
+
+  async function loop(){
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      const f = FLOWS[0];
+      promptText.textContent = f.prompt;
+      outcomeText.textContent = f.outcome;
+      flowCaption.textContent = `FLOW · ${f.name}`;
+      setDot(WP.outcomeCenter.x, WP.outcomeCenter.y);
+      showDot();
+      return;
+    }
+    let i = 0;
+    while(true){
+      await playFlow(FLOWS[i % FLOWS.length]);
+      i++;
+    }
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ loop(); obs.disconnect(); }
+    });
+  }, { threshold: 0.25 });
+  const target = document.querySelector('.diagram-section .diagram');
+  if(target) obs.observe(target);
+})();
 
 // ─── MOBILE NAV TOGGLE ───
 const navToggle = document.getElementById('navToggle');
