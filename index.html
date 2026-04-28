@@ -607,14 +607,14 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 
         <text x="436" y="208" class="dg-lbl dg-lbl-tiny">CONTEXT</text>
 
-        <rect id="dg-ctx-voice" class="dg-sub" x="450" y="222" width="96" height="76" rx="4"/>
-        <text x="498" y="266" class="dg-ctx-label" id="dg-ctx-voice-label">VOICE</text>
+        <rect id="dg-ctx-company" class="dg-sub" x="450" y="222" width="96" height="76" rx="4"/>
+        <text x="498" y="266" class="dg-ctx-label" id="dg-ctx-company-label">COMPANY</text>
 
-        <rect id="dg-ctx-clients" class="dg-sub" x="562" y="222" width="96" height="76" rx="4"/>
-        <text x="610" y="266" class="dg-ctx-label" id="dg-ctx-clients-label">CLIENTS</text>
+        <rect id="dg-ctx-method" class="dg-sub" x="562" y="222" width="96" height="76" rx="4"/>
+        <text x="610" y="266" class="dg-ctx-label" id="dg-ctx-method-label">METHOD</text>
 
-        <rect id="dg-ctx-promises" class="dg-sub" x="674" y="222" width="96" height="76" rx="4"/>
-        <text x="722" y="266" class="dg-ctx-label" id="dg-ctx-promises-label">PROMISES</text>
+        <rect id="dg-ctx-voice" class="dg-sub" x="674" y="222" width="96" height="76" rx="4"/>
+        <text x="722" y="266" class="dg-ctx-label" id="dg-ctx-voice-label">VOICE</text>
 
         <text x="436" y="338" class="dg-lbl dg-lbl-tiny">CONNECTORS</text>
 
@@ -694,14 +694,14 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 
         <text x="56" y="304" class="dg-lbl dg-lbl-tiny">CONTEXT</text>
 
-        <rect id="dg-ctx-voice" class="dg-sub" x="70" y="316" width="140" height="60" rx="4"/>
-        <text x="140" y="352" class="dg-ctx-label" id="dg-ctx-voice-label">VOICE</text>
+        <rect id="dg-ctx-company" class="dg-sub" x="70" y="316" width="140" height="60" rx="4"/>
+        <text x="140" y="352" class="dg-ctx-label" id="dg-ctx-company-label">COMPANY</text>
 
-        <rect id="dg-ctx-clients" class="dg-sub" x="230" y="316" width="140" height="60" rx="4"/>
-        <text x="300" y="352" class="dg-ctx-label" id="dg-ctx-clients-label">CLIENTS</text>
+        <rect id="dg-ctx-method" class="dg-sub" x="230" y="316" width="140" height="60" rx="4"/>
+        <text x="300" y="352" class="dg-ctx-label" id="dg-ctx-method-label">METHOD</text>
 
-        <rect id="dg-ctx-promises" class="dg-sub" x="390" y="316" width="140" height="60" rx="4"/>
-        <text x="460" y="352" class="dg-ctx-label" id="dg-ctx-promises-label">PROMISES</text>
+        <rect id="dg-ctx-voice" class="dg-sub" x="390" y="316" width="140" height="60" rx="4"/>
+        <text x="460" y="352" class="dg-ctx-label" id="dg-ctx-voice-label">VOICE</text>
 
         <text x="56" y="416" class="dg-lbl dg-lbl-tiny">CONNECTORS</text>
 
@@ -756,7 +756,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 <!-- ─── CONNECTOR + TRUST LINE ─── -->
 <section class="trustline">
   <div class="trustline-inner">
-    <p>Plugs into the tools your team already lives in. Runs on Claude Cowork. You own the repo. <strong>The system stays with you.</strong></p>
+    <p>Runs on Claude Cowork. Connects to the tools your team already uses. <strong>Compounds week over week.</strong></p>
   </div>
 </section>
 
@@ -1171,26 +1171,26 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   const FLOWS = [
     { name:'MEETING PREP', prompt:'prep me for my 2pm with beck',
       outcome:'Brief · Beck 2pm',
-      context:['dg-ctx-voice','dg-ctx-clients'],
+      context:['dg-ctx-company','dg-ctx-method'],
       connectors:['gmail','drive','cal'] },
     { name:'ACTION ITEMS', prompt:'tag actions from Q2 retro',
       outcome:'Action items · Q2 Retro',
-      context:['dg-ctx-clients'],
+      context:['dg-ctx-method'],
       connectors:['cal','notion'] },
     { name:'DRAFT PROPOSAL', prompt:'draft the stonefly proposal',
       outcome:'Proposal · Stonefly draft v1',
-      context:['dg-ctx-voice','dg-ctx-clients','dg-ctx-promises'],
+      context:['dg-ctx-company','dg-ctx-method','dg-ctx-voice'],
       connectors:['drive','notion'] },
     { name:'WEEKLY REVIEW', prompt:'generate the weekly review',
       outcome:'Review · this week',
-      context:['dg-ctx-voice','dg-ctx-clients','dg-ctx-promises'],
+      context:['dg-ctx-company','dg-ctx-method','dg-ctx-voice'],
       connectors:['gmail','drive','slack'] },
   ];
 
   const WP_DESKTOP = {
     promptOut:{x:340,y:320}, enrichIn:{x:420,y:320},
     enrichOut:{x:800,y:320}, outcomeIn:{x:860,y:320}, outcomeCenter:{x:960,y:320},
-    ctxX:{'dg-ctx-voice':498,'dg-ctx-clients':610,'dg-ctx-promises':722},
+    ctxX:{'dg-ctx-company':498,'dg-ctx-method':610,'dg-ctx-voice':722},
     ctxRowY:260,
     connX:{gmail:470,drive:540,cal:610,slack:680,notion:750},
     portRowY:416, midRowY:320, exitMidRowY:320,
@@ -1198,7 +1198,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   const WP_MOBILE = {
     promptOut:{x:300,y:220}, enrichIn:{x:300,y:260},
     enrichOut:{x:300,y:700}, outcomeIn:{x:300,y:740}, outcomeCenter:{x:300,y:810},
-    ctxX:{'dg-ctx-voice':140,'dg-ctx-clients':300,'dg-ctx-promises':460},
+    ctxX:{'dg-ctx-company':140,'dg-ctx-method':300,'dg-ctx-voice':460},
     ctxRowY:346,
     connX:{gmail:110,drive:210,cal:310,slack:410,notion:510},
     portRowY:514, midRowY:404, exitMidRowY:660,
@@ -1251,7 +1251,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   const setNode = (n,on) => n.classList.toggle('active',on);
 
   function resetAll(){
-    ['dg-ctx-voice','dg-ctx-clients','dg-ctx-promises'].forEach(id=>activateCtx(id,false));
+    ['dg-ctx-company','dg-ctx-method','dg-ctx-voice'].forEach(id=>activateCtx(id,false));
     ['gmail','drive','cal','slack','notion'].forEach(id=>activateConn(id,false));
     setNode(nodePrompt,false); setNode(nodeEnrich,false); setNode(nodeOutcome,false);
   }
