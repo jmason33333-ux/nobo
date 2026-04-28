@@ -254,34 +254,31 @@ strong,b{font-weight:600}
 .sec-sub{font-family:var(--sans);font-size:1.1rem;color:var(--text-mid);line-height:1.55;max-width:56ch;margin:0 auto;text-wrap:pretty}
 .sec-head.left .sec-sub{margin:0}
 
-/* ─── HOW IT WORKS, 5 steps ─── */
-.steps{display:flex;flex-direction:column;gap:24px;max-width:1080px;margin:0 auto}
-.step{
-  display:grid;grid-template-columns:80px 1fr 1.2fr;gap:32px;
-  background:var(--surface);border:1px solid var(--line);border-radius:6px;
-  padding:24px 28px;align-items:center;
+/* ─── HOW IT WORKS, install inventory ─── */
+.install{max-width:680px;margin:0 auto;padding:8px 0 16px}
+.install-group{margin-bottom:32px}
+.install-group:last-of-type{margin-bottom:24px}
+.install-group-head{
+  display:flex;align-items:baseline;gap:18px;
+  padding:6px 0 10px;margin-bottom:10px;
+  border-bottom:1px dashed var(--line-strong);
+}
+.install-group-name{font-family:var(--mono);font-size:1rem;font-weight:600;color:var(--pine-dark);letter-spacing:-.01em}
+.install-group-desc{font-family:var(--mono);font-size:.74rem;color:var(--text-soft);letter-spacing:.04em}
+.install-items{list-style:none;margin:0;padding:0 0 0 28px}
+.install-items li{font-family:var(--mono);font-size:.92rem;color:var(--pine-dark);padding:2px 0;line-height:1.6}
+.install-items li.install-more{color:var(--text-soft);padding-top:6px;font-size:.84rem}
+.install-link{
+  display:inline-block;font-family:var(--mono);font-size:.82rem;letter-spacing:.04em;
+  color:var(--accent);text-decoration:none;margin-top:8px;margin-left:28px;
+  border-bottom:1px solid var(--rust-soft);padding-bottom:1px;
   transition:border-color .2s ease;
 }
-.step:hover{border-color:var(--line-strong)}
-.step-n{
-  font-family:var(--serif);font-weight:600;font-size:3.2rem;line-height:1;
-  color:var(--cream-deeper);letter-spacing:-.02em;
-}
-.step:hover .step-n{color:var(--accent)}
-.step-n{transition:color .25s}
-.step-copy h3{font-family:var(--serif);font-weight:600;font-size:1.5rem;color:var(--pine-dark);line-height:1.2;letter-spacing:-.01em;margin-bottom:10px}
-.step-copy h3 em{color:var(--pine)}
-.step-copy p{font-family:var(--sans);font-size:.96rem;color:var(--text-mid);line-height:1.6;max-width:38ch}
-.step-visual{
-  background:var(--cream);border:1px solid var(--cream-deeper);border-radius:12px;
-  padding:16px;font-family:var(--mono);font-size:.74rem;color:var(--text-mid);line-height:1.7;
-  min-height:112px;display:flex;flex-direction:column;gap:4px;justify-content:center;
-}
-.step-visual .vline{display:flex;align-items:center;gap:8px}
-.step-visual .vline .k{color:var(--text-muted)}
-.step-visual .vline .v{color:var(--pine-dark)}
-.step-visual .vline .badge{font-size:.66rem;padding:2px 8px;border-radius:999px;background:var(--pine-soft);color:var(--pine-dark);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
-.step-visual .vline .badge.rust{background:var(--rust-soft);color:var(--accent)}
+.install-link:hover{border-bottom-color:var(--accent)}
+.install-after{max-width:600px;margin:48px auto 0}
+.install-after p{font-family:var(--sans);font-size:1rem;color:var(--text-mid);line-height:1.65;margin-bottom:0}
+.install-after p strong{color:var(--pine-dark);font-weight:600}
+.install-after p + p.install-ladder{margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}
 
 /* ─── WITH/WITHOUT, 6 tasks ─── */
 .vs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:1240px;margin:0 auto}
@@ -354,9 +351,13 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   .hero-grid{grid-template-columns:1fr;gap:48px}
   .section{padding:80px 0}
   .sec-head{margin-bottom:48px}
-  .step{grid-template-columns:auto 1fr;padding:24px 22px;gap:20px}
-  .step-n{font-size:2.2rem}
-  .step-visual{grid-column:1/-1;margin-top:4px}
+  .install{max-width:100%}
+  .install-group-head{flex-direction:column;gap:4px;align-items:flex-start;padding-bottom:8px}
+  .install-group-desc{font-size:.7rem}
+  .install-items{padding-left:18px}
+  .install-items li{font-size:.84rem}
+  .install-link{margin-left:18px}
+  .install-after{margin-top:32px}
   .vs-grid{grid-template-columns:1fr}
   .cta{padding:120px 0 112px}
   .foot-inner{grid-template-columns:1fr 1fr;gap:32px;padding:0 22px}
@@ -772,7 +773,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
     <div class="system-frame">
       <div class="hear-grid">
         <div class="hear">
-          <div class="hear-title">We've seen what AI can do. We're just not there yet<span class="dot">.</span></div>
+          <div class="hear-title">We've seen what AI can do, but we're not there yet<span class="dot">.</span></div>
           <p class="hear-quote">"I know we could be getting more out of AI. I just don't have time to figure it out while running the business."</p>
         </div>
         <div class="hear">
@@ -797,70 +798,56 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">02 &middot; How it works</span>
-      <h2 class="sec-title">A system, <em>configured around your business<span class="dot">.</span></em></h2>
-      <p class="sec-sub">Five layers. Each one carries the context the next one needs. Together they make Claude sound like someone who's been here a while.</p>
+      <h2 class="sec-title">Here's what <em>ships</em><span class="dot">.</span></h2>
+      <p class="sec-sub">The diagram shows the wiring. Below is what fills it on day one of month one.</p>
     </div>
 
-    <div class="steps">
-      <div class="step">
-        <div class="step-n">01</div>
-        <div class="step-copy">
-          <h3>Context <em>that makes it yours</em></h3>
-          <p>I write down who your business is. Your clients, your promises, how you sound on a good day. The system reads it before it answers anything, so Claude stops sounding like a stranger and starts sounding like someone who's been here a while.</p>
+    <div class="install">
+      <div class="install-group">
+        <div class="install-group-head">
+          <span class="install-group-name">context/</span>
+          <span class="install-group-desc">8 files written for your business</span>
         </div>
-        <div class="step-visual">
-          <div class="vline"><span class="k">→</span> <span class="v">your voice · your clients · your promises</span></div>
-          <div class="vline"><span class="k">→</span> <span class="v">the docs, threads, and quirks that define the work</span></div>
-        </div>
+        <ul class="install-items">
+          <li>what-is-[company].md</li>
+          <li>how-we-work.md</li>
+          <li>how-we-communicate.md</li>
+          <li class="install-more">+ 5 more</li>
+        </ul>
       </div>
 
-      <div class="step">
-        <div class="step-n">02</div>
-        <div class="step-copy">
-          <h3>Specialists <em>who own the work</em></h3>
-          <p>Each role on your team gets a named specialist that knows what they own. Account Lead. Chief of Staff. Marketing. Ops. Each one carries the context for that piece of the business and stays in their lane.</p>
+      <div class="install-group">
+        <div class="install-group-head">
+          <span class="install-group-name">specialists/</span>
+          <span class="install-group-desc">10 named experts who read your context first</span>
         </div>
-        <div class="step-visual">
-          <div class="vline"><span class="k">→</span> <span class="v">named roles, not generic chat</span></div>
-          <div class="vline"><span class="k">→</span> <span class="v">each one carries context for what they own</span></div>
-        </div>
+        <ul class="install-items">
+          <li>/client-comms</li>
+          <li>/content-strategist</li>
+          <li>/project-manager</li>
+          <li>/prep-for-call</li>
+          <li class="install-more">+ 6 more</li>
+        </ul>
       </div>
 
-      <div class="step">
-        <div class="step-n">03</div>
-        <div class="step-copy">
-          <h3>Skills <em>that do the work</em></h3>
-          <p>Real jobs your business needs done, drafted to your standard, delivered with receipts. Some run on a cue, some run on a schedule. All of them leave the work in better shape than they found it.</p>
+      <div class="install-group">
+        <div class="install-group-head">
+          <span class="install-group-name">workflows/</span>
+          <span class="install-group-desc">3 routines, on cue or on schedule</span>
         </div>
-        <div class="step-visual">
-          <div class="vline"><span class="k">→</span> <span class="v">prep a call · draft a proposal · close the day</span></div>
-          <div class="vline"><span class="k">→</span> <span class="v">ships a result, not a reply</span></div>
-        </div>
+        <ul class="install-items">
+          <li>/weekly-review</li>
+          <li>/daily-log</li>
+          <li>/refine-voice</li>
+        </ul>
       </div>
 
-      <div class="step">
-        <div class="step-n">04</div>
-        <div class="step-copy">
-          <h3>Connectors <em>to the tools you already use</em></h3>
-          <p>Gmail. Drive. Calendar. Slack. Notion. The system reaches into the surfaces your team already lives in. Nothing new to install, nothing new to learn, your data stays where it is.</p>
-        </div>
-        <div class="step-visual">
-          <div class="vline"><span class="k">→</span> <span class="v">Gmail · Drive · Calendar · Slack · Notion</span></div>
-          <div class="vline"><span class="k">→</span> <span class="v">every connector Cowork adds, your system grows with</span></div>
-        </div>
-      </div>
+      <a class="install-link" href="/guides/foundation-plugin">See the full install &rarr;</a>
+    </div>
 
-      <div class="step">
-        <div class="step-n">05</div>
-        <div class="step-copy">
-          <h3>Outcomes <em>that compound</em></h3>
-          <p>Every Friday the system reads its own logs and proposes its own upgrades. You approve. It compounds. By month three, the system knows more about how your team works than your last hire did.</p>
-        </div>
-        <div class="step-visual">
-          <div class="vline"><span class="k">this week →</span> <span class="v">caught a pattern you'd been living with for months</span></div>
-          <div class="vline"><span class="k">next week →</span> <span class="v">sharper than last week</span> <span class="badge">always</span></div>
-        </div>
-      </div>
+    <div class="install-after">
+      <p>Every Friday the system reads its own logs and proposes upgrades. You approve. It compounds. <strong>By month three it knows more about how your team works than your last hire did.</strong></p>
+      <p class="install-ladder"><strong>The Foundation is where every engagement starts.</strong> From there: automation builds for the workflows the install doesn't cover, and full operating systems for teams that want every function running on context.</p>
     </div>
   </div>
 </section>
