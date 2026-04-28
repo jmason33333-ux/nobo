@@ -280,37 +280,72 @@ strong,b{font-weight:600}
 .install-after p strong{color:var(--pine-dark);font-weight:600}
 .install-after p + p.install-ladder{margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}
 
-/* ─── WITH/WITHOUT, 6 tasks ─── */
-.vs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:1240px;margin:0 auto}
-@media (max-width:900px){.vs-grid{grid-template-columns:1fr}}
-.vs{
-  background:var(--surface);border:1px solid var(--line);border-radius:6px;
-  padding:24px;display:flex;flex-direction:column;gap:20px;
-  transition:border-color .2s ease;
+/* ─── DEMO: ONE WORKED EXAMPLE ─── */
+.demo-stage{max-width:760px;margin:0 auto;display:flex;flex-direction:column;align-items:stretch}
+
+.demo-prompt{
+  align-self:flex-start;
+  display:inline-flex;flex-direction:column;gap:6px;
+  padding:14px 20px;
+  background:var(--cream);border:1px solid var(--cream-deeper);border-radius:8px;
+  max-width:520px;
 }
-.vs:hover{border-color:var(--line-strong)}
-.vs-ask{display:flex;gap:12px;align-items:flex-start;padding-bottom:18px;border-bottom:1px solid var(--cream-deeper)}
-.vs-ask-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px}
-.vs-ask-text{font-family:var(--sans);font-weight:500;font-size:1.05rem;color:var(--pine-dark);line-height:1.4;letter-spacing:-.01em;text-wrap:pretty}
-.vs-col{display:flex;flex-direction:column;gap:10px}
-.vs-head{display:flex;align-items:center;gap:8px;font-family:var(--sans);font-weight:700;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
-.vs-head .label-a{color:var(--text-muted)}
-.vs-head .label-b{color:var(--pine)}
-.vs-head .badge{font-size:.62rem;padding:2px 8px;border-radius:3px;letter-spacing:.08em}
-.vs-head .badge-a{background:var(--cream-dark);color:var(--text-soft)}
-.vs-head .badge-b{background:var(--pine);color:var(--cream)}
-.vs-out{font-family:var(--sans);font-size:.9rem;color:var(--text-mid);line-height:1.55}
-.vs-out.generic{color:var(--text-soft);font-style:italic}
-.vs-out.generic::before{content:"“";font-family:var(--serif);font-size:1.3em;color:var(--text-muted);margin-right:2px;line-height:0}
-.vs-out.generic::after{content:"”";font-family:var(--serif);font-size:1.3em;color:var(--text-muted);line-height:0}
-.vs-tools{display:flex;flex-direction:column;gap:6px;margin-top:4px}
-.vs-tool{display:flex;align-items:center;gap:10px;font-family:var(--sans);font-size:.85rem;color:var(--text-dark);padding:6px 10px;background:var(--cream);border-radius:6px;border:1px solid var(--cream-deeper)}
-.vs-tool .tool-icon{width:18px;height:18px;font-size:.6rem}
-.vs-done{
-  margin-top:8px;padding:12px 14px;background:var(--pine-soft);border-left:3px solid var(--pine);border-radius:6px;
-  font-family:var(--sans);font-size:.85rem;color:var(--pine-dark);line-height:1.5;
+.demo-prompt-meta{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);
 }
-.vs-done b{font-weight:700}
+.demo-prompt-text{
+  font-family:var(--mono);font-size:.95rem;color:var(--pine-dark);letter-spacing:-.005em;
+}
+
+.demo-arrow{
+  font-family:var(--mono);font-size:1.2rem;color:var(--text-muted);
+  margin:14px 0 14px 32px;line-height:1;
+}
+
+.brief{
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:36px 40px;
+  box-shadow:0 1px 2px rgba(20,30,40,.04), 0 18px 40px rgba(20,30,40,.06);
+  position:relative;
+}
+.brief-head{
+  display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;
+  padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:28px;
+}
+.brief-from{
+  font-family:var(--sans);font-weight:700;font-size:1.1rem;color:var(--pine-dark);letter-spacing:-.01em;
+}
+.brief-status{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);
+}
+.brief-section{margin-bottom:22px}
+.brief-section:last-child{margin-bottom:0}
+.brief-label{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);font-weight:500;margin-bottom:10px;
+}
+.brief-body p{
+  font-family:var(--sans);font-size:.96rem;line-height:1.6;color:var(--text-dark);margin:0 0 6px;
+}
+.brief-body p:last-child{margin-bottom:0}
+.brief-body ol{list-style:decimal;padding-left:22px;margin:0}
+.brief-body ol li{
+  font-family:var(--sans);font-size:.96rem;line-height:1.6;color:var(--text-dark);margin-bottom:4px;
+}
+.brief-body ol li:last-child{margin-bottom:0}
+
+.brief-sources{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;
+  margin:24px 0 0;padding:0 4px;
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.02em;color:var(--text-soft);
+}
+.brief-sources-label{
+  text-transform:uppercase;letter-spacing:.14em;font-size:.64rem;color:var(--text-muted);margin-right:2px;
+}
+.brief-source{display:inline-flex;align-items:center}
+.brief-source + .brief-source::before{content:"·";margin-right:12px;color:var(--text-muted)}
 
 /* ─── FINAL CTA ─── */
 .cta{padding:144px 0 128px;background:var(--pine-dark);color:var(--white);position:relative}
@@ -358,7 +393,11 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   .install-items li{font-size:.84rem}
   .install-link{margin-left:18px}
   .install-after{margin-top:32px}
-  .vs-grid{grid-template-columns:1fr}
+  .brief{padding:24px 22px}
+  .brief-head{flex-direction:column;gap:4px}
+  .brief-from{font-size:1rem}
+  .demo-prompt{max-width:100%}
+  .demo-arrow{margin-left:18px}
   .cta{padding:120px 0 112px}
   .foot-inner{grid-template-columns:1fr 1fr;gap:32px;padding:0 22px}
   .foot-bottom{padding:22px 22px 0}
@@ -776,152 +815,70 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   </div>
 </section>
 
-<!-- ─── WITH / WITHOUT, 6 tasks ─── -->
-<section class="section section-white" id="vs">
+<!-- ─── DEMO: ONE WORKED EXAMPLE ─── -->
+<section class="section section-white" id="demo">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">03 &middot; Out-of-the-box vs. Nobo</span>
-      <h2 class="sec-title">Same Claude. <em>Wildly different</em> answer<span class="dot">.</span></h2>
-      <p class="sec-sub">Claude alone is generic. Claude running the Nobo system knows who your clients are, what you've promised them, and how you sound.</p>
+      <span class="eyebrow">03 &middot; Let me show you one</span>
+      <h2 class="sec-title">1:25pm. The brief <em>lands</em><span class="dot">.</span></h2>
+      <p class="sec-sub">You asked Claude at lunch. The brief is in your inbox 35 minutes before the call. Pulled from Gmail, Calendar, Drive, and Slack.</p>
     </div>
 
-    <div class="vs-grid">
+    <div class="demo-stage">
 
-      <!-- 1 -->
-      <div class="vs">
-        <div class="vs-ask">
-          <div>
-            <div class="vs-ask-label">When you ask</div>
-            <div class="vs-ask-text">"Reply to Beck about the contract terms."</div>
-          </div>
-        </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
-          <div class="vs-out generic">Sure, could you share the contract details and the terms they're asking about? I can draft a reply once I have those.</div>
-        </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">@client-coms specialist</span></div>
-          <div class="vs-tools">
-            <div class="vs-tool"><div class="tool-icon gmail">G</div>Pulled Beck thread · 14 messages</div>
-            <div class="vs-tool"><div class="tool-icon drive">D</div>Cited Phase 2 SOW v3 · § payment</div>
-          </div>
-          <div class="vs-done"><b>Done.</b> Drafted a reply that answers the real question (net-30, 50% up), holds the line, and offers a split if cash is tight. Matches your voice.</div>
-        </div>
+      <div class="demo-prompt">
+        <div class="demo-prompt-meta">12:48 PM &middot; in Cowork</div>
+        <div class="demo-prompt-text">"prep me for my 2pm with beck"</div>
       </div>
 
-      <!-- 2 -->
-      <div class="vs">
-        <div class="vs-ask">
-          <div>
-            <div class="vs-ask-label">When you ask</div>
-            <div class="vs-ask-text">"Prep me for my 2pm with Beck."</div>
-          </div>
-        </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
-          <div class="vs-out generic">Happy to help you prep. What's the meeting about, and who's attending?</div>
-        </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">@chief-of-staff specialist</span></div>
-          <div class="vs-tools">
-            <div class="vs-tool"><div class="tool-icon cal">C</div>Read calendar · invitees + agenda</div>
-            <div class="vs-tool"><div class="tool-icon drive">D</div>Found last 3 Beck docs</div>
-            <div class="vs-tool"><div class="tool-icon gmail">G</div>Surfaced open scope-change thread</div>
-          </div>
-          <div class="vs-done"><b>Done.</b> One-page brief: who's in the room, what was promised in v2 SOW, the scope change they tried to slip in last week, and three questions to lead with.</div>
-        </div>
-      </div>
+      <div class="demo-arrow" aria-hidden="true">&darr;</div>
 
-      <!-- 3 -->
-      <div class="vs">
-        <div class="vs-ask">
-          <div>
-            <div class="vs-ask-label">When you ask</div>
-            <div class="vs-ask-text">"Write the April client newsletter."</div>
-          </div>
-        </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
-          <div class="vs-out generic">Sure, what are the main updates you'd like to share, and what's your usual tone?</div>
-        </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">@marketing specialist · trained on 14 past issues</span></div>
-          <div class="vs-tools">
-            <div class="vs-tool"><div class="tool-icon drive">D</div>Pulled last 6 newsletters · voice + rhythm</div>
-            <div class="vs-tool"><div class="tool-icon click">L</div>Checked ClickUp · what shipped this month</div>
-            <div class="vs-tool"><div class="tool-icon canva">c</div>Queued cover draft in Canva</div>
-          </div>
-          <div class="vs-done"><b>Done.</b> Full draft in your voice. Three shipped projects, one learning, one upcoming. Canva cover ready for you to approve.</div>
-        </div>
-      </div>
+      <article class="brief">
+        <header class="brief-head">
+          <div class="brief-from">Brief &middot; 2pm with Beck</div>
+          <div class="brief-status">1:25 PM &middot; ready to walk in</div>
+        </header>
 
-      <!-- 4 -->
-      <div class="vs">
-        <div class="vs-ask">
-          <div>
-            <div class="vs-ask-label">When you ask</div>
-            <div class="vs-ask-text">"What happened today?"</div>
+        <div class="brief-section">
+          <div class="brief-label">Who's in the room</div>
+          <div class="brief-body">
+            <p>Beck and her COO. Both joined the v2 SOW conversation in March.</p>
           </div>
         </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
-          <div class="vs-out generic">I don't have access to what happened in your day. Could you tell me what you worked on?</div>
-        </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">/daily-log · scheduled 5:30 PM</span></div>
-          <div class="vs-tools">
-            <div class="vs-tool"><div class="tool-icon gmail">G</div>Read today's threads · 12 touched</div>
-            <div class="vs-tool"><div class="tool-icon click">L</div>Pulled status changes across 3 projects</div>
-            <div class="vs-tool"><div class="tool-icon drive">D</div>Checked doc edits · 4 meaningful</div>
-          </div>
-          <div class="vs-done"><b>Done.</b> A log of what you shipped, what you decided, what's unresolved, and what tomorrow's one real blocker is. Your Monday already starts in motion.</div>
-        </div>
-      </div>
 
-      <!-- 5 -->
-      <div class="vs">
-        <div class="vs-ask">
-          <div>
-            <div class="vs-ask-label">When you ask</div>
-            <div class="vs-ask-text">"Send the Stonefly proposal."</div>
+        <div class="brief-section">
+          <div class="brief-label">What's been promised</div>
+          <div class="brief-body">
+            <p>Phase 2 SOW v3. Net-30. 50% upfront, signed Apr 1.</p>
+            <p>Final deliverable: Q2 retrospective deck.</p>
           </div>
         </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
-          <div class="vs-out generic">I'd need the proposal content first. Can you share what you'd like included?</div>
-        </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">/proposal-draft · specialist + skill</span></div>
-          <div class="vs-tools">
-            <div class="vs-tool"><div class="tool-icon drive">D</div>Loaded Stonefly discovery notes</div>
-            <div class="vs-tool"><div class="tool-icon drive">D</div>Cloned your proposal template</div>
-            <div class="vs-tool"><div class="tool-icon gmail">G</div>Drafted send-email with PDF attached</div>
-          </div>
-          <div class="vs-done"><b>Done.</b> Proposal in your template, priced from your rate card, with the lighter 1-week onboarding you decided yesterday. Send email queued for your approval.</div>
-        </div>
-      </div>
 
-      <!-- 6 -->
-      <div class="vs">
-        <div class="vs-ask">
-          <div>
-            <div class="vs-ask-label">When you ask</div>
-            <div class="vs-ask-text">"How's the business this week?"</div>
+        <div class="brief-section">
+          <div class="brief-label">Heads up</div>
+          <div class="brief-body">
+            <p>Last Friday Beck tried to slip a scope change into a Slack thread (added two workshops). Hold the line on the SOW.</p>
           </div>
         </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-a">Out of the box</span> <span class="label-a">Claude alone</span></div>
-          <div class="vs-out generic">I can't see your business data. What metrics do you want to review?</div>
-        </div>
-        <div class="vs-col">
-          <div class="vs-head"><span class="badge badge-b">With Nobo</span> <span class="label-b">/weekly-review · reads five days of logs</span></div>
-          <div class="vs-tools">
-            <div class="vs-tool"><div class="tool-icon skill">/</div>Re-read this week's five daily logs</div>
-            <div class="vs-tool"><div class="tool-icon sheets">S</div>Checked cash-in · cash-out</div>
-            <div class="vs-tool"><div class="tool-icon skill">/</div>Proposed 3 system updates for approval</div>
+
+        <div class="brief-section">
+          <div class="brief-label">Three questions to lead with</div>
+          <div class="brief-body">
+            <ol>
+              <li>Did the Q2 dashboards land?</li>
+              <li>What's making the workshop request hot?</li>
+              <li>Phase 3, same scope or different?</li>
+            </ol>
           </div>
-          <div class="vs-done"><b>Done.</b> Patterns you were too close to see. Where the week leaked time, what's repeating, and three skill updates that would stop it from happening next week.</div>
         </div>
+      </article>
+
+      <div class="brief-sources">
+        <span class="brief-sources-label">Pulled from</span>
+        <span class="brief-source">Gmail thread (14 messages)</span>
+        <span class="brief-source">Calendar invite</span>
+        <span class="brief-source">Drive (Phase 2 SOW v3)</span>
+        <span class="brief-source">Slack (scope-change thread)</span>
       </div>
 
     </div>
@@ -960,8 +917,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
     <div class="foot-col">
       <h5>The system</h5>
       <a href="#how">How it works</a>
-      <a href="#workflows">Workflow library</a>
-      <a href="#vs">Out-of-the-box vs. Nobo</a>
+      <a href="#demo">An example</a>
     </div>
     <div class="foot-col">
       <h5>Writing</h5>
