@@ -160,6 +160,23 @@ strong,b{font-weight:600}
 .diagram{width:100%;aspect-ratio:1200/640}
 .diagram svg{display:block;width:100%;height:auto}
 
+/* ─── SIGNATURE: dotted system-frame motif ─── */
+.system-frame{
+  border:1px dashed var(--line-strong);
+  border-radius:8px;
+  padding:32px;
+  position:relative;
+}
+.system-frame::before{
+  content:"";position:absolute;
+  inset:8px;border:1px dashed rgba(31,51,37,.06);
+  border-radius:6px;pointer-events:none;
+}
+@media (max-width:780px){
+  .system-frame{padding:18px}
+  .system-frame::before{inset:6px}
+}
+
 /* diagram tokens (prefixed dg- to avoid colliding with anything else) */
 .dg-lbl{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;fill:var(--text-soft)}
 .dg-lbl-strong{fill:var(--text-dark)}
@@ -473,12 +490,12 @@ strong,b{font-weight:600}
 /* ─── HOW IT WORKS, 5 steps ─── */
 .steps{display:flex;flex-direction:column;gap:24px;max-width:1080px;margin:0 auto}
 .step{
-  display:grid;grid-template-columns:80px 1fr 1.2fr;gap:40px;
-  background:var(--white);border:1px solid var(--cream-deeper);border-radius:8px;
-  padding:36px 40px;align-items:center;
-  transition:border-color .2s,transform .2s,box-shadow .2s;
+  display:grid;grid-template-columns:80px 1fr 1.2fr;gap:32px;
+  background:var(--surface);border:1px solid var(--line);border-radius:6px;
+  padding:24px 28px;align-items:center;
+  transition:border-color .2s ease;
 }
-.step:hover{border-color:var(--pine-mid);transform:translateY(-2px);box-shadow:var(--shadow-card)}
+.step:hover{border-color:var(--line-strong)}
 .step-n{
   font-family:var(--serif);font-weight:600;font-size:3.2rem;line-height:1;
   color:var(--cream-deeper);letter-spacing:-.02em;
@@ -503,11 +520,11 @@ strong,b{font-weight:600}
 .vs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:1240px;margin:0 auto}
 @media (max-width:900px){.vs-grid{grid-template-columns:1fr}}
 .vs{
-  background:var(--white);border:1px solid var(--cream-deeper);border-radius:8px;
-  padding:28px 30px 24px;display:flex;flex-direction:column;gap:20px;
-  transition:border-color .2s,transform .2s,box-shadow .2s;
+  background:var(--surface);border:1px solid var(--line);border-radius:6px;
+  padding:24px;display:flex;flex-direction:column;gap:20px;
+  transition:border-color .2s ease;
 }
-.vs:hover{border-color:var(--pine-mid);transform:translateY(-2px);box-shadow:var(--shadow-card)}
+.vs:hover{border-color:var(--line-strong)}
 .vs-ask{display:flex;gap:12px;align-items:flex-start;padding-bottom:18px;border-bottom:1px solid var(--cream-deeper)}
 .vs-ask-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px}
 .vs-ask-text{font-family:var(--serif);font-weight:500;font-size:1.1rem;color:var(--pine-dark);line-height:1.35;font-style:italic;text-wrap:pretty}
@@ -713,19 +730,20 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 .trustline strong{font-style:normal;color:var(--pine-dark)}
 
 /* ─── WHAT I KEEP HEARING ─── */
-.hear-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:1100px;margin:0 auto}
+.hear-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:1100px;margin:0 auto}
 .hear{
-  background:var(--white);border:1px solid var(--cream-deeper);border-radius:12px;
-  padding:28px 30px;
-  border-left:3px solid var(--accent);
+  background:var(--surface);border:1px solid var(--line);border-radius:6px;
+  padding:24px;
+  transition:border-color .2s ease;
 }
+.hear:hover{border-color:var(--line-strong)}
 .hear-title{
-  font-family:var(--serif);font-weight:600;font-size:1.15rem;color:var(--pine-dark);
-  margin-bottom:12px;letter-spacing:-.01em;
+  font-family:var(--sans);font-weight:600;font-size:1.05rem;color:var(--pine-dark);
+  margin-bottom:12px;letter-spacing:-.015em;
 }
 .hear-title .dot{color:var(--accent)}
 .hear-quote{
-  font-family:var(--serif);font-style:italic;font-size:1rem;line-height:1.6;color:var(--text-mid);
+  font-family:var(--sans);font-size:.95rem;line-height:1.6;color:var(--text-mid);
   margin:0;
 }
 @media (max-width:780px){
@@ -750,50 +768,48 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 .wf-grid::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:3px}
 .wf-grid::-webkit-scrollbar-track{background:transparent}
 .wf{
-  flex:0 0 340px;scroll-snap-align:start;
-  border-radius:8px;padding:28px 26px;
+  flex:0 0 320px;scroll-snap-align:start;
+  background:var(--surface);
   border:1px solid var(--line);
-  display:flex;flex-direction:column;min-height:260px;
-  transition:transform .18s,box-shadow .18s;
+  border-radius:6px;
+  padding:24px;
+  display:flex;flex-direction:column;min-height:240px;
+  transition:border-color .2s ease;
 }
-.wf:hover{transform:translateY(-2px);box-shadow:var(--shadow-card)}
+.wf:hover{border-color:var(--line-strong)}
 
-/* base card type — defaults for cream/light cards */
 .wf-num{
-  font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;color:var(--text-soft);
-  margin-bottom:14px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--text-soft);margin-bottom:14px;
 }
 .wf h3{
-  font-family:var(--sans);font-weight:600;font-size:1.25rem;line-height:1.2;letter-spacing:-.02em;
+  font-family:var(--sans);font-weight:600;font-size:1.05rem;line-height:1.25;letter-spacing:-.015em;
   color:var(--pine-dark);margin:0 0 10px;text-wrap:balance;
 }
 .wf h3 .dot{color:var(--accent)}
 .wf p{
-  font-family:var(--sans);font-size:.95rem;line-height:1.55;color:var(--text-mid);
+  font-family:var(--sans);font-size:.92rem;line-height:1.55;color:var(--text-mid);
   margin:0 0 18px;flex:1;
 }
 
-/* variants — specificity bumped (.wf.wf--X) so they actually override .wf p / .wf h3 */
-.wf--cream{background:var(--cream)}
-.wf.wf--pine{background:var(--pine-dark);color:#FFFFFF;border-color:transparent}
-.wf.wf--pine h3{color:#FFFFFF}
-.wf.wf--pine p{color:#FFFFFF}
-.wf.wf--pine .wf-num{color:rgba(255,255,255,.78)}
-.wf.wf--pine h3 .dot{color:#FFFFFF}
-.wf.wf--rust{background:var(--accent);color:#FFFFFF;border-color:transparent}
-.wf.wf--rust h3{color:#FFFFFF}
-.wf.wf--rust p{color:#FFFFFF}
-.wf.wf--rust .wf-num{color:rgba(255,255,255,.85)}
-.wf.wf--rust h3 .dot{color:#FFFFFF}
-.wf-tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto}
+/* variants — all retired in favor of single white card with consistent treatment */
+.wf--cream,.wf.wf--pine,.wf.wf--rust{
+  background:var(--surface);color:inherit;border-color:var(--line);
+}
+.wf.wf--pine h3,.wf.wf--rust h3,.wf--cream h3{color:var(--pine-dark)}
+.wf.wf--pine p,.wf.wf--rust p,.wf--cream p{color:var(--text-mid)}
+.wf.wf--pine .wf-num,.wf.wf--rust .wf-num,.wf--cream .wf-num{color:var(--text-soft)}
+.wf.wf--pine h3 .dot,.wf.wf--rust h3 .dot,.wf--cream h3 .dot{color:var(--accent)}
+
+.wf-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
 .wf-tool{
   display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--mono);font-size:.7rem;letter-spacing:.02em;color:var(--text-soft);
-  background:#FFFFFF;border:1px solid var(--line);border-radius:6px;padding:4px 9px 4px 5px;
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.02em;color:var(--text-soft);
+  background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:4px 9px 4px 5px;
 }
-.wf--cream .wf-tool{background:#FFFFFF;border-color:var(--line)}
-.wf--pine .wf-tool{background:rgba(255,255,255,.16);color:#FFFFFF;border-color:rgba(255,255,255,.18)}
-.wf--rust .wf-tool{background:rgba(255,255,255,.22);color:#FFFFFF;border-color:rgba(255,255,255,.28)}
+.wf--cream .wf-tool,.wf--pine .wf-tool,.wf--rust .wf-tool{
+  background:var(--bg);color:var(--text-soft);border-color:var(--line);
+}
 .wf-tool .tool-icon{width:16px;height:16px;font-size:0}
 .wf-note{
   text-align:center;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;
@@ -901,6 +917,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 <!-- ─── SYSTEM DIAGRAM ─── -->
 <section class="diagram-section" id="diagram-section">
   <div class="wrap">
+    <div class="system-frame">
     <div class="diagram">
       <svg viewBox="0 0 1200 640" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
 
@@ -1002,6 +1019,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 
       </svg>
     </div>
+    </div>
   </div>
 </section>
 
@@ -1021,22 +1039,24 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
       <p class="sec-sub">These are the things I hear from the operators I work with.</p>
     </div>
 
-    <div class="hear-grid">
-      <div class="hear">
-        <div class="hear-title">There's got to be more<span class="dot">.</span></div>
-        <p class="hear-quote">"I know we could be getting more out of AI. I just don't have time to figure it out while running the business."</p>
-      </div>
-      <div class="hear">
-        <div class="hear-title">It doesn't know our business<span class="dot">.</span></div>
-        <p class="hear-quote">"Every time someone on my team opens Claude, they start from scratch. It doesn't know our clients, our processes, or how we work."</p>
-      </div>
-      <div class="hear">
-        <div class="hear-title">Just do it myself<span class="dot">.</span></div>
-        <p class="hear-quote">"We spend more time going back and forth with AI than it would take to just do the work ourselves."</p>
-      </div>
-      <div class="hear">
-        <div class="hear-title">This should run itself<span class="dot">.</span></div>
-        <p class="hear-quote">"Too much of our week goes to work that feels like it should be automated, we just don't know where to start."</p>
+    <div class="system-frame">
+      <div class="hear-grid">
+        <div class="hear">
+          <div class="hear-title">There's got to be more<span class="dot">.</span></div>
+          <p class="hear-quote">"I know we could be getting more out of AI. I just don't have time to figure it out while running the business."</p>
+        </div>
+        <div class="hear">
+          <div class="hear-title">It doesn't know our business<span class="dot">.</span></div>
+          <p class="hear-quote">"Every time someone on my team opens Claude, they start from scratch. It doesn't know our clients, our processes, or how we work."</p>
+        </div>
+        <div class="hear">
+          <div class="hear-title">Just do it myself<span class="dot">.</span></div>
+          <p class="hear-quote">"We spend more time going back and forth with AI than it would take to just do the work ourselves."</p>
+        </div>
+        <div class="hear">
+          <div class="hear-title">This should run itself<span class="dot">.</span></div>
+          <p class="hear-quote">"Too much of our week goes to work that feels like it should be automated, we just don't know where to start."</p>
+        </div>
       </div>
     </div>
   </div>
