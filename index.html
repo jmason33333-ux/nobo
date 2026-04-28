@@ -398,82 +398,6 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   .hear-grid{grid-template-columns:1fr}
 }
 
-/* ─── WORKFLOW LIBRARY (carousel) ─── */
-.wf-carousel{
-  position:relative;max-width:1240px;margin:0 auto;padding:0 0 8px;
-}
-.wf-grid{
-  display:flex;gap:18px;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  scroll-behavior:smooth;
-  padding:6px 40px 28px;
-  margin:0 -40px;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:thin;scrollbar-color:var(--line-strong) transparent;
-}
-.wf-grid::-webkit-scrollbar{height:6px}
-.wf-grid::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:3px}
-.wf-grid::-webkit-scrollbar-track{background:transparent}
-.wf{
-  flex:0 0 320px;scroll-snap-align:start;
-  background:var(--surface);
-  border:1px solid var(--line);
-  border-radius:6px;
-  padding:24px;
-  display:flex;flex-direction:column;min-height:240px;
-  transition:border-color .2s ease;
-}
-.wf:hover{border-color:var(--line-strong)}
-
-.wf-num{
-  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--text-soft);margin-bottom:14px;
-}
-.wf h3{
-  font-family:var(--sans);font-weight:600;font-size:1.05rem;line-height:1.25;letter-spacing:-.015em;
-  color:var(--pine-dark);margin:0 0 10px;text-wrap:balance;
-}
-.wf h3 .dot{color:var(--accent)}
-.wf p{
-  font-family:var(--sans);font-size:.92rem;line-height:1.55;color:var(--text-mid);
-  margin:0 0 18px;flex:1;
-}
-
-/* variants — all retired in favor of single white card with consistent treatment */
-.wf--cream,.wf.wf--pine,.wf.wf--rust{
-  background:var(--surface);color:inherit;border-color:var(--line);
-}
-.wf.wf--pine h3,.wf.wf--rust h3,.wf--cream h3{color:var(--pine-dark)}
-.wf.wf--pine p,.wf.wf--rust p,.wf--cream p{color:var(--text-mid)}
-.wf.wf--pine .wf-num,.wf.wf--rust .wf-num,.wf--cream .wf-num{color:var(--text-soft)}
-.wf.wf--pine h3 .dot,.wf.wf--rust h3 .dot,.wf--cream h3 .dot{color:var(--accent)}
-
-.wf-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
-.wf-tool{
-  display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--mono);font-size:.68rem;letter-spacing:.02em;color:var(--text-soft);
-  background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:4px 9px 4px 5px;
-}
-.wf--cream .wf-tool,.wf--pine .wf-tool,.wf--rust .wf-tool{
-  background:var(--bg);color:var(--text-soft);border-color:var(--line);
-}
-.wf-tool .tool-icon{width:16px;height:16px;font-size:0}
-.wf-note{
-  text-align:center;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;
-  color:var(--text-soft);margin-top:18px;
-}
-.wf-hint{
-  font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--text-muted);text-align:center;margin-top:10px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.wf-hint::before,.wf-hint::after{content:"";display:inline-block;width:18px;height:1px;background:var(--line-strong)}
-@media (max-width:640px){
-  .wf{flex:0 0 86%}
-  .wf-grid{padding:6px 20px 28px;margin:0 -20px}
-}
-
 /* ─── PRICING + CTA UPDATES ─── */
 .cta-pricing{
   font-family:var(--mono);font-size:.85rem;letter-spacing:.02em;color:rgba(245,240,230,.7);
@@ -842,7 +766,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
         </ul>
       </div>
 
-      <a class="install-link" href="#coffee">Let's grab coffee &rarr;</a>
+      <a class="install-link" href="#coffee">Let's chat &rarr;</a>
     </div>
 
     <div class="install-after">
@@ -852,93 +776,11 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   </div>
 </section>
 
-<!-- ─── WORKFLOW LIBRARY ─── -->
-<section class="section section-white" id="workflows">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="eyebrow">03 &middot; Workflow library</span>
-      <h2 class="sec-title">What the system <em>does</em><span class="dot">.</span></h2>
-      <p class="sec-sub">Six routines to start. Yours grows with what your team actually runs.</p>
-    </div>
-
-    <div class="wf-carousel">
-    <div class="wf-grid" role="region" aria-label="Workflow library">
-
-      <div class="wf wf--cream">
-        <div class="wf-num">01 &middot; /prep-for-call</div>
-        <h3>Prep for a client call<span class="dot">.</span></h3>
-        <p>Inbox, calendar, and project history scanned. The brief, before the call.</p>
-        <div class="wf-tools">
-          <span class="wf-tool"><span class="tool-icon gmail">G</span>Gmail</span>
-          <span class="wf-tool"><span class="tool-icon cal">C</span>Calendar</span>
-          <span class="wf-tool"><span class="tool-icon drive">D</span>Drive</span>
-        </div>
-      </div>
-
-      <div class="wf wf--pine">
-        <div class="wf-num">02 &middot; /content-strategist</div>
-        <h3>Draft a proposal<span class="dot">.</span></h3>
-        <p>Past proposals, brand voice, the new prospect's notes. First draft in your voice, ready for your edit.</p>
-        <div class="wf-tools">
-          <span class="wf-tool"><span class="tool-icon drive">D</span>Drive</span>
-          <span class="wf-tool"><span class="tool-icon notion">N</span>Notion</span>
-        </div>
-      </div>
-
-      <div class="wf wf--cream">
-        <div class="wf-num">03 &middot; /project-manager</div>
-        <h3>Turn a meeting into action items<span class="dot">.</span></h3>
-        <p>Transcript and project context. Actions assigned, follow-ups drafted, nothing dropped on the floor.</p>
-        <div class="wf-tools">
-          <span class="wf-tool"><span class="tool-icon cal">C</span>Calendar</span>
-          <span class="wf-tool"><span class="tool-icon slack">S</span>Slack</span>
-          <span class="wf-tool"><span class="tool-icon notion">N</span>Notion</span>
-        </div>
-      </div>
-
-      <div class="wf wf--rust">
-        <div class="wf-num">04 &middot; /onboard</div>
-        <h3>Onboard a new client<span class="dot">.</span></h3>
-        <p>Intake form, context written, team brought up to speed, first deliverable scoped. By Friday of week one.</p>
-        <div class="wf-tools">
-          <span class="wf-tool"><span class="tool-icon gmail">G</span>Gmail</span>
-          <span class="wf-tool"><span class="tool-icon drive">D</span>Drive</span>
-          <span class="wf-tool"><span class="tool-icon cal">C</span>Calendar</span>
-        </div>
-      </div>
-
-      <div class="wf wf--pine">
-        <div class="wf-num">05 &middot; /weekly-review</div>
-        <h3>Run the weekly review<span class="dot">.</span></h3>
-        <p>What shipped, what slipped, what's worth pulling forward. The team hears the same story.</p>
-        <div class="wf-tools">
-          <span class="wf-tool"><span class="tool-icon slack">S</span>Slack</span>
-          <span class="wf-tool"><span class="tool-icon notion">N</span>Notion</span>
-          <span class="wf-tool"><span class="tool-icon click">L</span>Project tools</span>
-        </div>
-      </div>
-
-      <div class="wf wf--cream">
-        <div class="wf-num">06 &middot; /refine-voice</div>
-        <h3>Refine a draft into your voice<span class="dot">.</span></h3>
-        <p>Rough draft into your tone, your patterns, your phrasing. Anyone on your team can produce work that sounds like you.</p>
-        <div class="wf-tools">
-          <span class="wf-tool"><span class="tool-icon drive">D</span>Drive</span>
-          <span class="wf-tool"><span class="tool-icon notion">N</span>Notion</span>
-        </div>
-      </div>
-
-    </div>
-    <div class="wf-hint">scroll or swipe for more</div>
-    </div>
-  </div>
-</section>
-
 <!-- ─── WITH / WITHOUT, 6 tasks ─── -->
 <section class="section section-white" id="vs">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">04 &middot; Out-of-the-box vs. Nobo</span>
+      <span class="eyebrow">03 &middot; Out-of-the-box vs. Nobo</span>
       <h2 class="sec-title">Same Claude. <em>Wildly different</em> answer<span class="dot">.</span></h2>
       <p class="sec-sub">Claude alone is generic. Claude running the Nobo system knows who your clients are, what you've promised them, and how you sound.</p>
     </div>
