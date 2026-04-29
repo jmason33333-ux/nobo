@@ -280,46 +280,75 @@ strong,b{font-weight:600}
 .install-after p strong{color:var(--pine-dark);font-weight:600}
 .install-after p + p.install-ladder{margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}
 
-/* ─── DEMO: ONE WORKED EXAMPLE (Cowork thread) ─── */
-.demo-stage{max-width:720px;margin:0 auto}
+/* ─── DEMO: THREE WORKED EXAMPLES (Cowork thread, tabbed) ─── */
+.demo-stage{max-width:780px;margin:0 auto;padding:24px 28px}
 
-.demo-thread{
-  background:var(--bg);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:24px 28px 28px;
-  box-shadow:0 1px 2px rgba(20,30,40,.04), 0 18px 40px rgba(20,30,40,.06);
+.demo-tabs{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin-bottom:24px;padding-bottom:18px;
+  border-bottom:1px dashed var(--line-strong);
 }
+.demo-tab{
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;
+  background:transparent;border:1px solid var(--line);border-radius:6px;
+  padding:8px 14px;color:var(--text-soft);cursor:pointer;
+  transition:all .15s ease;
+}
+.demo-tab:hover{border-color:var(--line-strong);color:var(--pine-dark)}
+.demo-tab--active{background:var(--pine-dark);color:var(--cream);border-color:var(--pine-dark)}
+.demo-tab--active:hover{color:var(--cream)}
+
+.demo-panels{position:relative}
+.demo-panel{display:block}
+.demo-panel[hidden]{display:none}
 
 .demo-thread-head{
-  display:flex;align-items:center;gap:8px;
-  padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:20px;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding-bottom:14px;border-bottom:1px dashed var(--line);margin-bottom:20px;
   font-family:var(--sans);font-size:.84rem;
 }
 .demo-thread-crumb{color:var(--text-soft)}
 .demo-thread-sep{color:var(--text-muted)}
 .demo-thread-name{color:var(--pine-dark);font-weight:500}
-.demo-thread-chevron{color:var(--text-muted);font-size:.7rem;margin-left:2px}
+.demo-thread-runby{
+  margin-left:auto;font-family:var(--mono);font-size:.72rem;
+  color:var(--text-soft);letter-spacing:.02em;
+}
+.demo-thread-runby code{
+  font-family:var(--mono);color:var(--pine-dark);
+  background:none;padding:0;font-size:.72rem;
+}
 
 .demo-msg{margin-bottom:22px}
 .demo-msg:last-child{margin-bottom:0}
 
 .demo-msg--user{display:flex;justify-content:flex-end}
 .demo-msg-bubble{
-  background:var(--cream);
-  border-radius:12px;
-  padding:12px 16px;
+  background:var(--cream);border-radius:12px;padding:12px 16px;
   font-family:var(--sans);font-size:.95rem;color:var(--pine-dark);
   max-width:80%;line-height:1.5;
 }
+
+.demo-trigger{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:10px 14px;background:var(--cream);
+  border:1px dashed var(--line-strong);border-radius:8px;
+  font-family:var(--mono);font-size:.82rem;color:var(--text-mid);
+  margin-bottom:22px;
+}
+.demo-trigger-icon{font-size:.95rem;color:var(--accent)}
+.demo-trigger-label{color:var(--pine-dark);font-weight:500;letter-spacing:.04em}
+.demo-trigger-meta{color:var(--text-soft)}
 
 .demo-thinking{
   display:flex;align-items:center;gap:8px;
   font-family:var(--sans);font-size:.84rem;color:var(--text-soft);
   margin-bottom:14px;
 }
-.demo-thinking-icon{font-size:.85rem;color:var(--text-muted)}
-.demo-thinking-chevron{font-size:.66rem;color:var(--text-muted);margin-left:2px}
+.demo-thinking-icon{
+  font-family:var(--mono);font-size:.95rem;color:var(--text-muted);
+  font-weight:600;line-height:1;
+}
 
 .demo-done{
   display:inline-flex;align-items:center;gap:8px;
@@ -332,16 +361,13 @@ strong,b{font-weight:600}
   background:var(--pine);color:var(--white);font-size:.62rem;font-weight:700;
 }
 
-.demo-msg-text p{
+.demo-summary{
   font-family:var(--sans);font-size:.95rem;color:var(--text-dark);line-height:1.6;
-  margin:0 0 14px;
+  margin:0 0 16px;min-height:1.6em;
 }
-.demo-msg-text p:last-child{margin-bottom:0}
-.demo-msg-text strong{color:var(--pine-dark);font-weight:600}
+.demo-summary strong{color:var(--pine-dark);font-weight:600}
 
-.demo-bullets{
-  list-style:none;padding:0;margin:0 0 18px;
-}
+.demo-bullets{list-style:none;padding:0;margin:0 0 18px}
 .demo-bullets li{
   font-family:var(--sans);font-size:.95rem;color:var(--text-mid);line-height:1.55;
   padding-left:18px;margin-bottom:6px;position:relative;
@@ -350,6 +376,10 @@ strong,b{font-weight:600}
   content:"\2022";position:absolute;left:4px;color:var(--accent);font-weight:700;
 }
 .demo-bullets li:last-child{margin-bottom:0}
+.demo-bullets li code{
+  font-family:var(--mono);font-size:.86em;color:var(--pine-dark);
+  background:var(--cream);padding:1px 4px;border-radius:3px;
+}
 
 .demo-pulled{
   font-family:var(--mono);font-size:.74rem;color:var(--text-soft);
@@ -375,16 +405,13 @@ strong,b{font-weight:600}
   color:var(--accent);font-size:1rem;
 }
 .demo-artifact-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.demo-artifact-name{
-  font-family:var(--sans);font-weight:600;font-size:.93rem;color:var(--pine-dark);
-}
-.demo-artifact-type{
-  font-family:var(--mono);font-size:.7rem;color:var(--text-soft);letter-spacing:.02em;
-}
-.demo-artifact-link{
-  font-family:var(--sans);font-size:.84rem;color:var(--accent);font-weight:500;
-  flex-shrink:0;
-}
+.demo-artifact-name{font-family:var(--sans);font-weight:600;font-size:.93rem;color:var(--pine-dark)}
+.demo-artifact-type{font-family:var(--mono);font-size:.7rem;color:var(--text-soft);letter-spacing:.02em}
+.demo-artifact-link{font-family:var(--sans);font-size:.84rem;color:var(--accent);font-weight:500;flex-shrink:0}
+
+/* fade-in reveal during play */
+.demo-fade{opacity:0;transform:translateY(3px);transition:opacity .35s ease, transform .35s ease}
+.demo-fade.demo-show{opacity:1;transform:none}
 
 /* ─── FINAL CTA ─── */
 .cta{padding:144px 0 128px;background:var(--pine-dark);color:var(--white);position:relative}
@@ -432,8 +459,11 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   .install-items li{font-size:.84rem}
   .install-link{margin-left:18px}
   .install-after{margin-top:32px}
-  .demo-thread{padding:18px 20px 22px}
+  .demo-stage{padding:14px 16px}
+  .demo-tabs{gap:4px}
+  .demo-tab{padding:7px 10px;font-size:.7rem}
   .demo-msg-bubble{max-width:90%;font-size:.9rem}
+  .demo-thread-runby{margin-left:0;width:100%}
   .demo-artifact{flex-wrap:wrap;gap:10px}
   .demo-artifact-link{margin-left:auto}
   .cta{padding:120px 0 112px}
@@ -853,67 +883,172 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   </div>
 </section>
 
-<!-- ─── DEMO: ONE WORKED EXAMPLE ─── -->
+<!-- ─── DEMO: THREE WORKED EXAMPLES ─── -->
 <section class="section section-white" id="demo">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">03 &middot; Let me show you one</span>
-      <h2 class="sec-title">The brief <em>lands</em><span class="dot">.</span></h2>
-      <p class="sec-sub">You ask in Cowork. Claude pulls from your work. The brief lands in your Drive, summarized in chat.</p>
+      <span class="eyebrow">03 &middot; Let me show you a few</span>
+      <h2 class="sec-title">What it actually <em>ships</em><span class="dot">.</span></h2>
+      <p class="sec-sub">Three real delegations. Click each tab to watch it play.</p>
     </div>
 
-    <div class="demo-stage">
-      <div class="demo-thread">
+    <div class="demo-stage system-frame">
 
-        <div class="demo-thread-head">
-          <span class="demo-thread-crumb">nobo</span>
-          <span class="demo-thread-sep">/</span>
-          <span class="demo-thread-name">2pm with Beck</span>
-          <span class="demo-thread-chevron">&#9662;</span>
-        </div>
+      <div class="demo-tabs" role="tablist">
+        <button class="demo-tab demo-tab--active" data-tab="meeting" role="tab" aria-selected="true">Meeting prep</button>
+        <button class="demo-tab" data-tab="status" role="tab" aria-selected="false">Client status</button>
+        <button class="demo-tab" data-tab="content" role="tab" aria-selected="false">Weekly content</button>
+      </div>
 
-        <div class="demo-msg demo-msg--user">
-          <div class="demo-msg-bubble">prep me for my 2pm with beck</div>
-        </div>
+      <div class="demo-panels">
 
-        <div class="demo-msg demo-msg--claude">
-
-          <div class="demo-thinking">
-            <span class="demo-thinking-icon">&#9711;</span>
-            <span>Thought process</span>
-            <span class="demo-thinking-chevron">&#9662;</span>
+        <!-- TAB 1: Meeting prep -->
+        <div class="demo-panel demo-panel--active" data-tab="meeting" role="tabpanel">
+          <div class="demo-thread-head">
+            <span class="demo-thread-crumb">nobo</span>
+            <span class="demo-thread-sep">/</span>
+            <span class="demo-thread-name">2pm with Beck</span>
+            <span class="demo-thread-runby">via <code>/prep-for-call</code></span>
           </div>
 
-          <div class="demo-done">
-            <span class="demo-done-icon">&#10003;</span>
-            <span>Done</span>
+          <div class="demo-msg demo-msg--user">
+            <div class="demo-msg-bubble">prep me for my 2pm with beck</div>
           </div>
 
-          <div class="demo-msg-text">
-            <p>Brief drafted from your context. <strong>Who's in the room</strong>, <strong>what's been promised</strong>, the <strong>scope-change Beck slipped into Slack last Friday</strong>, and three questions to lead with.</p>
+          <div class="demo-msg demo-msg--claude">
+            <div class="demo-thinking">
+              <span class="demo-thinking-icon">&gt;</span>
+              <span>Thought process</span>
+            </div>
 
-            <ul class="demo-bullets">
+            <div class="demo-done demo-fade">
+              <span class="demo-done-icon">&#10003;</span>
+              <span>Done</span>
+            </div>
+
+            <p class="demo-summary demo-fade" data-text="Brief drafted from your context. Who's in the room, what's been promised, the scope-change Beck slipped into Slack last Friday, and three questions to lead with."></p>
+
+            <ul class="demo-bullets demo-fade">
               <li>Beck and her COO. Joined the v2 SOW conversation in March.</li>
               <li>Phase 2 SOW v3. Net-30. 50% upfront, signed Apr 1.</li>
               <li>Workshop scope-change attempt last Friday. Held the line in the brief.</li>
               <li>Three questions to lead with: Q2 dashboards, the workshop request, Phase 3 scope.</li>
             </ul>
 
-            <p class="demo-pulled">
+            <p class="demo-pulled demo-fade">
               <span class="demo-pulled-label">Pulled from</span>
               Gmail thread (14 messages) &middot; Calendar invite &middot; Drive (Phase 2 SOW v3) &middot; Slack (scope-change thread)
             </p>
+
+            <a class="demo-artifact demo-fade" href="#" onclick="event.preventDefault()">
+              <span class="demo-artifact-icon">&#9745;</span>
+              <span class="demo-artifact-meta">
+                <span class="demo-artifact-name">Brief &middot; 2pm with Beck</span>
+                <span class="demo-artifact-type">Document &middot; in your Drive</span>
+              </span>
+              <span class="demo-artifact-link">View &rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- TAB 2: Client status -->
+        <div class="demo-panel" data-tab="status" role="tabpanel" hidden>
+          <div class="demo-thread-head">
+            <span class="demo-thread-crumb">nobo</span>
+            <span class="demo-thread-sep">/</span>
+            <span class="demo-thread-name">Stonefly &middot; weekly status</span>
+            <span class="demo-thread-runby">via <code>/project-manager</code></span>
           </div>
 
-          <a class="demo-artifact" href="#" onclick="event.preventDefault()">
-            <span class="demo-artifact-icon">&#9745;</span>
-            <span class="demo-artifact-meta">
-              <span class="demo-artifact-name">Brief &middot; 2pm with Beck</span>
-              <span class="demo-artifact-type">Document &middot; in your Drive</span>
-            </span>
-            <span class="demo-artifact-link">View &rarr;</span>
-          </a>
+          <div class="demo-msg demo-msg--user">
+            <div class="demo-msg-bubble">weekly status update for stonefly</div>
+          </div>
 
+          <div class="demo-msg demo-msg--claude">
+            <div class="demo-thinking">
+              <span class="demo-thinking-icon">&gt;</span>
+              <span>Thought process</span>
+            </div>
+
+            <div class="demo-done demo-fade">
+              <span class="demo-done-icon">&#10003;</span>
+              <span>Done</span>
+            </div>
+
+            <p class="demo-summary demo-fade" data-text="Status drafted. Three deliverables shipped this week, one risk surfaced, two next actions assigned. Email queued for your review."></p>
+
+            <ul class="demo-bullets demo-fade">
+              <li>Shipped: Q1 dashboard build, KPI rollup, success-criteria doc.</li>
+              <li>Risk: Salesforce data sync delayed by 5 business days.</li>
+              <li>Next: dashboard QA (Marcus by Thursday), KPI sign-off (Stonefly COO).</li>
+              <li>Tone matched to the COO's preferred check-in cadence: short, dated, no hedging.</li>
+            </ul>
+
+            <p class="demo-pulled demo-fade">
+              <span class="demo-pulled-label">Pulled from</span>
+              project-log.md &middot; Drive (Q1 dashboard) &middot; Slack (#stonefly) &middot; Gmail (last week's check-in)
+            </p>
+
+            <a class="demo-artifact demo-fade" href="#" onclick="event.preventDefault()">
+              <span class="demo-artifact-icon">&#9993;</span>
+              <span class="demo-artifact-meta">
+                <span class="demo-artifact-name">Status &middot; Stonefly &middot; Apr 28</span>
+                <span class="demo-artifact-type">Email draft &middot; queued in Gmail</span>
+              </span>
+              <span class="demo-artifact-link">View &rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- TAB 3: Weekly content (scheduled) -->
+        <div class="demo-panel" data-tab="content" role="tabpanel" hidden>
+          <div class="demo-thread-head">
+            <span class="demo-thread-crumb">nobo</span>
+            <span class="demo-thread-sep">/</span>
+            <span class="demo-thread-name">weekly content run</span>
+            <span class="demo-thread-runby">via <code>/content-strategist</code></span>
+          </div>
+
+          <div class="demo-trigger">
+            <span class="demo-trigger-icon">&#9201;</span>
+            <span class="demo-trigger-label">Scheduled</span>
+            <span class="demo-trigger-meta">Mondays &middot; 8:00 AM</span>
+          </div>
+
+          <div class="demo-msg demo-msg--claude">
+            <div class="demo-thinking">
+              <span class="demo-thinking-icon">&gt;</span>
+              <span>Thought process</span>
+            </div>
+
+            <div class="demo-done demo-fade">
+              <span class="demo-done-icon">&#10003;</span>
+              <span>Done</span>
+            </div>
+
+            <p class="demo-summary demo-fade" data-text="This week's content drafted. Pulled the theme from your roadmap, drafted a LinkedIn post and a newsletter section in your voice. Both queued in your Drive for review."></p>
+
+            <ul class="demo-bullets demo-fade">
+              <li>Theme: practitioner field manuals (per Q2 roadmap).</li>
+              <li>From backlog: "How I write context files for clients" (queued 12 days).</li>
+              <li>Drafted: 1 LinkedIn post + 1 Field Notes section.</li>
+              <li>Voice match: per <code>/refine-voice</code> profile, last updated Apr 22.</li>
+            </ul>
+
+            <p class="demo-pulled demo-fade">
+              <span class="demo-pulled-label">Pulled from</span>
+              Notion (content backlog) &middot; Q2 roadmap &middot; Drive (last 4 weeks shipped)
+            </p>
+
+            <a class="demo-artifact demo-fade" href="#" onclick="event.preventDefault()">
+              <span class="demo-artifact-icon">&#9745;</span>
+              <span class="demo-artifact-meta">
+                <span class="demo-artifact-name">This week's content &middot; ready for your edit</span>
+                <span class="demo-artifact-type">2 docs &middot; in your Drive</span>
+              </span>
+              <span class="demo-artifact-link">View &rarr;</span>
+            </a>
+          </div>
         </div>
 
       </div>
@@ -1170,6 +1305,95 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   }, { threshold: 0.25 });
   const target = document.querySelector('.diagram-section .diagram');
   if(target) obs.observe(target);
+})();
+
+// ─── DEMO: tabbed delegation playback ───
+(function(){
+  const stage = document.querySelector('.demo-stage');
+  if(!stage) return;
+  const tabs = stage.querySelectorAll('.demo-tab');
+  const panels = stage.querySelectorAll('.demo-panel');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+
+  async function typeText(el, text, totalMs){
+    el.textContent = '';
+    if(!text) return;
+    const per = totalMs / text.length;
+    for(const ch of text){
+      el.textContent += ch;
+      await wait(per);
+    }
+  }
+
+  function showInstant(panel){
+    const summary = panel.querySelector('.demo-summary');
+    if(summary) summary.textContent = summary.dataset.text || '';
+    panel.querySelectorAll('.demo-fade').forEach(el => el.classList.add('demo-show'));
+  }
+
+  async function playPanel(panel){
+    if(reduceMotion){ showInstant(panel); return; }
+    const summary = panel.querySelector('.demo-summary');
+    const fades = Array.from(panel.querySelectorAll('.demo-fade'));
+    fades.forEach(el => el.classList.remove('demo-show'));
+    if(summary) summary.textContent = '';
+
+    await wait(700);
+    const done = panel.querySelector('.demo-done');
+    if(done) done.classList.add('demo-show');
+
+    await wait(220);
+    if(summary){
+      summary.classList.add('demo-show');
+      await typeText(summary, summary.dataset.text || '', 1500);
+    }
+
+    const bullets = panel.querySelector('.demo-bullets');
+    if(bullets){
+      await wait(180);
+      bullets.classList.add('demo-show');
+    }
+    const pulled = panel.querySelector('.demo-pulled');
+    if(pulled){
+      await wait(220);
+      pulled.classList.add('demo-show');
+    }
+    const artifact = panel.querySelector('.demo-artifact');
+    if(artifact){
+      await wait(220);
+      artifact.classList.add('demo-show');
+    }
+  }
+
+  function activateTab(tabId, play=true){
+    tabs.forEach(t => {
+      const isActive = t.dataset.tab === tabId;
+      t.classList.toggle('demo-tab--active', isActive);
+      t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    let activePanel = null;
+    panels.forEach(p => {
+      const isActive = p.dataset.tab === tabId;
+      p.hidden = !isActive;
+      p.classList.toggle('demo-panel--active', isActive);
+      if(isActive) activePanel = p;
+    });
+    if(activePanel && play) playPanel(activePanel);
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => activateTab(t.dataset.tab, true)));
+
+  // First tab plays once the section scrolls into view
+  const firstPanel = stage.querySelector('.demo-panel--active');
+  if(firstPanel){
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting){ playPanel(firstPanel); obs.disconnect(); }
+      });
+    }, { threshold: 0.25 });
+    obs.observe(firstPanel);
+  }
 })();
 
 // ─── MOBILE NAV TOGGLE ───
