@@ -280,72 +280,111 @@ strong,b{font-weight:600}
 .install-after p strong{color:var(--pine-dark);font-weight:600}
 .install-after p + p.install-ladder{margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}
 
-/* ─── DEMO: ONE WORKED EXAMPLE ─── */
-.demo-stage{max-width:760px;margin:0 auto;display:flex;flex-direction:column;align-items:stretch}
+/* ─── DEMO: ONE WORKED EXAMPLE (Cowork thread) ─── */
+.demo-stage{max-width:720px;margin:0 auto}
 
-.demo-prompt{
-  align-self:flex-start;
-  display:inline-flex;flex-direction:column;gap:6px;
-  padding:14px 20px;
-  background:var(--cream);border:1px solid var(--cream-deeper);border-radius:8px;
-  max-width:520px;
-}
-.demo-prompt-meta{
-  font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);
-}
-.demo-prompt-text{
-  font-family:var(--mono);font-size:.95rem;color:var(--pine-dark);letter-spacing:-.005em;
-}
-
-.demo-arrow{
-  font-family:var(--mono);font-size:1.2rem;color:var(--text-muted);
-  margin:14px 0 14px 32px;line-height:1;
-}
-
-.brief{
+.demo-thread{
   background:var(--bg);
   border:1px solid var(--line);
-  border-radius:10px;
-  padding:36px 40px;
+  border-radius:12px;
+  padding:24px 28px 28px;
   box-shadow:0 1px 2px rgba(20,30,40,.04), 0 18px 40px rgba(20,30,40,.06);
-  position:relative;
 }
-.brief-head{
-  display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;
-  padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:28px;
-}
-.brief-from{
-  font-family:var(--sans);font-weight:700;font-size:1.1rem;color:var(--pine-dark);letter-spacing:-.01em;
-}
-.brief-status{
-  font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);
-}
-.brief-section{margin-bottom:22px}
-.brief-section:last-child{margin-bottom:0}
-.brief-label{
-  font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--accent);font-weight:500;margin-bottom:10px;
-}
-.brief-body p{
-  font-family:var(--sans);font-size:.96rem;line-height:1.6;color:var(--text-dark);margin:0 0 6px;
-}
-.brief-body p:last-child{margin-bottom:0}
-.brief-body ol{list-style:decimal;padding-left:22px;margin:0}
-.brief-body ol li{
-  font-family:var(--sans);font-size:.96rem;line-height:1.6;color:var(--text-dark);margin-bottom:4px;
-}
-.brief-body ol li:last-child{margin-bottom:0}
 
-.brief-sources{
-  display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;
-  margin:24px 0 0;padding:0 4px;
-  font-family:var(--mono);font-size:.72rem;letter-spacing:.02em;color:var(--text-soft);
+.demo-thread-head{
+  display:flex;align-items:center;gap:8px;
+  padding-bottom:16px;border-bottom:1px solid var(--line);margin-bottom:20px;
+  font-family:var(--sans);font-size:.84rem;
 }
-.brief-sources-label{
-  text-transform:uppercase;letter-spacing:.14em;font-size:.64rem;color:var(--text-muted);margin-right:2px;
+.demo-thread-crumb{color:var(--text-soft)}
+.demo-thread-sep{color:var(--text-muted)}
+.demo-thread-name{color:var(--pine-dark);font-weight:500}
+.demo-thread-chevron{color:var(--text-muted);font-size:.7rem;margin-left:2px}
+
+.demo-msg{margin-bottom:22px}
+.demo-msg:last-child{margin-bottom:0}
+
+.demo-msg--user{display:flex;justify-content:flex-end}
+.demo-msg-bubble{
+  background:var(--cream);
+  border-radius:12px;
+  padding:12px 16px;
+  font-family:var(--sans);font-size:.95rem;color:var(--pine-dark);
+  max-width:80%;line-height:1.5;
 }
-.brief-source{display:inline-flex;align-items:center}
-.brief-source + .brief-source::before{content:"·";margin-right:12px;color:var(--text-muted)}
+
+.demo-thinking{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--sans);font-size:.84rem;color:var(--text-soft);
+  margin-bottom:14px;
+}
+.demo-thinking-icon{font-size:.85rem;color:var(--text-muted)}
+.demo-thinking-chevron{font-size:.66rem;color:var(--text-muted);margin-left:2px}
+
+.demo-done{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--sans);font-size:.88rem;color:var(--pine-dark);font-weight:500;
+  margin-bottom:14px;
+}
+.demo-done-icon{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--pine);color:var(--white);font-size:.62rem;font-weight:700;
+}
+
+.demo-msg-text p{
+  font-family:var(--sans);font-size:.95rem;color:var(--text-dark);line-height:1.6;
+  margin:0 0 14px;
+}
+.demo-msg-text p:last-child{margin-bottom:0}
+.demo-msg-text strong{color:var(--pine-dark);font-weight:600}
+
+.demo-bullets{
+  list-style:none;padding:0;margin:0 0 18px;
+}
+.demo-bullets li{
+  font-family:var(--sans);font-size:.95rem;color:var(--text-mid);line-height:1.55;
+  padding-left:18px;margin-bottom:6px;position:relative;
+}
+.demo-bullets li::before{
+  content:"\2022";position:absolute;left:4px;color:var(--accent);font-weight:700;
+}
+.demo-bullets li:last-child{margin-bottom:0}
+
+.demo-pulled{
+  font-family:var(--mono);font-size:.74rem;color:var(--text-soft);
+  letter-spacing:.02em;line-height:1.55;
+  margin:0 0 18px;padding:0;
+}
+.demo-pulled-label{
+  text-transform:uppercase;letter-spacing:.14em;font-size:.64rem;color:var(--text-muted);
+  margin-right:6px;
+}
+
+.demo-artifact{
+  display:flex;align-items:center;gap:14px;
+  background:var(--bg);border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;margin-top:0;text-decoration:none;
+  transition:border-color .15s ease, background .15s ease;
+}
+.demo-artifact:hover{border-color:var(--line-strong);background:var(--cream)}
+.demo-artifact-icon{
+  width:34px;height:34px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--cream);border-radius:6px;
+  color:var(--accent);font-size:1rem;
+}
+.demo-artifact-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.demo-artifact-name{
+  font-family:var(--sans);font-weight:600;font-size:.93rem;color:var(--pine-dark);
+}
+.demo-artifact-type{
+  font-family:var(--mono);font-size:.7rem;color:var(--text-soft);letter-spacing:.02em;
+}
+.demo-artifact-link{
+  font-family:var(--sans);font-size:.84rem;color:var(--accent);font-weight:500;
+  flex-shrink:0;
+}
 
 /* ─── FINAL CTA ─── */
 .cta{padding:144px 0 128px;background:var(--pine-dark);color:var(--white);position:relative}
@@ -393,11 +432,10 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   .install-items li{font-size:.84rem}
   .install-link{margin-left:18px}
   .install-after{margin-top:32px}
-  .brief{padding:24px 22px}
-  .brief-head{flex-direction:column;gap:4px}
-  .brief-from{font-size:1rem}
-  .demo-prompt{max-width:100%}
-  .demo-arrow{margin-left:18px}
+  .demo-thread{padding:18px 20px 22px}
+  .demo-msg-bubble{max-width:90%;font-size:.9rem}
+  .demo-artifact{flex-wrap:wrap;gap:10px}
+  .demo-artifact-link{margin-left:auto}
   .cta{padding:120px 0 112px}
   .foot-inner{grid-template-columns:1fr 1fr;gap:32px;padding:0 22px}
   .foot-bottom{padding:22px 22px 0}
@@ -820,67 +858,65 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">03 &middot; Let me show you one</span>
-      <h2 class="sec-title">1:25pm. The brief <em>lands</em><span class="dot">.</span></h2>
-      <p class="sec-sub">You asked Claude at lunch. The brief is in your inbox 35 minutes before the call. Pulled from Gmail, Calendar, Drive, and Slack.</p>
+      <h2 class="sec-title">The brief <em>lands</em><span class="dot">.</span></h2>
+      <p class="sec-sub">You ask in Cowork. Claude pulls from your work. The brief lands in your Drive, summarized in chat.</p>
     </div>
 
     <div class="demo-stage">
+      <div class="demo-thread">
 
-      <div class="demo-prompt">
-        <div class="demo-prompt-meta">12:48 PM &middot; in Cowork</div>
-        <div class="demo-prompt-text">"prep me for my 2pm with beck"</div>
+        <div class="demo-thread-head">
+          <span class="demo-thread-crumb">nobo</span>
+          <span class="demo-thread-sep">/</span>
+          <span class="demo-thread-name">2pm with Beck</span>
+          <span class="demo-thread-chevron">&#9662;</span>
+        </div>
+
+        <div class="demo-msg demo-msg--user">
+          <div class="demo-msg-bubble">prep me for my 2pm with beck</div>
+        </div>
+
+        <div class="demo-msg demo-msg--claude">
+
+          <div class="demo-thinking">
+            <span class="demo-thinking-icon">&#9711;</span>
+            <span>Thought process</span>
+            <span class="demo-thinking-chevron">&#9662;</span>
+          </div>
+
+          <div class="demo-done">
+            <span class="demo-done-icon">&#10003;</span>
+            <span>Done</span>
+          </div>
+
+          <div class="demo-msg-text">
+            <p>Brief drafted from your context. <strong>Who's in the room</strong>, <strong>what's been promised</strong>, the <strong>scope-change Beck slipped into Slack last Friday</strong>, and three questions to lead with.</p>
+
+            <ul class="demo-bullets">
+              <li>Beck and her COO. Joined the v2 SOW conversation in March.</li>
+              <li>Phase 2 SOW v3. Net-30. 50% upfront, signed Apr 1.</li>
+              <li>Workshop scope-change attempt last Friday. Held the line in the brief.</li>
+              <li>Three questions to lead with: Q2 dashboards, the workshop request, Phase 3 scope.</li>
+            </ul>
+
+            <p class="demo-pulled">
+              <span class="demo-pulled-label">Pulled from</span>
+              Gmail thread (14 messages) &middot; Calendar invite &middot; Drive (Phase 2 SOW v3) &middot; Slack (scope-change thread)
+            </p>
+          </div>
+
+          <a class="demo-artifact" href="#" onclick="event.preventDefault()">
+            <span class="demo-artifact-icon">&#9745;</span>
+            <span class="demo-artifact-meta">
+              <span class="demo-artifact-name">Brief &middot; 2pm with Beck</span>
+              <span class="demo-artifact-type">Document &middot; in your Drive</span>
+            </span>
+            <span class="demo-artifact-link">View &rarr;</span>
+          </a>
+
+        </div>
+
       </div>
-
-      <div class="demo-arrow" aria-hidden="true">&darr;</div>
-
-      <article class="brief">
-        <header class="brief-head">
-          <div class="brief-from">Brief &middot; 2pm with Beck</div>
-          <div class="brief-status">1:25 PM &middot; ready to walk in</div>
-        </header>
-
-        <div class="brief-section">
-          <div class="brief-label">Who's in the room</div>
-          <div class="brief-body">
-            <p>Beck and her COO. Both joined the v2 SOW conversation in March.</p>
-          </div>
-        </div>
-
-        <div class="brief-section">
-          <div class="brief-label">What's been promised</div>
-          <div class="brief-body">
-            <p>Phase 2 SOW v3. Net-30. 50% upfront, signed Apr 1.</p>
-            <p>Final deliverable: Q2 retrospective deck.</p>
-          </div>
-        </div>
-
-        <div class="brief-section">
-          <div class="brief-label">Heads up</div>
-          <div class="brief-body">
-            <p>Last Friday Beck tried to slip a scope change into a Slack thread (added two workshops). Hold the line on the SOW.</p>
-          </div>
-        </div>
-
-        <div class="brief-section">
-          <div class="brief-label">Three questions to lead with</div>
-          <div class="brief-body">
-            <ol>
-              <li>Did the Q2 dashboards land?</li>
-              <li>What's making the workshop request hot?</li>
-              <li>Phase 3, same scope or different?</li>
-            </ol>
-          </div>
-        </div>
-      </article>
-
-      <div class="brief-sources">
-        <span class="brief-sources-label">Pulled from</span>
-        <span class="brief-source">Gmail thread (14 messages)</span>
-        <span class="brief-source">Calendar invite</span>
-        <span class="brief-source">Drive (Phase 2 SOW v3)</span>
-        <span class="brief-source">Slack (scope-change thread)</span>
-      </div>
-
     </div>
   </div>
 </section>
