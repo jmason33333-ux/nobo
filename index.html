@@ -254,20 +254,44 @@ strong,b{font-weight:600}
 .sec-sub{font-family:var(--sans);font-size:1.1rem;color:var(--text-mid);line-height:1.55;max-width:56ch;margin:0 auto;text-wrap:pretty}
 .sec-head.left .sec-sub{margin:0}
 
-/* ─── HOW IT WORKS, install inventory ─── */
-.install{max-width:680px;margin:0 auto;padding:8px 0 16px}
-.install-group{margin-bottom:32px}
-.install-group:last-of-type{margin-bottom:24px}
-.install-group-head{
-  display:flex;align-items:baseline;gap:18px;
-  padding:6px 0 10px;margin-bottom:10px;
-  border-bottom:1px dashed var(--line-strong);
+/* ─── HOW IT WORKS, layered install tree ─── */
+.install-tree{
+  max-width:760px;margin:0 auto 24px;
+  background:var(--bg);
+  border:1px dashed var(--line-strong);
+  border-radius:8px;
+  padding:32px 36px 36px;
+  font-family:var(--mono);font-size:.84rem;line-height:1.95;
 }
-.install-group-name{font-family:var(--mono);font-size:1rem;font-weight:600;color:var(--pine-dark);letter-spacing:-.01em}
-.install-group-desc{font-family:var(--mono);font-size:.74rem;color:var(--text-soft);letter-spacing:.04em}
-.install-items{list-style:none;margin:0;padding:0 0 0 28px}
-.install-items li{font-family:var(--mono);font-size:.92rem;color:var(--pine-dark);padding:2px 0;line-height:1.6}
-.install-items li.install-more{color:var(--text-soft);padding-top:6px;font-size:.84rem}
+.install-tree::before{
+  content:"";position:relative;display:block;
+}
+.layer{margin-top:28px}
+.layer:first-child{margin-top:0}
+.layer-label{
+  font-family:var(--sans);font-weight:700;font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.14em;
+  margin-bottom:10px;padding-left:2px;
+}
+.layer-label--company{color:#b07a2c}
+.layer-label--individual{color:#7d8a5c}
+.layer-label--engagement{color:#6b8fb0}
+.layer-label--specialist{color:var(--accent)}
+.layer-label--workflow{color:#7770a3}
+.tree-line{
+  display:flex;align-items:baseline;gap:0;
+  padding:1px 0;
+}
+.tree-branch{
+  color:var(--text-muted);white-space:pre;user-select:none;flex-shrink:0;
+}
+.tree-dir{color:var(--pine-dark);font-weight:600}
+.tree-file{color:var(--text-mid)}
+.tree-more{color:var(--text-soft);font-style:italic}
+.tree-anno{
+  color:var(--text-soft);font-style:italic;font-size:.78rem;
+  margin-left:18px;font-family:var(--sans);
+}
 .install-link{
   display:inline-block;font-family:var(--mono);font-size:.82rem;letter-spacing:.04em;
   color:var(--accent);text-decoration:none;margin-top:8px;margin-left:28px;
@@ -482,11 +506,10 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   .hero-grid{grid-template-columns:1fr;gap:48px}
   .section{padding:80px 0}
   .sec-head{margin-bottom:48px}
-  .install{max-width:100%}
-  .install-group-head{flex-direction:column;gap:4px;align-items:flex-start;padding-bottom:8px}
-  .install-group-desc{font-size:.7rem}
-  .install-items{padding-left:18px}
-  .install-items li{font-size:.84rem}
+  .install-tree{max-width:100%;padding:22px 20px 26px;font-size:.78rem;line-height:1.9}
+  .layer{margin-top:22px}
+  .layer-label{font-size:.62rem}
+  .tree-anno{font-size:.72rem;margin-left:12px}
   .install-link{margin-left:18px}
   .install-after{margin-top:32px}
   .demo-stage{padding:14px 16px}
@@ -863,59 +886,48 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
       <p class="sec-sub">The files and skills that configure Claude around your business.</p>
     </div>
 
-    <div class="install">
-      <div class="install-group">
-        <div class="install-group-head">
-          <span class="install-group-name">me/</span>
-          <span class="install-group-desc">your business in 4 files</span>
-        </div>
-        <ul class="install-items">
-          <li>company.md</li>
-          <li>voice.md</li>
-          <li>workflow.md</li>
-          <li>profile.md</li>
-        </ul>
+    <div class="install-tree">
+
+      <div class="layer">
+        <div class="layer-label layer-label--company">Company layer &middot; written once during build</div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">what-is-[company].md</span><span class="tree-anno">company identity</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">how-we-work.md</span><span class="tree-anno">team structure, processes</span></div>
+        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-file">how-we-communicate.md</span><span class="tree-anno">brand voice</span></div>
       </div>
 
-      <div class="install-group">
-        <div class="install-group-head">
-          <span class="install-group-name">clients/</span>
-          <span class="install-group-desc">per-engagement, created by /onboard</span>
-        </div>
-        <ul class="install-items">
-          <li>[name].md</li>
-          <li>[name]/log.md</li>
-        </ul>
+      <div class="layer">
+        <div class="layer-label layer-label--individual">Individual layer &middot; created by /onboard, one per person</div>
+        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-dir">Individual Profiles/</span></div>
+        <div class="tree-line"><span class="tree-branch">    └── </span><span class="tree-file">[name] - Claude Profile</span><span class="tree-anno">who-i-am + how-i-talk + how-i-work</span></div>
       </div>
 
-      <div class="install-group">
-        <div class="install-group-head">
-          <span class="install-group-name">specialists/</span>
-          <span class="install-group-desc">10 named experts who read your context first</span>
-        </div>
-        <ul class="install-items">
-          <li>/client-comms</li>
-          <li>/content-strategist</li>
-          <li>/project-manager</li>
-          <li>/prep-for-call</li>
-          <li class="install-more">+ 6 more</li>
-        </ul>
+      <div class="layer">
+        <div class="layer-label layer-label--engagement">Engagement layer &middot; created by /new-project, one per client</div>
+        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-dir">[client]/</span></div>
+        <div class="tree-line"><span class="tree-branch">    ├── </span><span class="tree-file">project-brief.md</span><span class="tree-anno">scope, contacts, timeline</span></div>
+        <div class="tree-line"><span class="tree-branch">    └── </span><span class="tree-file">project-log.md</span><span class="tree-anno">running log, updated by every skill</span></div>
       </div>
 
-      <div class="install-group">
-        <div class="install-group-head">
-          <span class="install-group-name">workflows/</span>
-          <span class="install-group-desc">3 routines, on cue or on schedule</span>
-        </div>
-        <ul class="install-items">
-          <li>/weekly-review</li>
-          <li>/daily-log</li>
-          <li>/refine-voice</li>
-        </ul>
+      <div class="layer">
+        <div class="layer-label layer-label--specialist">Specialist layer &middot; 10 named experts that read the layers above</div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/client-comms</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/content-strategist</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/project-manager</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/brand-strategist</span></div>
+        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-more">+ 6 more</span></div>
       </div>
 
-      <a class="install-link" href="#coffee">Let's chat &rarr;</a>
+      <div class="layer">
+        <div class="layer-label layer-label--workflow">Workflow layer &middot; 4 standing routines, on cue or on schedule</div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/prep-for-call</span><span class="tree-anno">pre-meeting brief</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/weekly-review</span><span class="tree-anno">friday consolidation</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/daily-log</span><span class="tree-anno">end-of-day capture, scheduled</span></div>
+        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-file">/refine-voice</span><span class="tree-anno">voice profile updates from real evidence</span></div>
+      </div>
+
     </div>
+
+    <a class="install-link" href="#coffee">Let's chat &rarr;</a>
 
     <div class="install-after">
       <p>Every Friday the system reviews its own logs and proposes what to tighten. You approve. <strong>The system upgrades itself.</strong></p>
@@ -963,10 +975,11 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
             <p class="demo-thinking-detail demo-fade">Pulling Beck context and recent threads. Scanning what's open in the SOW.</p>
 
             <div class="demo-events">
-              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">clients/beck.md</span></div>
-              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">me/voice.md</span></div>
+              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">company context file</span></div>
+              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">how-we-communicate.md</span></div>
+              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">Beck/project-brief.md</span></div>
               <div class="demo-event demo-fade"><span class="demo-event-action">Searched</span><span class="demo-event-target">Gmail &middot; "Beck" &middot; 14 threads (30 days)</span></div>
-              <div class="demo-event demo-fade"><span class="demo-event-action">Searched</span><span class="demo-event-target">Slack #beck-project &middot; 8 messages (14 days)</span></div>
+              <div class="demo-event demo-fade"><span class="demo-event-action">Searched</span><span class="demo-event-target">Slack #beck &middot; 8 messages (14 days)</span></div>
               <div class="demo-event demo-fade"><span class="demo-event-action">Searched</span><span class="demo-event-target">Drive &middot; Phase 2 SOW v3</span></div>
               <div class="demo-event demo-fade"><span class="demo-event-action">Created</span><span class="demo-event-target">Brief &middot; 2pm with Beck</span></div>
             </div>
@@ -1010,11 +1023,11 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
             <p class="demo-thinking-detail demo-fade">Reading project log, checking what shipped, surfacing risks for the email.</p>
 
             <div class="demo-events">
-              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">clients/stonefly.md</span></div>
-              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">clients/stonefly/log.md</span></div>
-              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">me/voice.md</span></div>
+              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">Stonefly/project-brief.md</span></div>
+              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">Stonefly/project-log.md</span></div>
+              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">how-we-communicate.md</span></div>
               <div class="demo-event demo-fade"><span class="demo-event-action">Searched</span><span class="demo-event-target">Asana &middot; Stonefly &middot; 23 active, 8 closed this week</span></div>
-              <div class="demo-event demo-fade"><span class="demo-event-action">Searched</span><span class="demo-event-target">Slack #stonefly-team &middot; 14 messages (7 days)</span></div>
+              <div class="demo-event demo-fade"><span class="demo-event-action">Searched</span><span class="demo-event-target">Slack #stonefly &middot; 14 messages (7 days)</span></div>
               <div class="demo-event demo-fade"><span class="demo-event-action">Drafted</span><span class="demo-event-target">Status email &middot; ready to send</span></div>
             </div>
 
@@ -1059,8 +1072,8 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
             <p class="demo-thinking-detail demo-fade">Pulling this week's roadmap theme, scanning what shipped, drafting in your voice.</p>
 
             <div class="demo-events">
-              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">content/roadmap.md</span></div>
-              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">me/voice.md</span></div>
+              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">how-we-communicate.md</span></div>
+              <div class="demo-event demo-fade"><span class="demo-event-action">Read</span><span class="demo-event-target">content-roadmap.md</span></div>
               <div class="demo-event demo-fade"><span class="demo-event-action">Searched</span><span class="demo-event-target">Notion &middot; content backlog &middot; 18 active items</span></div>
               <div class="demo-event demo-fade"><span class="demo-event-action">Searched</span><span class="demo-event-target">Drive &middot; last 4 weeks shipped &middot; 12 docs</span></div>
               <div class="demo-event demo-fade"><span class="demo-event-action">Drafted</span><span class="demo-event-target">Week of Apr 29 &middot; 2 pieces</span></div>
