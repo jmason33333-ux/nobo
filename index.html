@@ -633,6 +633,11 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 /* drop the v2 CTA eyebrow if present */
 .cta-eyebrow{display:none}
 </style>
+<!-- Vercel Web Analytics -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -646,7 +651,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
       <a href="/field-notes">Field Notes</a>
     </div>
     <div class="nav-right">
-      <a href="#coffee" class="btn btn-primary nav-cta">Let's chat</a>
+      <a href="#coffee" class="btn btn-primary nav-cta" data-track="cta_click" data-track-location="nav">Let's chat</a>
       <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
@@ -657,7 +662,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
     <a href="#how">How it works</a>
     <a href="/guides">Guides</a>
     <a href="/field-notes">Field Notes</a>
-    <a href="#coffee" class="nav-drawer-cta">Let's chat</a>
+    <a href="#coffee" class="nav-drawer-cta" data-track="cta_click" data-track-location="nav_drawer">Let's chat</a>
   </div>
 </nav>
 
@@ -671,8 +676,8 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
         The AI System<br>that gets work done<span class="dot">.</span>
       </h1>
       <div class="hero-cta-row">
-        <a href="#coffee" class="btn btn-primary big">Let's chat</a>
-        <a href="#how" class="btn btn-ghost big">See how it works</a>
+        <a href="#coffee" class="btn btn-primary big" data-track="cta_click" data-track-location="hero">Let's chat</a>
+        <a href="#how" class="btn btn-ghost big" data-track="secondary_cta_click" data-track-location="hero">See how it works</a>
       </div>
       <div class="hero-byline">
         james mason &middot; boulder, co
@@ -966,7 +971,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 
     </div>
 
-    <a class="install-link" href="#coffee">Let's chat &rarr;</a>
+    <a class="install-link" href="#coffee" data-track="cta_click" data-track-location="install_section">Let's chat &rarr;</a>
 
     <div class="install-after">
       <p>Every Friday the system reviews its own logs and proposes what to tighten. You approve. <strong>The system upgrades itself.</strong></p>
@@ -986,9 +991,9 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
     <div class="demo-stage system-frame">
 
       <div class="demo-tabs" role="tablist">
-        <button class="demo-tab demo-tab--active" data-tab="meeting" role="tab" aria-selected="true">Meeting prep</button>
-        <button class="demo-tab" data-tab="status" role="tab" aria-selected="false">Client status</button>
-        <button class="demo-tab" data-tab="content" role="tab" aria-selected="false">Weekly content</button>
+        <button class="demo-tab demo-tab--active" data-tab="meeting" role="tab" aria-selected="true" data-track="demo_tab_click" data-track-location="meeting">Meeting prep</button>
+        <button class="demo-tab" data-tab="status" role="tab" aria-selected="false" data-track="demo_tab_click" data-track-location="status">Client status</button>
+        <button class="demo-tab" data-tab="content" role="tab" aria-selected="false" data-track="demo_tab_click" data-track-location="content">Weekly content</button>
       </div>
 
       <div class="demo-panels">
@@ -1201,8 +1206,8 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
     </div>
     <div class="foot-col">
       <h5>Nobo</h5>
-      <a href="mailto:james@nobo.works">james@nobo.works</a>
-      <a href="#coffee">Let's chat</a>
+      <a href="mailto:james@nobo.works" data-track="email_click" data-track-location="footer">james@nobo.works</a>
+      <a href="#coffee" data-track="cta_click" data-track-location="footer">Let's chat</a>
     </div>
   </div>
   <div class="foot-bottom">
@@ -1529,6 +1534,9 @@ if(ctaForm){
       });
 
       if(res.ok){
+        if(typeof window.va === 'function'){
+          window.va('event', { name: 'cta_form_submitted', data: { location: 'contact' } });
+        }
         const successEl = document.createElement('div');
         successEl.className = 'cta-success';
         successEl.innerHTML = '<strong>Got it.</strong> I\'ll be in touch within a day.';
@@ -1545,6 +1553,17 @@ if(ctaForm){
     }
   });
 }
+
+// ─── ANALYTICS: delegated click tracking ───
+// Any element with data-track="<event_name>" fires a Vercel event on click.
+// Optional data-track-location="<context>" is included as event data.
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-track]');
+  if(!el || typeof window.va !== 'function') return;
+  const name = el.getAttribute('data-track');
+  const location = el.getAttribute('data-track-location');
+  window.va('event', { name, data: location ? { location } : {} });
+});
 </script>
 
 </body>
