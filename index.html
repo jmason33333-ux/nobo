@@ -558,6 +558,38 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   .hear-grid{grid-template-columns:1fr}
 }
 
+/* ─── WHY NOBO (interlude) ─── */
+.why-nobo{
+  background:var(--cream-dark);
+  padding:96px 0;
+  border-top:1px solid var(--cream-deeper);
+  border-bottom:1px solid var(--cream-deeper);
+}
+.why-inner{max-width:720px;margin:0 auto;padding:0 40px;text-align:left}
+.why-title{
+  font-family:var(--sans);font-weight:700;
+  font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 28px;
+}
+.why-title .dot{color:var(--accent)}
+.why-thesis{
+  font-family:var(--sans);font-size:1.35rem;line-height:1.45;letter-spacing:-.012em;
+  color:var(--text-dark);margin:0 0 36px;text-wrap:pretty;
+}
+.why-thesis strong{color:var(--pine-dark);font-weight:600}
+.why-promise{
+  font-family:var(--sans);font-size:1.1rem;line-height:1.5;letter-spacing:-.005em;
+  color:var(--text-mid);margin:0;padding-top:28px;
+  border-top:1px dashed var(--line-strong);text-wrap:pretty;
+}
+.why-promise strong{color:var(--pine-dark);font-weight:600}
+@media (max-width:780px){
+  .why-nobo{padding:64px 0}
+  .why-inner{padding:0 22px}
+  .why-thesis{font-size:1.15rem;margin-bottom:28px}
+  .why-promise{font-size:1rem}
+}
+
 /* ─── PRICING + CTA UPDATES ─── */
 .cta-pricing{
   font-family:var(--mono);font-size:.85rem;letter-spacing:.02em;color:rgba(245,240,230,.7);
@@ -1102,6 +1134,24 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   </div>
 </section>
 
+<!-- ─── WHY NOBO (interlude) ─── -->
+<section class="why-nobo" id="why">
+  <div class="wrap">
+    <div class="why-inner">
+      <h2 class="why-title">Why Nobo<span class="dot">.</span></h2>
+      <p class="why-thesis">
+        <strong>Service businesses are about to look like software businesses.</strong>
+        AI does 80% of the work. Humans handle the 20% that matters.
+        <strong>The firms that lead the shift gain the edge.</strong>
+      </p>
+      <p class="why-promise">
+        <strong>I install your system. I train your team.</strong>
+        A strong foundation is what raises the ceiling.
+      </p>
+    </div>
+  </div>
+</section>
+
 <!-- ─── PRICING + CTA ─── -->
 <section class="cta" id="coffee">
   <div class="cta-inner">
@@ -1135,6 +1185,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
       <h5>The system</h5>
       <a href="#how">How it works</a>
       <a href="#demo">An example</a>
+      <a href="#why">Why Nobo</a>
     </div>
     <div class="foot-col">
       <h5>Writing</h5>
