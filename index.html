@@ -616,6 +616,13 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 }
 .cta-form textarea{resize:vertical;min-height:96px;font-family:var(--sans);line-height:1.5}
 .cta-form .btn{align-self:flex-start;margin-top:6px}
+.cta-form button[disabled]{opacity:.6;cursor:wait}
+.cta-success{
+  font-family:var(--sans);font-size:1.1rem;line-height:1.5;color:var(--cream);
+  text-align:center;padding:48px 32px;max-width:520px;margin:30px auto 24px;
+  border:1px dashed rgba(245,240,230,.25);border-radius:10px;
+}
+.cta-success strong{color:var(--cream);font-weight:600;display:block;margin-bottom:6px;font-size:1.25rem}
 /* on dark CTA, primary button needs to invert: cream surface, pine ink */
 .cta .btn-primary{background:var(--cream);color:var(--pine-dark)}
 .cta .btn-primary:hover{background:#FFFFFF;color:var(--pine-dark);transform:translateY(-1px)}
@@ -1160,7 +1167,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
     <h2>Your team <em>already</em><br>has the tool<span class="dot">.</span></h2>
     <p class="cta-sub">Let's build the system around it. Grab coffee, 30 minutes, no deck, no pitch. I'll map where the hours are going and tell you honestly if Nobo can help.</p>
 
-    <form class="cta-form" id="cta-form">
+    <form class="cta-form" id="cta-form" action="https://formspree.io/f/mykogovq" method="POST">
       <div class="cta-form-row">
         <input type="text" name="name" placeholder="Your name" required>
         <input type="email" name="email" placeholder="you@yourteam.com" required>
@@ -1504,19 +1511,38 @@ if(navToggle && navDrawer){
   }));
 }
 
-// ─── CTA FORM → MAILTO ───
+// ─── CTA FORM → FORMSPREE (AJAX, stays on page) ───
 const ctaForm = document.getElementById('cta-form');
 if(ctaForm){
-  ctaForm.addEventListener('submit', e => {
+  ctaForm.addEventListener('submit', async e => {
     e.preventDefault();
-    const fd = new FormData(ctaForm);
-    const name = (fd.get('name') || '').trim();
-    const email = (fd.get('email') || '').trim();
-    const company = (fd.get('company') || '').trim();
-    const tuesday = (fd.get('tuesday') || '').trim();
-    const subject = `Coffee with James, ${name}${company ? ' (' + company + ')' : ''}`;
-    const body = `From: ${name} <${email}>\nCompany: ${company || ','}\n\nWhat's eating my Tuesday:\n${tuesday}`;
-    window.location.href = `mailto:james@nobo.works?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const button = ctaForm.querySelector('button[type=submit]');
+    const originalText = button.textContent;
+    button.disabled = true;
+    button.textContent = 'Sending...';
+
+    try{
+      const res = await fetch(ctaForm.action, {
+        method: 'POST',
+        body: new FormData(ctaForm),
+        headers: { Accept: 'application/json' }
+      });
+
+      if(res.ok){
+        const successEl = document.createElement('div');
+        successEl.className = 'cta-success';
+        successEl.innerHTML = '<strong>Got it.</strong> I\'ll be in touch within a day.';
+        ctaForm.replaceWith(successEl);
+      } else {
+        button.disabled = false;
+        button.textContent = originalText;
+        alert('Something went wrong. Email james@nobo.works directly and I\'ll respond from there.');
+      }
+    } catch(err){
+      button.disabled = false;
+      button.textContent = originalText;
+      alert('Something went wrong. Email james@nobo.works directly and I\'ll respond from there.');
+    }
   });
 }
 </script>
