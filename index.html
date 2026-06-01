@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>nobo · AI that actually shows up to work</title>
+<title>nobo · Messy workflows, made useful</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -146,6 +146,11 @@ strong,b{font-weight:600}
 .hero-headline em{color:var(--pine)}
 .hero-headline .dot{color:var(--accent)}
 .hero-cta-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:56px}
+.hero-lede{
+  font-family:var(--sans);font-size:1.12rem;line-height:1.6;
+  color:var(--text-mid);max-width:58ch;margin:-18px 0 34px;
+  text-wrap:pretty;
+}
 .hero-byline{
   font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;
   color:var(--text-soft);
@@ -245,6 +250,7 @@ strong,b{font-weight:600}
 /* ─── SECTIONS ─── */
 .section{padding:144px 0;position:relative}
 .section-cream,.section-white{background:var(--bg)} /* both resolve to default warm white per discipline */
+.is-hidden{display:none !important}
 
 .sec-head{text-align:center;max-width:760px;margin:0 auto 72px}
 .sec-head.left{text-align:left;margin-left:0}
@@ -646,7 +652,6 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   <div class="nav-inner">
     <a href="#" class="wordmark">nobo<span class="dot">.</span></a>
     <div class="nav-links">
-      <a href="#how">How it works</a>
       <a href="/guides">Guides</a>
       <a href="/field-notes">Field Notes</a>
     </div>
@@ -659,7 +664,6 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
     </div>
   </div>
   <div class="nav-drawer" id="navDrawer" hidden>
-    <a href="#how">How it works</a>
     <a href="/guides">Guides</a>
     <a href="/field-notes">Field Notes</a>
     <a href="#coffee" class="nav-drawer-cta" data-track="cta_click" data-track-location="nav_drawer">Let's chat</a>
@@ -673,11 +677,12 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   <div class="hero-inner">
     <div class="hero-left">
       <h1 class="hero-headline">
-        The AI System<br>that gets work done<span class="dot">.</span>
+        Messy workflows,<br>made useful<span class="dot">.</span>
       </h1>
+      <p class="hero-lede">Nobo builds practical workflow systems for businesses whose work is trapped across software, spreadsheets, documents, and staff memory. I turn scattered data into clear operating views, repeatable processes, and tools your team can actually use.</p>
       <div class="hero-cta-row">
         <a href="#coffee" class="btn btn-primary big" data-track="cta_click" data-track-location="hero">Let's chat</a>
-        <a href="#how" class="btn btn-ghost big" data-track="secondary_cta_click" data-track-location="hero">See how it works</a>
+        <a href="#hearing" class="btn btn-ghost big" data-track="secondary_cta_click" data-track-location="hero">See where it fits</a>
       </div>
       <div class="hero-byline">
         james mason &middot; boulder, co
@@ -718,73 +723,73 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
         <text x="1080" y="624" class="dg-lbl dg-lbl-tiny" text-anchor="end">REV. 01 &#183; 2026</text>
 
         <line x1="120" y1="618" x2="148" y2="618" class="dg-stroke-line"/>
-        <text id="dg-flowCaption" x="160" y="622" class="dg-lbl">FLOW &#183; MEETING PREP</text>
+        <text id="dg-flowCaption" x="160" y="622" class="dg-lbl">FLOW &#183; WORKFLOW PREP</text>
 
         <rect id="dg-node-prompt" class="dg-node" x="140" y="240" width="200" height="160" rx="6"/>
-        <text x="156" y="262" class="dg-lbl">PROMPT</text>
+        <text x="156" y="262" class="dg-lbl">MESS</text>
         <foreignObject x="156" y="280" width="168" height="108">
-          <div xmlns="http://www.w3.org/1999/xhtml" id="dg-prompt-text" class="dg-box-content">prep me for my 2pm with beck</div>
+          <div xmlns="http://www.w3.org/1999/xhtml" id="dg-prompt-text" class="dg-box-content">project context scattered across systems</div>
         </foreignObject>
 
         <line x1="340" y1="320" x2="414" y2="320" class="dg-stroke-pine"/>
         <path d="M 408 316 L 414 320 L 408 324" class="dg-stroke-pine"/>
 
         <rect id="dg-node-enrich" class="dg-node" x="420" y="160" width="380" height="320" rx="6"/>
-        <text x="436" y="182" class="dg-lbl">CONTEXT + CONNECTORS</text>
+        <text x="436" y="182" class="dg-lbl">MAP + CLEAN</text>
 
         <line x1="436" y1="312" x2="784" y2="312" class="dg-stroke-line" stroke-dasharray="2 4"/>
 
-        <text x="436" y="208" class="dg-lbl dg-lbl-tiny">CONTEXT</text>
+        <text x="436" y="208" class="dg-lbl dg-lbl-tiny">WORKFLOW</text>
 
         <rect id="dg-ctx-company" class="dg-sub" x="450" y="222" width="96" height="76" rx="4"/>
-        <text x="498" y="266" class="dg-ctx-label" id="dg-ctx-company-label">COMPANY</text>
+        <text x="498" y="266" class="dg-ctx-label" id="dg-ctx-company-label">PEOPLE</text>
 
         <rect id="dg-ctx-method" class="dg-sub" x="562" y="222" width="96" height="76" rx="4"/>
-        <text x="610" y="266" class="dg-ctx-label" id="dg-ctx-method-label">METHOD</text>
+        <text x="610" y="266" class="dg-ctx-label" id="dg-ctx-method-label">STEPS</text>
 
         <rect id="dg-ctx-voice" class="dg-sub" x="674" y="222" width="96" height="76" rx="4"/>
-        <text x="722" y="266" class="dg-ctx-label" id="dg-ctx-voice-label">VOICE</text>
+        <text x="722" y="266" class="dg-ctx-label" id="dg-ctx-voice-label">RULES</text>
 
-        <text x="436" y="338" class="dg-lbl dg-lbl-tiny">CONNECTORS</text>
+        <text x="436" y="338" class="dg-lbl dg-lbl-tiny">SOURCES</text>
 
         <g data-conn="gmail">
           <rect class="dg-sub dg-conn-box" x="442" y="354" width="56" height="40" rx="4"/>
           <line class="dg-stem" x1="470" y1="394" x2="470" y2="412"/>
           <circle class="dg-port" cx="470" cy="416" r="3.5"/>
-          <text x="470" y="438" class="dg-conn-label">GMAIL</text>
+          <text x="470" y="438" class="dg-conn-label">APIS</text>
         </g>
         <g data-conn="drive">
           <rect class="dg-sub dg-conn-box" x="512" y="354" width="56" height="40" rx="4"/>
           <line class="dg-stem" x1="540" y1="394" x2="540" y2="412"/>
           <circle class="dg-port" cx="540" cy="416" r="3.5"/>
-          <text x="540" y="438" class="dg-conn-label">DRIVE</text>
+          <text x="540" y="438" class="dg-conn-label">EXPORTS</text>
         </g>
         <g data-conn="cal">
           <rect class="dg-sub dg-conn-box" x="582" y="354" width="56" height="40" rx="4"/>
           <line class="dg-stem" x1="610" y1="394" x2="610" y2="412"/>
           <circle class="dg-port" cx="610" cy="416" r="3.5"/>
-          <text x="610" y="438" class="dg-conn-label">CAL</text>
+          <text x="610" y="438" class="dg-conn-label">SHEETS</text>
         </g>
         <g data-conn="slack">
           <rect class="dg-sub dg-conn-box" x="652" y="354" width="56" height="40" rx="4"/>
           <line class="dg-stem" x1="680" y1="394" x2="680" y2="412"/>
           <circle class="dg-port" cx="680" cy="416" r="3.5"/>
-          <text x="680" y="438" class="dg-conn-label">SLACK</text>
+          <text x="680" y="438" class="dg-conn-label">DOCS</text>
         </g>
         <g data-conn="notion">
           <rect class="dg-sub dg-conn-box" x="722" y="354" width="56" height="40" rx="4"/>
           <line class="dg-stem" x1="750" y1="394" x2="750" y2="412"/>
           <circle class="dg-port" cx="750" cy="416" r="3.5"/>
-          <text x="750" y="438" class="dg-conn-label">NOTION</text>
+          <text x="750" y="438" class="dg-conn-label">TEAM</text>
         </g>
 
         <line x1="800" y1="320" x2="854" y2="320" class="dg-stroke-pine"/>
         <path d="M 848 316 L 854 320 L 848 324" class="dg-stroke-pine"/>
 
         <rect id="dg-node-outcome" class="dg-node" x="860" y="240" width="200" height="160" rx="6"/>
-        <text x="876" y="262" class="dg-lbl">OUTCOME</text>
+        <text x="876" y="262" class="dg-lbl">OPERATING VIEW</text>
         <foreignObject x="876" y="280" width="168" height="108">
-          <div xmlns="http://www.w3.org/1999/xhtml" id="dg-outcome-text" class="dg-box-content dg-box-content--outcome">Brief &#183; Beck 2pm</div>
+          <div xmlns="http://www.w3.org/1999/xhtml" id="dg-outcome-text" class="dg-box-content dg-box-content--outcome">work queue with trusted next actions</div>
         </foreignObject>
 
         <circle id="dg-dot" class="dg-dot" cx="340" cy="320" r="6" opacity="0"/>
@@ -805,73 +810,73 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
         <text x="540" y="980" class="dg-lbl dg-lbl-tiny" text-anchor="end">REV. 01 &#183; 2026</text>
 
         <line x1="60" y1="970" x2="88" y2="970" class="dg-stroke-line"/>
-        <text id="dg-flowCaption" x="100" y="974" class="dg-lbl">FLOW &#183; MEETING PREP</text>
+        <text id="dg-flowCaption" x="100" y="974" class="dg-lbl">FLOW &#183; WORKFLOW PREP</text>
 
         <rect id="dg-node-prompt" class="dg-node" x="180" y="80" width="240" height="140" rx="6"/>
-        <text x="196" y="102" class="dg-lbl">PROMPT</text>
+        <text x="196" y="102" class="dg-lbl">MESS</text>
         <foreignObject x="196" y="118" width="208" height="92">
-          <div xmlns="http://www.w3.org/1999/xhtml" id="dg-prompt-text" class="dg-box-content">prep me for my 2pm with beck</div>
+          <div xmlns="http://www.w3.org/1999/xhtml" id="dg-prompt-text" class="dg-box-content">project context scattered across systems</div>
         </foreignObject>
 
         <line x1="300" y1="220" x2="300" y2="254" class="dg-stroke-pine"/>
         <path d="M 296 248 L 300 254 L 304 248" class="dg-stroke-pine"/>
 
         <rect id="dg-node-enrich" class="dg-node" x="40" y="260" width="520" height="440" rx="6"/>
-        <text x="56" y="282" class="dg-lbl">CONTEXT + CONNECTORS</text>
+        <text x="56" y="282" class="dg-lbl">MAP + CLEAN</text>
 
         <line x1="56" y1="392" x2="544" y2="392" class="dg-stroke-line" stroke-dasharray="2 4"/>
 
-        <text x="56" y="304" class="dg-lbl dg-lbl-tiny">CONTEXT</text>
+        <text x="56" y="304" class="dg-lbl dg-lbl-tiny">WORKFLOW</text>
 
         <rect id="dg-ctx-company" class="dg-sub" x="70" y="316" width="140" height="60" rx="4"/>
-        <text x="140" y="352" class="dg-ctx-label" id="dg-ctx-company-label">COMPANY</text>
+        <text x="140" y="352" class="dg-ctx-label" id="dg-ctx-company-label">PEOPLE</text>
 
         <rect id="dg-ctx-method" class="dg-sub" x="230" y="316" width="140" height="60" rx="4"/>
-        <text x="300" y="352" class="dg-ctx-label" id="dg-ctx-method-label">METHOD</text>
+        <text x="300" y="352" class="dg-ctx-label" id="dg-ctx-method-label">STEPS</text>
 
         <rect id="dg-ctx-voice" class="dg-sub" x="390" y="316" width="140" height="60" rx="4"/>
-        <text x="460" y="352" class="dg-ctx-label" id="dg-ctx-voice-label">VOICE</text>
+        <text x="460" y="352" class="dg-ctx-label" id="dg-ctx-voice-label">RULES</text>
 
-        <text x="56" y="416" class="dg-lbl dg-lbl-tiny">CONNECTORS</text>
+        <text x="56" y="416" class="dg-lbl dg-lbl-tiny">SOURCES</text>
 
         <g data-conn="gmail">
           <rect class="dg-sub dg-conn-box" x="70" y="430" width="80" height="48" rx="4"/>
           <line class="dg-stem" x1="110" y1="478" x2="110" y2="510"/>
           <circle class="dg-port" cx="110" cy="514" r="3.5"/>
-          <text x="110" y="540" class="dg-conn-label">GMAIL</text>
+          <text x="110" y="540" class="dg-conn-label">APIS</text>
         </g>
         <g data-conn="drive">
           <rect class="dg-sub dg-conn-box" x="170" y="430" width="80" height="48" rx="4"/>
           <line class="dg-stem" x1="210" y1="478" x2="210" y2="510"/>
           <circle class="dg-port" cx="210" cy="514" r="3.5"/>
-          <text x="210" y="540" class="dg-conn-label">DRIVE</text>
+          <text x="210" y="540" class="dg-conn-label">EXPORTS</text>
         </g>
         <g data-conn="cal">
           <rect class="dg-sub dg-conn-box" x="270" y="430" width="80" height="48" rx="4"/>
           <line class="dg-stem" x1="310" y1="478" x2="310" y2="510"/>
           <circle class="dg-port" cx="310" cy="514" r="3.5"/>
-          <text x="310" y="540" class="dg-conn-label">CAL</text>
+          <text x="310" y="540" class="dg-conn-label">SHEETS</text>
         </g>
         <g data-conn="slack">
           <rect class="dg-sub dg-conn-box" x="370" y="430" width="80" height="48" rx="4"/>
           <line class="dg-stem" x1="410" y1="478" x2="410" y2="510"/>
           <circle class="dg-port" cx="410" cy="514" r="3.5"/>
-          <text x="410" y="540" class="dg-conn-label">SLACK</text>
+          <text x="410" y="540" class="dg-conn-label">DOCS</text>
         </g>
         <g data-conn="notion">
           <rect class="dg-sub dg-conn-box" x="470" y="430" width="80" height="48" rx="4"/>
           <line class="dg-stem" x1="510" y1="478" x2="510" y2="510"/>
           <circle class="dg-port" cx="510" cy="514" r="3.5"/>
-          <text x="510" y="540" class="dg-conn-label">NOTION</text>
+          <text x="510" y="540" class="dg-conn-label">TEAM</text>
         </g>
 
         <line x1="300" y1="700" x2="300" y2="734" class="dg-stroke-pine"/>
         <path d="M 296 728 L 300 734 L 304 728" class="dg-stroke-pine"/>
 
         <rect id="dg-node-outcome" class="dg-node" x="180" y="740" width="240" height="140" rx="6"/>
-        <text x="196" y="762" class="dg-lbl">OUTCOME</text>
+        <text x="196" y="762" class="dg-lbl">OPERATING VIEW</text>
         <foreignObject x="196" y="778" width="208" height="92">
-          <div xmlns="http://www.w3.org/1999/xhtml" id="dg-outcome-text" class="dg-box-content dg-box-content--outcome">Brief &#183; Beck 2pm</div>
+          <div xmlns="http://www.w3.org/1999/xhtml" id="dg-outcome-text" class="dg-box-content dg-box-content--outcome">work queue with trusted next actions</div>
         </foreignObject>
 
         <circle id="dg-dot" class="dg-dot" cx="300" cy="220" r="6" opacity="0"/>
@@ -885,7 +890,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 <!-- ─── CONNECTOR + TRUST LINE ─── -->
 <section class="trustline">
   <div class="trustline-inner">
-    <p>Runs on Claude Cowork. Connects to the tools your team already uses. <strong>Compounds week over week.</strong></p>
+    <p>Built around the tools your team already uses. <strong>Designed to make your data actionable.</strong></p>
   </div>
 </section>
 
@@ -893,28 +898,27 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 <section class="section section-cream" id="hearing">
   <div class="wrap">
     <div class="sec-head">
-      <span class="eyebrow">01 &middot; What I keep hearing</span>
       <h2 class="sec-title">Does this sound <em>familiar</em><span class="dot">?</span></h2>
-      <p class="sec-sub">These are the things I hear from the operators I work with.</p>
+      <p class="sec-sub">These are the problems that usually mean the business needs a workflow system, not another dashboard.</p>
     </div>
 
     <div class="system-frame">
       <div class="hear-grid">
         <div class="hear">
-          <div class="hear-title">We've seen what AI can do, but we're not there yet<span class="dot">.</span></div>
-          <p class="hear-quote">"I know we could be getting more out of AI. I just don't have time to figure it out while running the business."</p>
+          <div class="hear-title">The data is there, but the work is still manual<span class="dot">.</span></div>
+          <p class="hear-quote">"We can usually find the answer, but it takes three systems, a spreadsheet, and the one person who knows where everything lives."</p>
         </div>
         <div class="hear">
-          <div class="hear-title">It doesn't know our business<span class="dot">.</span></div>
-          <p class="hear-quote">"Every time someone on my team opens Claude, they start from scratch. It doesn't know our clients, our processes, or how we work."</p>
+          <div class="hear-title">Reports do not match reality<span class="dot">.</span></div>
+          <p class="hear-quote">"The report says one thing, the spreadsheet says another, and then we spend half the meeting figuring out which one is right."</p>
         </div>
         <div class="hear">
-          <div class="hear-title">Just do it myself<span class="dot">.</span></div>
-          <p class="hear-quote">"We spend more time going back and forth with AI than it would take to just do the work ourselves."</p>
+          <div class="hear-title">Important follow-up falls through the cracks<span class="dot">.</span></div>
+          <p class="hear-quote">"A lot of the follow-up is obvious after the fact. The problem is nobody sees it at the moment when it should happen."</p>
         </div>
         <div class="hear">
-          <div class="hear-title">We don't know where to start<span class="dot">.</span></div>
-          <p class="hear-quote">"Half our week is work that should be automated. We just don't know which thing to fix first."</p>
+          <div class="hear-title">The team has outgrown the workaround<span class="dot">.</span></div>
+          <p class="hear-quote">"It works because a couple people are really good at remembering the process. That is not the same thing as having a system."</p>
         </div>
       </div>
     </div>
@@ -922,51 +926,50 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 </section>
 
 <!-- ─── HOW IT WORKS ─── -->
-<section class="section section-cream" id="how">
+<section class="section section-cream is-hidden" id="how" aria-hidden="true">
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">02 &middot; How it works</span>
       <h2 class="sec-title">Here's what <em>ships</em><span class="dot">.</span></h2>
-      <p class="sec-sub">The files and skills that configure Claude around your business.</p>
+      <p class="sec-sub">A scoped build that turns scattered workflow knowledge into a system your team can run.</p>
     </div>
 
     <div class="install-tree">
 
       <div class="layer">
-        <div class="layer-label layer-label--company">Company layer &middot; written once during build</div>
-        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">what-is-[company].md</span><span class="tree-anno">company identity</span></div>
-        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">how-we-work.md</span><span class="tree-anno">team structure, processes</span></div>
-        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-file">how-we-communicate.md</span><span class="tree-anno">brand voice</span></div>
+        <div class="layer-label layer-label--company">Workflow map &middot; what is happening now</div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">current-state.md</span><span class="tree-anno">people, systems, handoffs</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">source-inventory.md</span><span class="tree-anno">software, exports, documents</span></div>
+        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-file">pain-points.md</span><span class="tree-anno">manual work, gaps, risk</span></div>
       </div>
 
       <div class="layer">
-        <div class="layer-label layer-label--individual">Individual layer &middot; created by /onboard, one per person</div>
-        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-dir">Individual Profiles/</span></div>
-        <div class="tree-line"><span class="tree-branch">    └── </span><span class="tree-file">[name] - Claude Profile</span><span class="tree-anno">who-i-am + how-i-talk + how-i-work</span></div>
+        <div class="layer-label layer-label--individual">Data layer &middot; make scattered information usable</div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">field-map.md</span><span class="tree-anno">what lives where</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">reconciliation-checks.md</span><span class="tree-anno">proof the data matches reality</span></div>
+        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-file">owned-record</span><span class="tree-anno">the clean operational view</span></div>
       </div>
 
       <div class="layer">
-        <div class="layer-label layer-label--engagement">Engagement layer &middot; created by /new-project, one per client</div>
-        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-dir">[client]/</span></div>
-        <div class="tree-line"><span class="tree-branch">    ├── </span><span class="tree-file">project-brief.md</span><span class="tree-anno">scope, contacts, timeline</span></div>
-        <div class="tree-line"><span class="tree-branch">    └── </span><span class="tree-file">project-log.md</span><span class="tree-anno">running log, updated by every skill</span></div>
+        <div class="layer-label layer-label--engagement">Operating views &middot; give the team one place to work</div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">prep-view</span><span class="tree-anno">what matters before the work happens</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">queue-view</span><span class="tree-anno">what needs action</span></div>
+        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-file">admin-view</span><span class="tree-anno">status, exceptions, reporting</span></div>
       </div>
 
       <div class="layer">
-        <div class="layer-label layer-label--specialist">Specialist layer &middot; 10 named experts that read the layers above</div>
-        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/client-comms</span></div>
-        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/content-strategist</span></div>
-        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/project-manager</span></div>
-        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/brand-strategist</span></div>
-        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-more">+ 6 more</span></div>
+        <div class="layer-label layer-label--specialist">Automation &middot; remove repeatable work carefully</div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">scheduled-refresh</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">exception-flags</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">drafted-next-actions</span></div>
+        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-file">audit-log</span></div>
       </div>
 
       <div class="layer">
-        <div class="layer-label layer-label--workflow">Workflow layer &middot; 4 standing routines, on cue or on schedule</div>
-        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/prep-for-call</span><span class="tree-anno">pre-meeting brief</span></div>
-        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/weekly-review</span><span class="tree-anno">friday consolidation</span></div>
-        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">/daily-log</span><span class="tree-anno">end-of-day capture, scheduled</span></div>
-        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-file">/refine-voice</span><span class="tree-anno">voice profile updates from real evidence</span></div>
+        <div class="layer-label layer-label--workflow">Handoff &middot; leave the business stronger</div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">training-notes</span><span class="tree-anno">how the team uses it</span></div>
+        <div class="tree-line"><span class="tree-branch">├── </span><span class="tree-file">maintenance-plan</span><span class="tree-anno">what to watch</span></div>
+        <div class="tree-line"><span class="tree-branch">└── </span><span class="tree-file">next-build-roadmap</span><span class="tree-anno">what becomes possible next</span></div>
       </div>
 
     </div>
@@ -974,14 +977,14 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
     <a class="install-link" href="#coffee" data-track="cta_click" data-track-location="install_section">Let's chat &rarr;</a>
 
     <div class="install-after">
-      <p>Every Friday the system reviews its own logs and proposes what to tighten. You approve. <strong>The system upgrades itself.</strong></p>
-      <p class="install-ladder"><strong>The Foundation is where every engagement starts.</strong> From there: automation builds for the workflows the install doesn't cover, and full operating systems for teams that want every function running on context.</p>
+      <p>The goal is not another place to look. It is a cleaner way for the business to run: fewer manual lookups, clearer next actions, and data people can trust.</p>
+      <p class="install-ladder"><strong>Most projects start with discovery.</strong> I map the workflow, prove the data path, and define the smallest useful build before turning it into production software.</p>
     </div>
   </div>
 </section>
 
 <!-- ─── DEMO: THREE WORKED EXAMPLES ─── -->
-<section class="section section-white" id="demo">
+<section class="section section-white is-hidden" id="demo" aria-hidden="true">
   <div class="wrap">
     <div class="sec-head">
       <span class="eyebrow">03 &middot; Let me show you a few</span>
@@ -1152,13 +1155,13 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
     <div class="why-inner">
       <h2 class="why-title">Why Nobo<span class="dot">.</span></h2>
       <p class="why-thesis">
-        <strong>Service businesses are about to look like software businesses.</strong>
-        AI does 80% of the work. Humans handle the 20% that matters.
-        <strong>The firms that lead the shift gain the edge.</strong>
+        <strong>Most businesses already have the information they need.</strong>
+        It is just scattered across systems, reports, documents, and people.
+        <strong>Nobo turns that scattered knowledge into usable workflow software.</strong>
       </p>
       <p class="why-promise">
-        <strong>I install your system. I train your team.</strong>
-        I stay involved and figure out where AI should be working for you.
+        <strong>I map the work, clean up the data path, and build the surface.</strong>
+        The result is a tool that reflects how your team actually operates.
       </p>
     </div>
   </div>
@@ -1167,10 +1170,10 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
 <!-- ─── PRICING + CTA ─── -->
 <section class="cta" id="coffee">
   <div class="cta-inner">
-    <p class="cta-pricing">Month one: <strong>$5,000</strong>. I build the system, write your context, train your team, run the audit, and write the roadmap. After that, I price against outcomes.</p>
+    <p class="cta-pricing">Projects usually start with a scoped discovery or feasibility phase, then move into a fixed-price build once the workflow, data path, and constraints are clear.</p>
 
-    <h2>Your team <em>already</em><br>has the tool<span class="dot">.</span></h2>
-    <p class="cta-sub">Let's build the system around it. 30 minutes, no deck, no pitch. I'll map where the hours are going and tell you honestly if Nobo can help.</p>
+    <h2>Have a workflow<br>trapped between systems<span class="dot">?</span></h2>
+    <p class="cta-sub">I'll map the workflow, identify the system constraints, and tell you what can be streamlined safely.</p>
 
     <form class="cta-form" id="cta-form" action="https://formspree.io/f/mykogovq" method="POST">
       <div class="cta-form-row">
@@ -1178,7 +1181,7 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
         <input type="email" name="email" placeholder="you@yourteam.com" required>
       </div>
       <input type="text" name="company" placeholder="Company">
-      <textarea name="tuesday" placeholder="What's the first workflow you'd hand off?" rows="3" required></textarea>
+      <textarea name="tuesday" placeholder="What workflow is costing the most time right now?" rows="3" required></textarea>
       <button class="btn btn-primary big" type="submit">Let's chat</button>
     </form>
   </div>
@@ -1191,12 +1194,10 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   <div class="foot-inner">
     <div class="foot-brand">
       <span class="wordmark">nobo<span class="dot">.</span></span>
-      <p>The AI System that gets work done<span class="dot">.</span></p>
+      <p>Messy workflows, made useful<span class="dot">.</span></p>
     </div>
     <div class="foot-col">
       <h5>The system</h5>
-      <a href="#how">How it works</a>
-      <a href="#demo">An example</a>
       <a href="#why">Why Nobo</a>
     </div>
     <div class="foot-col">
@@ -1232,20 +1233,20 @@ footer{background:var(--pine-dark);color:rgba(253,250,244,.7);padding:64px 0 36p
   const nodeOutcome = document.getElementById('dg-node-outcome');
 
   const FLOWS = [
-    { name:'MEETING PREP', prompt:'prep me for my 2pm with beck',
-      outcome:'Brief · Beck 2pm',
+    { name:'WORKFLOW PREP', prompt:'project context scattered across systems',
+      outcome:'work queue with trusted next actions',
       context:['dg-ctx-company','dg-ctx-method','dg-ctx-voice'],
       connectors:['gmail','drive','cal'] },
-    { name:'ACTION ITEMS', prompt:'tag actions from Q2 retro',
-      outcome:'Action items · Q2 Retro',
-      context:['dg-ctx-method'],
-      connectors:['cal','notion'] },
-    { name:'DRAFT PROPOSAL', prompt:'draft the stonefly proposal',
-      outcome:'Proposal · Stonefly draft v1',
+    { name:'RECONCILIATION', prompt:'reports, balances, and spreadsheets do not agree',
+      outcome:'matched records and exceptions list',
+      context:['dg-ctx-method','dg-ctx-voice'],
+      connectors:['drive','cal'] },
+    { name:'FOLLOW UP', prompt:'next steps buried in notes and memory',
+      outcome:'action queue with owners and due dates',
       context:['dg-ctx-company','dg-ctx-method','dg-ctx-voice'],
-      connectors:['drive','notion'] },
-    { name:'WEEKLY REVIEW', prompt:'generate the weekly review',
-      outcome:'Review · this week',
+      connectors:['gmail','drive','notion'] },
+    { name:'OPERATIONS', prompt:'the process depends on one person knowing everything',
+      outcome:'repeatable workflow the team can run',
       context:['dg-ctx-company','dg-ctx-method','dg-ctx-voice'],
       connectors:['gmail','drive','slack'] },
   ];
